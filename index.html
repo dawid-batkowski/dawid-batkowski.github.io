@@ -81,12 +81,13 @@
         uniform float u_time;
         uniform vec2 u_resolution;
         uniform vec2 u_mouse; 
+        
         void main() {
           vec2 st = gl_FragCoord.xy / u_resolution;
           float dist = distance(st * u_resolution, u_mouse);
+          float intensity = 1.0 - smoothstep(0.0, 200.0, dist); // soft falloff
           vec4 color = vec4(st.x, st.y, abs(sin(u_time)), 1.0);
-          gl_FragColor = color * dist;
-
+          gl_FragColor = color * intensity;
         }
       `
     });
