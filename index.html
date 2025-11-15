@@ -155,7 +155,7 @@
           vec3 color = vec3(uv.x, uv.y, abs(sin(u_time)));
 
           // Final color
-          gl_FragColor = vec4(color * dist, 1.0);
+          gl_FragColor = vec4(uv, 0.0, 1.0);
         }
       `
     });
