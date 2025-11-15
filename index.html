@@ -143,19 +143,19 @@
 
         void main() {
           // Normalize coordinates
-          vec2 st = gl_FragCoord.xy / u_resolution;
+          vec2 uv = gl_FragCoord.xy / u_resolution;
 
           // Distance from mouse in normalized coords
-          float dist = distance(st, u_mouse);
+          float dist = length(uv - u_mouse) * 10;
 
           // Animated intensity around mouse
-          float intensity = 1.0 - smoothstep(0.0, 0.2, dist);
+          //float intensity = 1.0 - smoothstep(0.0, 0.2, dist);
 
           // Base gradient color
-          vec3 color = vec3(st.x, st.y, abs(sin(u_time)));
+          vec3 color = vec3(uv.x, uv.y, abs(sin(u_time)));
 
           // Final color
-          gl_FragColor = vec4(color * intensity, 1.0);
+          gl_FragColor = vec4(color * dist, 1.0);
         }
       `
     });
