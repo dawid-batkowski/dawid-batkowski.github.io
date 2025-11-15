@@ -6,13 +6,16 @@
   <title>My Portfolio</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* Make the canvas cover the whole page */
-    body, html {
+    /* Make canvas cover the whole page */
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow-x: hidden;
       position: relative;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: #111; /* fallback in case shader fails */
     }
 
     #bgCanvas {
@@ -21,26 +24,71 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1; /* behind everything */
+      z-index: -1; /* behind all content */
       display: block;
+    }
+
+    /* Simple layout for content */
+    header {
+      position: relative;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.5);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .hero {
+      padding: 100px 40px;
+      text-align: center;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #ff6f61;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .about {
+      padding: 60px 40px;
+    }
+
+    footer {
+      padding: 20px 40px;
+      text-align: center;
+      background: rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
-  <!-- Background canvas for shaders -->
+  <!-- Background Canvas -->
   <canvas id="bgCanvas"></canvas>
 
-  <!-- Top Navigation -->
+  <!-- Navigation -->
   <header>
-    <nav class="navbar">
-      <div class="logo">Dawid Batkowski</div>
-      <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="logo">Dawid Batkowski</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
   </header>
 
   <!-- Hero Section -->
@@ -50,10 +98,10 @@
     <a href="#" class="cta-button">View Projects</a>
   </section>
 
-  <!-- Optional About Section -->
+  <!-- About Section -->
   <section class="about">
     <h2>About Me</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut fermentum posuere libero vitae vulputate. Integer euismod non leo vel sollicitudin. Aliquam leo magna, posuere id nulla sed, interdum varius purus. Sed maximus lacinia aliquet. In hac habitasse platea dictumst. Quisque id urna dignissim, maximus urna eu, placerat tellus. Cras et ultricies arcu.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut fermentum posuere libero vitae vulputate. Integer euismod non leo vel sollicitudin.</p>
   </section>
 
   <!-- Footer -->
@@ -61,54 +109,76 @@
     <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
   </footer>
 
-  <!-- Optional: Three.js for background shader -->
+  <!-- Three.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script>
   <script>
-    // Basic Three.js fullscreen shader setup
+    // Three.js setup
     const canvas = document.getElementById('bgCanvas');
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
-    const renderer = new THREE.WebGLRenderer({canvas: canvas});
+    const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    const uniforms = { u_time: { value: 0 }, u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) } };
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
 
+    // Uniforms
+    const uniforms = {
+      u_time: { value: 0 },
+      u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+      u_mouse: { value: new THREE.Vector2(0.5, 0.5) } // normalized [0,1]
+    };
+
+    // Shader material
     const material = new THREE.ShaderMaterial({
       uniforms: uniforms,
-      vertexShader: `void main(){ gl_Position = vec4(position,1.0); }`,
+      vertexShader: `
+        void main() {
+          gl_Position = vec4(position, 1.0);
+        }
+      `,
       fragmentShader: `
         precision mediump float;
         uniform float u_time;
         uniform vec2 u_resolution;
-        uniform vec2 u_mouse; 
-        
+        uniform vec2 u_mouse;
+
         void main() {
+          // Normalize coordinates
           vec2 st = gl_FragCoord.xy / u_resolution;
-          float dist = distance(st * u_resolution, u_mouse);
-          float intensity = 1.0 - smoothstep(0.0, 200.0, dist); // soft falloff
-          vec4 color = vec4(st.x, st.y, abs(sin(u_time)), 1.0);
-          gl_FragColor = color * intensity;
+
+          // Distance from mouse in normalized coords
+          float dist = distance(st, u_mouse);
+
+          // Animated intensity around mouse
+          float intensity = 1.0 - smoothstep(0.0, 0.2, dist);
+
+          // Base gradient color
+          vec3 color = vec3(st.x, st.y, abs(sin(u_time)));
+
+          // Final color
+          gl_FragColor = vec4(color * intensity, 1.0);
         }
       `
     });
 
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(2,2), material);
+    // Plane geometry
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
     scene.add(plane);
 
+    // Mouse movement
     window.addEventListener('mousemove', (event) => {
-  // event.clientX / clientY gives pixel coordinates
-  uniforms.u_mouse.value.x = event.clientX;
-  uniforms.u_mouse.value.y = window.innerHeight - event.clientY; // flip Y axis
-  });
-    
+      uniforms.u_mouse.value.x = event.clientX / window.innerWidth;
+      uniforms.u_mouse.value.y = 1.0 - event.clientY / window.innerHeight; // flip Y
+    });
+
+    // Animate loop
     function animate(time) {
-      uniforms.u_time.value = time * 0.001;
+      uniforms.u_time.value = time * 0.001; // convert ms to seconds
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
 
-    // Handle window resize
+    // Resize handling
     window.addEventListener('resize', () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
