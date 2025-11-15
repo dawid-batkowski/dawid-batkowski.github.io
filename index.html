@@ -94,6 +94,12 @@
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(2,2), material);
     scene.add(plane);
 
+    window.addEventListener('mousemove', (event) => {
+  // event.clientX / clientY gives pixel coordinates
+  uniforms.u_mouse.value.x = event.clientX;
+  uniforms.u_mouse.value.y = window.innerHeight - event.clientY; // flip Y axis
+  });
+    
     function animate(time) {
       uniforms.u_time.value = time * 0.001;
       renderer.render(scene, camera);
