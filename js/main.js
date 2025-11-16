@@ -59,16 +59,12 @@ function animate(time) {
 requestAnimationFrame(animate);
 
 // Handle window resize
-function resize() {
-  canvas.width = window.innerWidth * window.devicePixelRatio;
-  canvas.height = window.innerHeight * window.devicePixelRatio;
-
-  gl.viewport(0, 0, canvas.width, canvas.height);
-  shader.setUniform("u_resolution", [canvas.width, canvas.height]);
-}
-window.addEventListener("resize", resize);
-resize();
-
+window.addEventListener("resize", () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  renderer.setSize(width, height, false);
+  uniforms.u_resolution.value.set(width, height);
+});
 
 
 window.addEventListener('mousemove', (event) => {

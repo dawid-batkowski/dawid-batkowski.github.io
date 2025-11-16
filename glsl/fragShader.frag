@@ -69,5 +69,5 @@ void main() {
     if (sinceClick < 1.5) {
         finalColor *= saturate(1.0 + ripple * fade);
     }
-    gl_FragColor = finalColor;
+    gl_FragColor = vec4(uv, 0.0, 1.0);
 }
