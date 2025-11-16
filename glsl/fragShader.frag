@@ -34,6 +34,7 @@ float gradientNoise(vec2 p) {
 
 float GradientNoise_float(vec2 UV, float Scale) {
     return clamp(gradientNoise(UV * Scale) + 0.5, 0.0, 1.0);
+    
 }
 
 

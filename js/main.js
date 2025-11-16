@@ -66,6 +66,7 @@ window.addEventListener("resize", () => {
   uniforms.u_resolution.value.set(width, height);
 });
 
+
 window.addEventListener('mousemove', (event) => {
   uniforms.u_mouse.value.x = event.clientX;
   uniforms.u_mouse.value.y = window.innerHeight - event.clientY; // flip Y for WebGL
