@@ -2,68 +2,121 @@
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
   height: 100%;
-  font-family: Arial, sans-serif;
-  color: #fff;
-  background: #111; /* fallback */
   overflow-x: hidden;
+  background: black;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  color: #fff;
 }
 
+/* Make sure all sections stretch naturally and allow canvas behind */
+body > * {
+  position: relative;
+  z-index: 1; /* content above canvas */
+}
+
+/* Background Canvas */
 #bgCanvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1; /* behind everything */
+  width: 100vw;     
+  height: 100vh;    
+  display: block;
+  z-index: 0;      
+  background: none;
 }
 
 /* Header / Navbar */
 header {
-  position: relative;
   padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 25px;
 }
 
 .nav-links li a {
   text-decoration: none;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #ff6f61;
+  text-shadow: 0 0 5px rgba(255,111,97,0.7);
 }
 
 /* Hero Section */
 .hero {
-  padding: 100px 40px;
+  padding: 120px 40px;
   text-align: center;
 }
 
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+.hero p {
+  font-size: 1.25em;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+/* Call to Action Button */
 .cta-button {
   display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #ff6f61;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #ff6f61, #ff9472);
   color: #fff;
   text-decoration: none;
-  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 8px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  background: linear-gradient(135deg, #ff9472, #ff6f61);
 }
 
 /* About Section */
 .about {
-  padding: 60px 40px;
+  padding: 80px 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.8;
+  font-size: 1.1em;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
 
 /* Footer */
 footer {
-  padding: 20px 40px;
+  padding: 30px 40px;
   text-align: center;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  font-size: 0.95em;
+  letter-spacing: 0.5px;
 }
