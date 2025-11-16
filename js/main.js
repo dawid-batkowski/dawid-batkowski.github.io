@@ -16,7 +16,7 @@ const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 const uniforms = {
   u_time: { value: 0 },
   u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-  u_mouse: { value: new THREE.Vector2(0, 0) }
+  u_mouse: { value: new THREE.Vector2(0, 0) },
 };
 
 // Shader Material
@@ -70,4 +70,18 @@ window.addEventListener("resize", () => {
 window.addEventListener('mousemove', (event) => {
   uniforms.u_mouse.value.x = event.clientX;
   uniforms.u_mouse.value.y = window.innerHeight - event.clientY; // flip Y for WebGL
+});
+
+uniforms.u_clickTime = { value: 0 };
+uniforms.u_clickPos = { value: new THREE.Vector2(0.5, 0.5) };
+
+window.addEventListener("click", (e) => {
+  uniforms.u_clickTime.value = uniforms.u_time.value;
+  uniforms.u_clickPos.value.set(e.clientX, window.innerHeight - e.clientY);
+});
+
+window.addEventListener("touchstart", (e) => {
+  const touch = e.touches[0];
+  uniforms.u_clickTime.value = uniforms.u_time.value;
+  uniforms.u_clickPos.value.set(touch.clientX, window.innerHeight - touch.clientY);
 });
