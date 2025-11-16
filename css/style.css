@@ -1,5 +1,5 @@
 /* Reset & general layout */
-html, body {
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -10,6 +10,25 @@ html, body {
   color: #fff;
 }
 
+/* Add this to ensure no default margins */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+}
+header, footer {
+  width: 100%;
+  box-sizing: border-box;       /* include padding in width */
+  padding: 20px 40px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  position: relative;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  left: 0;
+  right: 0;
+  margin: 0;
+}
 /* Make sure all sections stretch naturally and allow canvas behind */
 body > * {
   position: relative;

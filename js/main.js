@@ -15,7 +15,8 @@ const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 // Uniforms
 const uniforms = {
   u_time: { value: 0 },
-  u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+  u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+  u_mouse: { value: new THREE.Vector2(0, 0) }
 };
 
 // Shader Material
@@ -63,4 +64,9 @@ window.addEventListener("resize", () => {
   const height = window.innerHeight;
   renderer.setSize(width, height, false);
   uniforms.u_resolution.value.set(width, height);
+});
+
+window.addEventListener('mousemove', (event) => {
+  uniforms.u_mouse.value.x = event.clientX;
+  uniforms.u_mouse.value.y = window.innerHeight - event.clientY; // flip Y for WebGL
 });
