@@ -6,7 +6,7 @@ const canvas = document.getElementById("bgCanvas");
 // Renderer
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: false });
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight, false); // false ensures CSS scaling
+renderer.setSize(window.innerWidth, window.innerHeight, false);
 
 // Scene & Camera
 const scene = new THREE.Scene();
@@ -16,12 +16,14 @@ const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 const uniforms = {
   u_time: { value: 0 },
   u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-  u_mouse: { value: new THREE.Vector2(0, 0) },
+  u_mouse: { value: new THREE.Vector2() },
+  u_clickPos: { value: new THREE.Vector2() },
+  u_clickTime: { value: 0 },
 };
 
 // Shader Material
 const material = new THREE.ShaderMaterial({
-  uniforms: uniforms,
+  uniforms,
   vertexShader: `
     void main() {
       gl_Position = vec4(position, 1.0);
@@ -37,51 +39,60 @@ const material = new THREE.ShaderMaterial({
   `
 });
 
-// Load external fragment shader if needed
+// Load external shader
 fetch("glsl/fragShader.frag")
-  .then(res => res.text())
-  .then(code => {
-    material.fragmentShader = code;
-    material.needsUpdate = true;
-  })
-  .catch(err => console.error("Shader load error:", err));
+  .then(r => r.text())
+  .then(code => { material.fragmentShader = code; material.needsUpdate = true; });
 
-// Fullscreen plane
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
-scene.add(plane);
+// Fullscreen Plane
+scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
 
-// Animate loop
-function animate(time) {
-  uniforms.u_time.value = time * 0.001;
+// Animation
+function animate(t) {
+  uniforms.u_time.value = t * 0.001;
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
 
-// Handle window resize
-window.addEventListener("resize", () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  renderer.setSize(width, height, false);
-  uniforms.u_resolution.value.set(width, height);
-});
+// Resize handler
+function resize() {
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
 
+  uniforms.u_resolution.value.set(
+    window.innerWidth * window.devicePixelRatio,
+    window.innerHeight * window.devicePixelRatio
+  );
+}
+window.addEventListener("resize", resize);
+resize();
 
-window.addEventListener('mousemove', (event) => {
-  uniforms.u_mouse.value.x = event.clientX;
-  uniforms.u_mouse.value.y = window.innerHeight - event.clientY; // flip Y for WebGL
-});
+// Mouse & touch
+function setPointerPos(e) {
+  const dpr = window.devicePixelRatio || 1;
+  let x, y;
 
-uniforms.u_clickTime = { value: 0 };
-uniforms.u_clickPos = { value: new THREE.Vector2(0.5, 0.5) };
+  if (e.touches) {
+    x = e.touches[0].clientX * dpr;
+    y = (window.innerHeight - e.touches[0].clientY) * dpr;
+  } else {
+    x = e.clientX * dpr;
+    y = (window.innerHeight - e.clientY) * dpr;
+  }
 
-window.addEventListener("click", (e) => {
+  uniforms.u_mouse.value.set(x, y);
+}
+
+window.addEventListener("mousemove", setPointerPos);
+window.addEventListener("touchmove", setPointerPos);
+window.addEventListener("touchstart", e => {
+  setPointerPos(e);
   uniforms.u_clickTime.value = uniforms.u_time.value;
-  uniforms.u_clickPos.value.set(e.clientX, window.innerHeight - e.clientY);
+  uniforms.u_clickPos.value.copy(uniforms.u_mouse.value);
 });
-
-window.addEventListener("touchstart", (e) => {
-  const touch = e.touches[0];
+window.addEventListener("click", e => {
+  setPointerPos(e);
   uniforms.u_clickTime.value = uniforms.u_time.value;
-  uniforms.u_clickPos.value.set(touch.clientX, window.innerHeight - touch.clientY);
+  uniforms.u_clickPos.value.copy(uniforms.u_mouse.value);
 });
