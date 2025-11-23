@@ -43,7 +43,7 @@ const introMaterial = new THREE.ShaderMaterial({
       vec2 uv = gl_FragCoord.xy / u_resolution.xy;
 
       // Simple intro animation example
-      float circle = smoothstep(0.5, 0.0, (1.0 - uv.y) - pow(u_time, 2.0) + 1.5);
+      float circle = smoothstep(0.5, 0.0, length(uv - 0.5) - pow(u_time, 1.5) + 1.5);
 
       gl_FragColor = vec4(vec3(circle), 1.0 - circle);
     }
