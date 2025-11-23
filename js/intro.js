@@ -72,7 +72,14 @@ function introAnimate(time) {
 requestAnimationFrame(introAnimate);
 
 // Resize handler
-window.addEventListener("resize", () => {
-  introRenderer.setSize(window.innerWidth, window.innerHeight);
-  introUniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
-});
+function resize() {
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
+
+  uniforms.u_resolution.value.set(
+    window.innerWidth * window.devicePixelRatio,
+    window.innerHeight * window.devicePixelRatio
+  );
+}
+window.addEventListener("resize", resize);
+resize();
