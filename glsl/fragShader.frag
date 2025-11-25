@@ -46,10 +46,9 @@ void main() {
     vec2 mousePos = u_mouse / u_resolution;
 
     vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
-    vec2 diff = (uv - mousePos) * aspect;
+    vec2 diff = ((uv - mousePos) * aspect);
     float gradient = clamp(length(diff) * 6.0, 0.0, 1.0);
     
-
 
 
     
@@ -63,7 +62,7 @@ void main() {
     float pulse = exp(-sinceClick * 2.0) * sin(sinceClick * 20.0);
     float nosie = clamp(GradientNoise_float(mix(vec2(0.5, 0.5), uv, gradient) + GradientNoise_float(uv, 5.0) + vec2(0, u_time * 0.1), 32.0), 0.7, 1.0);
 
-    vec2 girdSize = vec2(fract((uv.x * aspect.x + rippleDisplacement) * 25.0), fract((uv.y * aspect.y + rippleDisplacement) * 25.0));
+    vec2 girdSize = mix(vec2(0.5, 0.5), vec2(fract((uv.x * aspect.x + rippleDisplacement) * 25.0), fract((uv.y * aspect.y + rippleDisplacement) * 25.0)), gradient);
     float grid = 1.0 - min(smoothstep(0.9, 1.0, abs(girdSize.x * 2.0 - 1.0)), smoothstep(0.9, 1.0, abs(girdSize.y * 2.0 - 1.0)));
 
     float t = saturate(((uv.x + 0.5 + 0.5 * sin(u_time * 0.5)) * (uv.y + 0.5 + 0.5 * sin(u_time))) / 4.0) * grid;
@@ -71,7 +70,7 @@ void main() {
 
     vec4 finalColor = color;
 
-    if (sinceClick < 1.5) {
+    if (sinceClick < 2.0) {
         finalColor *= saturate(1.0 + ripple * fade);
     }
     gl_FragColor = finalColor;
