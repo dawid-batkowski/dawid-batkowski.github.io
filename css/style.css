@@ -6,7 +6,7 @@ body {
   height: 100%;
   overflow-x: hidden;
   background: black;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Exo', 'Helvetica', 'Arial', sans-serif;
   color: #fff;
 }
 
@@ -24,7 +24,7 @@ header, footer {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(5px);
   position: relative;
-    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'Exo', 'Helvetica', 'Arial', sans-serif;
   left: 0;
   right: 0;
   margin: 0;

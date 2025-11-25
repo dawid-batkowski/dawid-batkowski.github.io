@@ -1,5 +1,4 @@
 precision mediump float;
-
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
@@ -49,8 +48,7 @@ void main() {
     vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
     vec2 diff = (uv - mousePos) * aspect;
     float gradient = clamp(length(diff) * 6.0, 0.0, 1.0);
-
-    vec4 color =  vec4(uv, 0.5 + 0.5 * sin(u_time), 1.0);
+    
 
 
 
@@ -60,12 +58,19 @@ void main() {
     float maskPulse = saturate(1.0 - length((uv - clickPos) * aspect) / sinceClick);
     float ripple = (sin(length((uv - clickPos) * aspect * 50.0) - sinceClick * 5.0)) * saturate(maskPulse);
     float fade = exp(-sinceClick * 3.0);
-
+    float rippleDisplacement = (saturate(1.0 + ripple * fade) * 2.0 - 1.0) / 20.0;
 
     float pulse = exp(-sinceClick * 2.0) * sin(sinceClick * 20.0);
     float nosie = clamp(GradientNoise_float(mix(vec2(0.5, 0.5), uv, gradient) + GradientNoise_float(uv, 5.0) + vec2(0, u_time * 0.1), 32.0), 0.7, 1.0);
 
+    vec2 girdSize = vec2(fract((uv.x * aspect.x + rippleDisplacement) * 25.0), fract((uv.y * aspect.y + rippleDisplacement) * 25.0));
+    float grid = 1.0 - min(smoothstep(0.9, 1.0, abs(girdSize.x * 2.0 - 1.0)), smoothstep(0.9, 1.0, abs(girdSize.y * 2.0 - 1.0)));
+
+    float t = saturate(((uv.x + 0.5 + 0.5 * sin(u_time * 0.5)) * (uv.y + 0.5 + 0.5 * sin(u_time))) / 4.0) * grid;
+    vec4 color =  mix(vec4(0.062, 0.062, 0.062, 1.0), vec4(0.6,0.6,0.6, 1.0), t);
+
     vec4 finalColor = color;
+
     if (sinceClick < 1.5) {
         finalColor *= saturate(1.0 + ripple * fade);
     }
