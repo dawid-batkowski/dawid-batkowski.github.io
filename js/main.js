@@ -3,15 +3,45 @@ console.log("JS Loaded");
 // Grab canvas
 const canvas = document.getElementById("bgCanvas");
 
-// Renderer
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: false });
+const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight, false);
 
-// Scene & Camera
 const scene = new THREE.Scene();
-const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+scene.fog = new THREE.Fog( new THREE.Color(0, 0, 0) , 200, 700 );
 
+const aspect = window.innerWidth / window.innerHeight;
+const frustum = 200.0;
+
+const camera = new THREE.OrthographicCamera(
+    frustum * -aspect,
+    frustum * aspect,
+    frustum,
+    -frustum,
+    1,
+    1000
+);
+
+camera.position.z = 500;
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+directionalLight.position.set(1, 1, 1);
+scene.add(directionalLight);
+
+const ambientLight = new THREE.AmbientLight(new THREE.Color(0.5, 0.7, 0.9), 0.5);
+scene.add(ambientLight);
+
+// cube
+const geometry = new THREE.BoxGeometry(55, 55, 55);
+const material2 = new THREE.MeshLambertMaterial({ color: new THREE.Color(0.5, 0.5, 0.5) });
+const cube = new THREE.Mesh(geometry, material2);
+cube.position.z += 50;
+cube.position.x += 300;
+scene.add(cube);
+
+
+
+renderer.render(scene, camera);
 // Uniforms
 const uniforms = {
   u_time: { value: 0 },
@@ -47,11 +77,17 @@ fetch("glsl/fragShader.frag")
 // Fullscreen Plane
 scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
 
+
 // Animation
 function animate(t) {
+  requestAnimationFrame(animate);
+
+  cube.rotation.x += 0.01;
+  cube.rotation.y += 0.02;
+
   uniforms.u_time.value = t * 0.001;
   renderer.render(scene, camera);
-  requestAnimationFrame(animate);
+
 }
 requestAnimationFrame(animate);
 
@@ -96,3 +132,5 @@ window.addEventListener("click", e => {
   uniforms.u_clickTime.value = uniforms.u_time.value;
   uniforms.u_clickPos.value.copy(uniforms.u_mouse.value);
 });
+
+
