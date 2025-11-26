@@ -28,17 +28,33 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(1, 1, 1);
 scene.add(directionalLight);
 
-const ambientLight = new THREE.AmbientLight(new THREE.Color(0.5, 0.7, 0.9), 0.5);
+const ambientLight = new THREE.AmbientLight(new THREE.Color(0.5, 0.0, 0.9), 0.5);
 scene.add(ambientLight);
 
 // cube
-const geometry = new THREE.BoxGeometry(55, 55, 55);
+const cubeSize = 80;
+const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 const material2 = new THREE.MeshLambertMaterial({ color: new THREE.Color(0.5, 0.5, 0.5) });
 const cube = new THREE.Mesh(geometry, material2);
-cube.position.z += 50;
-scene.add(cube);
 
+const cubeCount = 10;
+const cubeInstance = new THREE.InstancedMesh(geometry, material2, cubeCount);
+cubeInstance.position.z += 50;
+scene.add(cubeInstance);
 
+const cubeOffset = (cubeCount - 1) * 0.5;
+const dummy = new THREE.Object3D();
+let i = 0;
+for (let x = 0; x < cubeCount; x++)
+{
+  for (let y = 0; y < cubeCount; y++)
+    {
+      dummy.position.set(cubeOffset - x, cubeOffset - y, 0);
+      dummy.updateMatrix();
+      cubeInstance.setMatrixAt(i, dummy.matrix);
+      i += 1;
+    }
+}
 
 renderer.render(scene, camera);
 // Uniforms
@@ -81,8 +97,8 @@ scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
 function animate(t) {
   requestAnimationFrame(animate);
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.02;
+  cubeInstance.rotation.x += 0.01;
+  cubeInstance.rotation.y += 0.02;
 
   uniforms.u_time.value = t * 0.001;
   renderer.render(scene, camera);
