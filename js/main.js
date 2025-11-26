@@ -1,5 +1,6 @@
 console.log("JS Loaded");
 
+
 // Grab canvas
 const canvas = document.getElementById("bgCanvas");
 
@@ -28,33 +29,50 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(1, 1, 1);
 scene.add(directionalLight);
 
-const ambientLight = new THREE.AmbientLight(new THREE.Color(0.5, 0.0, 0.9), 0.5);
+const ambientLight = new THREE.AmbientLight(new THREE.Color(0.8, 0.8, 0.9), 0.5);
 scene.add(ambientLight);
 
 // cube
-const cubeSize = 80;
+const cubeSize = 55;
 const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-const material2 = new THREE.MeshLambertMaterial({ color: new THREE.Color(0.5, 0.5, 0.5) });
-const cube = new THREE.Mesh(geometry, material2);
+const material2 = new THREE.MeshLambertMaterial({ color: 0x808080 });
 
+// create enough instances!
 const cubeCount = 10;
-const cubeInstance = new THREE.InstancedMesh(geometry, material2, cubeCount);
+const totalInstances = cubeCount * cubeCount;
+const cubeInstance = new THREE.InstancedMesh(geometry, material2, totalInstances);
 cubeInstance.position.z += 50;
 scene.add(cubeInstance);
 
 const cubeOffset = (cubeCount - 1) * 0.5;
 const dummy = new THREE.Object3D();
+
+// Store initial positions for each cube
+const initialPositions = [];
+const cubeScales = [];
 let i = 0;
-for (let x = 0; x < cubeCount; x++)
-{
-  for (let y = 0; y < cubeCount; y++)
-    {
-      dummy.position.set(cubeOffset - x, cubeOffset - y, 0);
-      dummy.updateMatrix();
-      cubeInstance.setMatrixAt(i, dummy.matrix);
-      i += 1;
-    }
+for (let x = 0; x < cubeCount; x++) {
+  for (let y = 0; y < cubeCount; y++) {
+    const posX = (cubeOffset - x) * 80; // Use 80 for spacing
+    const posY = (cubeOffset - y) * 80;
+    const randomSize = Math.random() * 0.5;
+    cubeScales.push(randomSize);
+    // Store initial position
+    initialPositions.push({ x: posX, y: posY });
+    
+    // Generate random size between 25 and 55 and apply it ONCE
+
+    dummy.position.set(posX, posY, 0);
+    dummy.scale.set(randomSize, randomSize, randomSize); // Set scale once here
+    dummy.rotation.set(0, 0, 0);
+    dummy.updateMatrix();
+    cubeInstance.setMatrixAt(i, dummy.matrix);
+    i++;
+  }
 }
+
+// tell Three.js matrices changed
+cubeInstance.instanceMatrix.needsUpdate = true;
 
 renderer.render(scene, camera);
 // Uniforms
@@ -93,18 +111,38 @@ fetch("glsl/fragShader.frag")
 scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
 
 
-// Animation
+
 function animate(t) {
   requestAnimationFrame(animate);
 
-  cubeInstance.rotation.x += 0.01;
-  cubeInstance.rotation.y += 0.02;
+  const time = t * 0.001;
 
-  uniforms.u_time.value = t * 0.001;
+  for (let i = 0; i < totalInstances; i++) {
+    const initialPos = initialPositions[i];
+
+    dummy.position.set(initialPos.x, initialPos.y, 0);
+
+    dummy.rotation.x = time * 0.5 + (i * 0.1 * initialPos.y);
+    dummy.rotation.y = time * 1.0 + (initialPos.x * 0.01 + i);
+
+    dummy.position.x += Math.sin(time + i + initialPos.x * 0.01) * 100;
+    dummy.position.y += Math.sin(time + i + initialPos.y * 0.01) * 100;
+    dummy.position.z += Math.sin(time + i) * 50;
+
+    const s = cubeScales[i];          // read precomputed scale
+    dummy.scale.set(s, s, s);         // apply here
+
+    dummy.updateMatrix();
+    cubeInstance.setMatrixAt(i, dummy.matrix);
+  }
+
+  cubeInstance.instanceMatrix.needsUpdate = true;
+
+  uniforms.u_time.value = time;
   renderer.render(scene, camera);
-
 }
 requestAnimationFrame(animate);
+
 
 // Resize handler
 function resize() {
