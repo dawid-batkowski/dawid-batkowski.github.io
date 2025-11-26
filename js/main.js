@@ -29,13 +29,13 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(1, 1, 1);
 scene.add(directionalLight);
 
-const ambientLight = new THREE.AmbientLight(new THREE.Color(0.8, 0.8, 0.9), 0.5);
+const ambientLight = new THREE.AmbientLight(new THREE.Color(0.8, 0.8, 0.9), 1);
 scene.add(ambientLight);
 
 // cube
 const cubeSize = 55;
 const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-const material2 = new THREE.MeshLambertMaterial({ color: 0x808080 });
+const material2 = new THREE.MeshLambertMaterial({ color: new THREE.Color(0.2, 0.8, 1) });
 
 // create enough instances!
 const cubeCount = 10;
