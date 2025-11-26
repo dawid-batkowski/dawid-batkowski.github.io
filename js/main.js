@@ -36,7 +36,6 @@ const geometry = new THREE.BoxGeometry(55, 55, 55);
 const material2 = new THREE.MeshLambertMaterial({ color: new THREE.Color(0.5, 0.5, 0.5) });
 const cube = new THREE.Mesh(geometry, material2);
 cube.position.z += 50;
-cube.position.x += 300;
 scene.add(cube);
 
 
