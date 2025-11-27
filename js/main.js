@@ -38,7 +38,7 @@ const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 const material2 = new THREE.MeshStandardMaterial({});
 
 
-const cubeCount = 500;
+const cubeCount = 10;
 const totalInstances = cubeCount * cubeCount;
 const cubeInstance = new THREE.InstancedMesh(geometry, material2, totalInstances);
 
@@ -54,8 +54,8 @@ const cubeScales = [];
 let i = 0;
 for (let x = 0; x < cubeCount; x++) {
   for (let y = 0; y < cubeCount; y++) {
-    const posX = (cubeOffset - x) * 5; // Use 80 for spacing
-    const posY = (cubeOffset - y) * 5;
+    const posX = (cubeOffset - x) * 80; // Use 80 for spacing
+    const posY = (cubeOffset - y) * 80;
     const randomSize = Math.random() * 0.5;
     cubeScales.push(randomSize);
     // Store initial position
