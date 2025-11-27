@@ -22,7 +22,7 @@ void main() {
     float maskCircle = 1.0 - (length(uv - 0.5) + 1.5  - clamp(u_time * 1.5, 0.0, 1.5));
     float maskAlpha = 1.0 - (length(uv - 0.5) + 3.0  - clamp(u_time * 1.5, 0.0, 3.0));
 
-    vec3 color = maskH * maskCircle * vec3(0.8235, 0.7725, 1.0);
+    vec3 color = maskH * maskCircle * vec3(0.9216, 0.902, 1.0);
     gl_FragColor = vec4(color, 1.0 - alpha * maskAlpha);
 }
 

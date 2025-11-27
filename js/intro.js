@@ -87,6 +87,11 @@ function introAnimate(time) {
     }
   }
 
+  if (introUniforms.u_time.value > 0.2)
+    {
+      document.getElementById('bgCanvas').style.visibility = 'visible';
+    }
+
   introRenderer.render(introScene, introCamera);
   
   if (introRunning) {
@@ -117,7 +122,7 @@ function introResize() {
   });
 }
 
-
+// Force initial resize and start animation
 introResize();
 requestAnimationFrame(introAnimate);
 
