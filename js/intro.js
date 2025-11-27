@@ -41,17 +41,9 @@ const introMaterial = new THREE.ShaderMaterial({
   `,
   fragmentShader: `
     precision mediump float;
-    uniform float u_time;
-    uniform float u_fade;
-    uniform vec2 u_resolution;
 
     void main() {
-      vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-      
-      vec2 centeredUV = (gl_FragCoord.xy - u_resolution.xy * 0.5) / min(u_resolution.x, u_resolution.y);
-      
-      float circle = smoothstep(0.5, 0.0, length(centeredUV) - u_time * 0.8);
-      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0 - circle * u_fade);
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
   `
 });
@@ -86,11 +78,6 @@ function introAnimate(time) {
       return;
     }
   }
-
-  if (introUniforms.u_time.value > 0.2)
-    {
-      document.getElementById('bgCanvas').style.visibility = 'visible';
-    }
 
   introRenderer.render(introScene, introCamera);
   
