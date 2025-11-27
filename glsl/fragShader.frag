@@ -62,7 +62,7 @@ void main() {
     float pulse = exp(-sinceClick * 2.0) * sin(sinceClick * 20.0);
     float nosie = clamp(GradientNoise_float(mix(vec2(0.5, 0.5), uv, gradient) + GradientNoise_float(uv, 5.0) + vec2(0, u_time * 0.1), 32.0), 0.7, 1.0);
 
-vec2 girdSize = vec2(fract((uv.x * aspect.x + rippleDisplacement * gradient) * 25.0),
+    vec2 girdSize = vec2(fract((uv.x * aspect.x + rippleDisplacement * gradient) * 25.0),
                      fract((uv.y * aspect.y + rippleDisplacement * gradient) * 25.0));
     float grid = 1.0 - min(smoothstep(0.9, 1.0, abs(girdSize.x * 2.0 - 1.0)), smoothstep(0.9, 1.0, abs(girdSize.y * 2.0 - 1.0)));
 

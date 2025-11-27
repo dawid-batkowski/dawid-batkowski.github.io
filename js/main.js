@@ -35,12 +35,13 @@ scene.add(ambientLight);
 // cube
 const cubeSize = 55;
 const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-const material2 = new THREE.MeshLambertMaterial({ color: new THREE.Color(0.2, 0.8, 1) });
+const material2 = new THREE.MeshStandardMaterial({});
 
-// create enough instances!
-const cubeCount = 10;
+
+const cubeCount = 500;
 const totalInstances = cubeCount * cubeCount;
 const cubeInstance = new THREE.InstancedMesh(geometry, material2, totalInstances);
+
 cubeInstance.position.z += 50;
 scene.add(cubeInstance);
 
@@ -53,8 +54,8 @@ const cubeScales = [];
 let i = 0;
 for (let x = 0; x < cubeCount; x++) {
   for (let y = 0; y < cubeCount; y++) {
-    const posX = (cubeOffset - x) * 80; // Use 80 for spacing
-    const posY = (cubeOffset - y) * 80;
+    const posX = (cubeOffset - x) * 5; // Use 80 for spacing
+    const posY = (cubeOffset - y) * 5;
     const randomSize = Math.random() * 0.5;
     cubeScales.push(randomSize);
     // Store initial position
