@@ -1,33 +1,39 @@
 console.log("Intro Shader Loaded");
 
-// Create fullscreen canvas overlay for the intro
+
 const introCanvas = document.createElement("canvas");
 introCanvas.id = "introCanvas";
 document.body.appendChild(introCanvas);
 
-// WebGL renderer
+
 const introRenderer = new THREE.WebGLRenderer({
   canvas: introCanvas,
-  alpha: true,    // allow fade-out
+  alpha: true, 
+  antialias: false 
 });
-introRenderer.setPixelRatio(window.devicePixelRatio);
+
+
 introRenderer.setSize(window.innerWidth, window.innerHeight);
+introRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); 
 
 // Scene & Camera
 const introScene = new THREE.Scene();
 const introCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-// Uniforms for intro shader
+// Uniforms for intro shader - use exact pixel dimensions
 const introUniforms = {
   u_time: { value: 0 },
-  u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-  u_fade: { value: 1.0 },    // fade-out control
+  u_resolution: { value: new THREE.Vector2(
+    introCanvas.width, 
+    introCanvas.height
+  )},
+  u_fade: { value: 1.0 },
 };
 
-// Intro Shader Material (replace fragmentShader later with your effect)
+// Intro Shader Material
 const introMaterial = new THREE.ShaderMaterial({
   uniforms: introUniforms,
-  transparent: true,     // needed for fade
+  transparent: true,
   vertexShader: `
     void main() {
       gl_Position = vec4(position, 1.0);
@@ -41,11 +47,11 @@ const introMaterial = new THREE.ShaderMaterial({
 
     void main() {
       vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-
-      // Simple intro animation example
-      float circle = smoothstep(0.5, 0.0, length(uv - 0.5) - pow(u_time, 1.5) + 1.5);
-
-      gl_FragColor = vec4(0,0,0, 1.0);
+      
+      vec2 centeredUV = (gl_FragCoord.xy - u_resolution.xy * 0.5) / min(u_resolution.x, u_resolution.y);
+      
+      float circle = smoothstep(0.5, 0.0, length(centeredUV) - u_time * 0.8);
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0 - circle * u_fade);
     }
   `
 });
@@ -56,37 +62,68 @@ fetch("glsl/intro_PS.frag")
     introMaterial.fragmentShader = code;
     introMaterial.needsUpdate = true;
   })
+  .catch(err => {
+    console.error("Error loading intro shader:", err);
+  });
 
 // Fullscreen quad
 const introPlane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), introMaterial);
 introScene.add(introPlane);
 
-// Animation loop
+// Animation control
+let introRunning = true;
+
 function introAnimate(time) {
+  if (!introRunning) return;
+  
   introUniforms.u_time.value = time * 0.001;
 
-  // Fade out after 3 seconds
   if (introUniforms.u_time.value > 3.0) {
     introUniforms.u_fade.value = 1.0 - (introUniforms.u_time.value - 3.0) * 0.5;
     if (introUniforms.u_fade.value <= 0.0) {
-      introCanvas.style.display = "none"; // remove from view
+      introCanvas.style.display = "none";
+      introRunning = false;
+      return;
     }
   }
 
   introRenderer.render(introScene, introCamera);
-  requestAnimationFrame(introAnimate);
+  
+  if (introRunning) {
+    requestAnimationFrame(introAnimate);
+  }
 }
+
+// DEDICATED MOBILE-FRIENDLY RESIZE HANDLER
+function introResize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  
+  // Update renderer size and pixel ratio
+  introRenderer.setSize(width, height);
+  introRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  
+  // Update canvas internal size (CRITICAL for mobile)
+  introCanvas.width = width * introRenderer.getPixelRatio();
+  introCanvas.height = height * introRenderer.getPixelRatio();
+  
+  // Update uniforms with actual canvas dimensions
+  introUniforms.u_resolution.value.set(introCanvas.width, introCanvas.height);
+  
+  console.log("Intro canvas:", {
+    style: `${width}x${height}`,
+    internal: `${introCanvas.width}x${introCanvas.height}`,
+    pixelRatio: introRenderer.getPixelRatio()
+  });
+}
+
+
+introResize();
 requestAnimationFrame(introAnimate);
 
-// Resize handler
-function resize() {
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight, false);
 
-  uniforms.u_resolution.value.set(
-    window.innerWidth * window.devicePixelRatio,
-    window.innerHeight * window.devicePixelRatio
-  );
-}
-window.addEventListener("resize", resize);
-resize();
+window.addEventListener("resize", introResize);
+window.addEventListener("orientationchange", function() {
+  // Add delay for mobile orientation change
+  setTimeout(introResize, 100);
+});

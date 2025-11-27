@@ -147,9 +147,19 @@ requestAnimationFrame(animate);
 
 // Resize handler
 function resize() {
+  // Update renderer
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight, false);
 
+  // Update camera frustum based on new aspect ratio
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.left = frustum * -aspect;
+  camera.right = frustum * aspect;
+  camera.top = frustum;
+  camera.bottom = -frustum;
+  camera.updateProjectionMatrix(); // CRITICAL: This applies the changes
+
+  // Update shader uniforms
   uniforms.u_resolution.value.set(
     window.innerWidth * window.devicePixelRatio,
     window.innerHeight * window.devicePixelRatio
