@@ -45,10 +45,17 @@ const introMaterial = new THREE.ShaderMaterial({
       // Simple intro animation example
       float circle = smoothstep(0.5, 0.0, length(uv - 0.5) - pow(u_time, 1.5) + 1.5);
 
-      gl_FragColor = vec4(vec3(circle), 1.0 - circle);
+      gl_FragColor = vec4(0,0,0, 1.0);
     }
   `
 });
+
+fetch("glsl/intro_PS.frag")
+  .then(r => r.text())
+  .then(code => {
+    introMaterial.fragmentShader = code;
+    introMaterial.needsUpdate = true;
+  })
 
 // Fullscreen quad
 const introPlane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), introMaterial);
