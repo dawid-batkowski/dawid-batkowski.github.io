@@ -74,5 +74,9 @@ void main() {
     if (sinceClick < 2.0) {
         finalColor *= saturate(1.0 + ripple * fade);
     }
+
+    float sideVignette = saturate(pow(1.0 - abs(uv.x * 2.0 - 1.0), 0.5));
+    finalColor *= sideVignette;
+
     gl_FragColor = finalColor;
 }

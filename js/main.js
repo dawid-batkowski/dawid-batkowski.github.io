@@ -9,10 +9,10 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight, false);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog( new THREE.Color(0, 0, 0) , 200, 700 );
+scene.fog = new THREE.Fog( new THREE.Color(0, 0, 0) , 200, 600 );
 
 const aspect = window.innerWidth / window.innerHeight;
-const frustum = 200.0;
+const frustum = 300.0;
 
 const camera = new THREE.OrthographicCamera(
     frustum * -aspect,
@@ -20,7 +20,7 @@ const camera = new THREE.OrthographicCamera(
     frustum,
     -frustum,
     1,
-    1000
+    2000
 );
 
 camera.position.z = 500;
