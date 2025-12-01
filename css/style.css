@@ -163,12 +163,29 @@ header {
   box-shadow: 10px 10px 30px rgb(68, 68, 68);
 }
 
+.mainPiece:hover::before{
+  background: rgba(0, 0, 0, 0.568);
+  transition: all 0.3s ease;
+}
 .mainPiece .mainPiecetext {
   position: absolute;
   width: 100%;
   text-align: center;
   color: #ffffff;
   object-fit:fill;
+}
+
+/* Description anim*/
+.projectDescription {
+  opacity: 0;      
+  max-height: 0;       
+  transition: opacity 0.8s ease, max-height 0.8s ease;
+  overflow: hidden;
+}
+
+.mainPiece:hover .projectDescription {
+  opacity: 1;          
+  max-height: 100px;  
 }
 
 body{

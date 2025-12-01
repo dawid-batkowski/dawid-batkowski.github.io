@@ -67,7 +67,7 @@ void main() {
     float grid = 1.0 - min(smoothstep(0.9, 1.0, abs(girdSize.x * 2.0 - 1.0)), smoothstep(0.9, 1.0, abs(girdSize.y * 2.0 - 1.0)));
 
     float t = saturate(((uv.x + 0.5 + 0.5 * sin(u_time * 0.5)) * (uv.y + 0.5 + 0.5 * sin(u_time))) / 4.0) * grid;
-    vec4 color =  mix(vec4(0.062, 0.062, 0.062, 1.0), vec4(0.6,0.6,0.6, 1.0), t);
+    vec4 color =  mix(vec4(0.062, 0.062, 0.062, 1.0), vec4(0.8,0.8,0.8, 1.0), t);
 
     vec4 finalColor = color;
 
