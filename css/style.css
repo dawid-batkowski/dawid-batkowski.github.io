@@ -10,7 +10,6 @@ body {
   color: #fff;
 }
 
-
 html, body {
   margin: 0;
   padding: 0;
@@ -25,7 +24,7 @@ header, footer {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(5px);
   position: relative;
-    font-family: 'Exo', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Exo', 'Helvetica', 'Arial', sans-serif;
   left: 0;
   right: 0;
   margin: 0;
@@ -47,7 +46,6 @@ body > * {
   pointer-events: none; 
 }
 
-/* Background Canvas */
 #bgCanvas {
   position: fixed;
   top: 0;
@@ -59,7 +57,6 @@ body > * {
   background: none;
 }
 
-/* Header / Navbar */
 header {
   padding: 20px 40px;
   margin: 0;
@@ -89,7 +86,6 @@ header {
   text-shadow: 0 0 5px rgba(255,111,97,0.7);
 }
 
-/* Hero Section */
 .hero {
   padding: 300px 40px;
   text-align: center;
@@ -114,38 +110,38 @@ header {
 
 .mainPieceContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 29vw));
-  grid-gap: 2rem;
-  padding: 2em;
-  margin-top: 20px;
-  width: 90vw;
-  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  margin: 20px auto;
+  max-width: 90vw;
+  width: 100%;
   justify-content: center;
-  justify-self: center;
-  
+  box-sizing: border-box;
 }
 
 .mainPiece {
   position: relative;
-  flex: 1 0 50%;
+  aspect-ratio: 1 / 1;
   width: 100%;
   height: 100%;
-  max-width: 100%;
-  max-height: 100%;
   margin: 0;
-  padding: 0%;
+  padding: 0;
   border: 0;
-  overflow: auto;
+  overflow: hidden;
   text-align: center;
   display: flex;
   flex-direction: column;
   box-shadow: 10px 10px 30px #000000;
+  border-radius: 2%;
   transition: all 0.3s ease;
 }
 
-.mainPiece img{
-  object-fit: cover;
+.mainPiece img {
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .mainPiece::before {
@@ -159,7 +155,7 @@ header {
   z-index: auto;
 }
 
-.mainPiece:hover{
+.mainPiece:hover {
   transform: translateY(-5px);
   box-shadow: 10px 10px 30px rgb(68, 68, 68);
 }
@@ -167,15 +163,15 @@ header {
 .mainPiece:hover img {
   filter: brightness(0.5) grayscale(50%) blur(2px);
 }
+
 .mainPiece .mainPiecetext {
   position: absolute;
   width: 100%;
   text-align: center;
   color: #ffffff;
-  object-fit:fill;
+  object-fit: fill;
 }
 
-/* Description anim*/
 .projectDescription {
   opacity: 0;      
   max-height: 0;       
@@ -188,13 +184,7 @@ header {
   max-height: 100px;  
 }
 
-body{
-  background-color:"ffffff";
-}
-
-/* Call to Action Button */
 .cta-button {
-  /*display: inline-block;*/
   display: none;
   padding: 14px 28px;
   background: linear-gradient(135deg, #ff6f61, #ff9472);
@@ -213,7 +203,6 @@ body{
   background: linear-gradient(135deg, #ff9472, #ff6f61);
 }
 
-/* About Section */
 .about {
   padding: 80px 40px;
   max-width: 900px;
@@ -224,7 +213,6 @@ body{
   text-shadow: 0 0 10px rgba(0,0,0,0.6);
 }
 
-/* Title of each section - overwrites .about*/
 .sectionTitle {
   padding: 15px 40px;
   max-width: 900px;
@@ -234,7 +222,7 @@ body{
   text-align: center;
   text-shadow: 0px 0px 10px rgba(0,0,0, 1);
 }
-/* Footer */
+
 footer {
   padding: 30px 40px;
   text-align: center;
