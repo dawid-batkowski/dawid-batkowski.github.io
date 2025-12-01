@@ -70,7 +70,7 @@ header {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 25px;
+  gap: 2vw;
 }
 
 .nav-links li a {
@@ -109,8 +109,6 @@ header {
   text-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
-
-
 .mainPieceContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 29vw));
@@ -139,7 +137,7 @@ header {
   display: flex;
   flex-direction: column;
   box-shadow: 10px 10px 30px #000000;
-
+  transition: all 0.3s ease;
 }
 
 .mainPiece img{
@@ -155,6 +153,11 @@ header {
   position: absolute;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 50%);
   z-index: auto;
+}
+
+.mainPiece:hover{
+  transform: translateY(-5px);
+  box-shadow: 10px 10px 30px rgb(68, 68, 68);
 }
 
 .mainPiece .mainPiecetext {
