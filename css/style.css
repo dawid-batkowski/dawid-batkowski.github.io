@@ -147,6 +147,7 @@ header {
   object-fit: cover;
   height: 100%;
 }
+
 .mainPiece::before {
   content: '';
   z-index: 10;
@@ -163,9 +164,8 @@ header {
   box-shadow: 10px 10px 30px rgb(68, 68, 68);
 }
 
-.mainPiece:hover::before{
-  background: rgba(0, 0, 0, 0.568);
-  transition: all 0.3s ease;
+.mainPiece:hover img {
+  filter: brightness(0.5) grayscale(50%) blur(2px);
 }
 .mainPiece .mainPiecetext {
   position: absolute;
