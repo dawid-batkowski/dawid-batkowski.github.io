@@ -139,10 +139,10 @@ header {
 }
 
 .mainPieceContainer--gameProject {
-  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(125px, 100%), 1fr));
 }
 .mainPiece--gameProject {
-  aspect-ratio: 1 / 3;
+  aspect-ratio: 1 / 2;
 }
 
 .mainPiece img {
