@@ -9,13 +9,35 @@ const lenis = new Lenis({
     smoothTouch: false,
     touchMultiplier: 2,
     infinite: false,
-  });
-  
-  // Get scroll progress
-  function raf(time) {
+});
+
+// Get scroll progress
+function raf(time) {
     lenis.raf(time);
     requestAnimationFrame(raf);
-  }
-  
-  requestAnimationFrame(raf);
-  
+}
+
+requestAnimationFrame(raf);
+
+// Resize Lenis when window resizes
+window.addEventListener('resize', () => {
+    lenis.resize();
+});
+
+// Resize after page fully loads (including images)
+window.addEventListener('load', () => {
+    lenis.resize();
+});
+
+// Optional: Resize after a short delay to catch any late-loading content
+setTimeout(() => {
+    lenis.resize();
+}, 100);
+
+// If you have images in your grid
+const images = document.querySelectorAll('.mainPiece img');
+images.forEach(img => {
+    img.addEventListener('load', () => {
+        lenis.resize();
+    });
+});
