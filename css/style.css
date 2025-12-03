@@ -185,12 +185,49 @@ header {
   color: #ffffff;
   object-fit: fill;
 }
+
+.mainPiecetext {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  height: 100%;
+
+}
+
+.mainPiecetext h3 {
+  margin: 4%;
+}
+
+.mainPiecetext p {
+  flex-grow: 1; /* Takes majority of space */
+  margin: 1rem 0;
+  overflow-y: hidden;
+  align-content: center;
+}
+
+.projectButton {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: auto; 
+  margin-right: auto;
+  height: 5%;
+  min-height: 30px;
+  border-radius: 2%;
+  border: 0;
+  box-shadow: 10px 10px 30px #000000;
+  background:  linear-gradient(190deg, rgba(24, 24, 24, 0.6) 0%, rgba(3, 3, 3, 1) 100%);
+  color: white;
+  text-shadow: 0 0 10px #000000;
+  display: block;
+  text-decoration: none;
+  align-content: center;
+  max-width: 300px;
+}
 .mainPiece, .about {
   animation: fadeIn linear;
   animation-timeline: view();
   animation-range: entry 0% cover 20%;
 }
-
 
 @keyframes fadeIn {
   from {
@@ -205,14 +242,14 @@ header {
 
 .projectDescription {
   opacity: 0;      
-  max-height: 0;       
+    
   transition: opacity 0.8s ease, max-height 3s ease;
   overflow: hidden;
 }
 
 .mainPiece:hover .projectDescription {
   opacity: 1;          
-  max-height: 500px;  
+
 }
 
 .cta-button {
