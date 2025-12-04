@@ -157,7 +157,7 @@ header {
   object-fit: cover;
   display: block;
 }
-/*
+
 .mainPiece::before {
   content: '';
   z-index: 10;
@@ -178,13 +178,14 @@ header {
 .mainPiece:hover img {
   filter: brightness(0.5) grayscale(50%) blur(2px);
 }
-*/
+
 .mainPiece .mainPiecetext {
   position: absolute;
   width: 100%;
   text-align: center;
   color: #ffffff;
   object-fit: fill;
+  pointer-events:none;
 }
 
 .mainPiecetext {
