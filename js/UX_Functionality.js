@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
     lenis.resize();
 });
 
-// Optional: Resize after a short delay to catch any late-loading content
+// Resize after a short delay to catch any late-loading content
 setTimeout(() => {
     lenis.resize();
 }, 100);
@@ -95,7 +95,7 @@ function resizeButtonText() {
 
 const supportsHover = window.matchMedia('(hover: hover)').matches;
 
-document.querySelectorAll('.mainPiece').forEach(piece => {
+document.querySelectorAll('.mainPiecetext').forEach(piece => {
   if (supportsHover) {
     // Desktop: click immediately navigates (hover already revealed)
     piece.addEventListener('click', () => {

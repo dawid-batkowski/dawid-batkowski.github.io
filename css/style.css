@@ -213,6 +213,7 @@ header {
   color: white;
   text-shadow: 0 0 10px #000000;
   display: flex;
+  margin-bottom: auto;
   align-items: center;
   justify-content: center;
   text-decoration: none;
