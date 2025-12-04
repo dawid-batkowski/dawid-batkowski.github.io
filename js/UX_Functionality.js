@@ -92,3 +92,29 @@ function resizeButtonText() {
   document.querySelectorAll('.projectButton').forEach(button => {
     buttonObserver.observe(button);
   });
+
+const supportsHover = window.matchMedia('(hover: hover)').matches;
+
+document.querySelectorAll('.mainPiece').forEach(piece => {
+  if (supportsHover) {
+    // Desktop: click immediately navigates (hover already revealed)
+    piece.addEventListener('click', () => {
+      const url = piece.dataset.url;
+      if (url) window.location.href = url;
+    });
+  } else {
+    // Mobile: first tap reveals, second tap navigates
+    let isRevealed = false;
+    
+    piece.addEventListener('click', (e) => {
+      if (!isRevealed) {
+        e.preventDefault();
+        piece.classList.add('show-description');
+        isRevealed = true;
+      } else {
+        const url = piece.dataset.url;
+        if (url) window.location.href = url;
+      }
+    });
+  }
+});
