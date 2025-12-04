@@ -255,6 +255,12 @@ header {
   transform: translateY(-5px); 
 }
 
+.mainPiece.show-description .projectDescription,
+.mainPiece.show-description .projectButton {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .about {
   padding: 5px 40px;
   max-width: 100vw;

@@ -93,28 +93,39 @@ function resizeButtonText() {
     buttonObserver.observe(button);
   });
 
+
+  
+
+// Detect if device supports hover
 const supportsHover = window.matchMedia('(hover: hover)').matches;
 
-document.querySelectorAll('.mainPiecetext').forEach(piece => {
+document.querySelectorAll('.mainPiece').forEach(piece => {
+  const textArea = piece.querySelector('.mainPiecetext');
+  
   if (supportsHover) {
     // Desktop: click immediately navigates (hover already revealed)
-    piece.addEventListener('click', () => {
-      const url = piece.dataset.url;
+    textArea.addEventListener('click', () => {
+      const url = textArea.dataset.url;
       if (url) window.location.href = url;
     });
+    
+    // Add pointer cursor for desktop
+    textArea.style.cursor = 'pointer';
   } else {
     // Mobile: first tap reveals, second tap navigates
     let isRevealed = false;
     
-    piece.addEventListener('click', (e) => {
+    textArea.addEventListener('click', (e) => {
       if (!isRevealed) {
         e.preventDefault();
         piece.classList.add('show-description');
         isRevealed = true;
       } else {
-        const url = piece.dataset.url;
+        const url = textArea.dataset.url;
         if (url) window.location.href = url;
       }
     });
+    
+    textArea.style.cursor = 'pointer';
   }
 });
