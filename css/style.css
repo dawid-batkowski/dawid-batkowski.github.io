@@ -207,6 +207,22 @@ header {
   text-decoration: none;
 }
 
+/* Mobile reveal state */
+.mainPiece.show-description img {
+  filter: brightness(0.5) grayscale(50%) blur(2px);
+}
+
+.mainPiece.show-description .projectDescription,
+.mainPiece.show-description .projectButton {
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+.mainPiece.show-description {
+  box-shadow: 10px 10px 30px rgb(68, 68, 68);
+}
+/* End */
+
 .projectButton {
   box-shadow: 0 0 30px #000000;
   background: rgba(8, 8, 8, 0.8);

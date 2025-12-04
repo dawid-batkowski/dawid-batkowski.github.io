@@ -94,38 +94,36 @@ function resizeButtonText() {
   });
 
 
-  
 
-// Detect if device supports hover
-const supportsHover = window.matchMedia('(hover: hover)').matches;
+  const supportsHover = window.matchMedia('(hover: hover)').matches;
 
-document.querySelectorAll('.mainPiece').forEach(piece => {
-  const textArea = piece.querySelector('.mainPiecetext');
+  document.querySelectorAll('.mainPiece').forEach(piece => {
+    const textArea = piece.querySelector('.mainPiecetext');
+    let tapped = false;
   
-  if (supportsHover) {
-    // Desktop: click immediately navigates (hover already revealed)
-    textArea.addEventListener('click', () => {
-      const url = textArea.dataset.url;
-      if (url) window.location.href = url;
-    });
-    
-    // Add pointer cursor for desktop
-    textArea.style.cursor = 'pointer';
-  } else {
-    // Mobile: first tap reveals, second tap navigates
-    let isRevealed = false;
-    
-    textArea.addEventListener('click', (e) => {
-      if (!isRevealed) {
-        e.preventDefault();
-        piece.classList.add('show-description');
-        isRevealed = true;
-      } else {
+    if (supportsHover) {
+      // Desktop = instant navigation
+      textArea.addEventListener('click', () => {
         const url = textArea.dataset.url;
         if (url) window.location.href = url;
-      }
-    });
-    
-    textArea.style.cursor = 'pointer';
-  }
-});
+      });
+    } else {
+      // Mobile = tap to reveal, second tap to open
+      textArea.addEventListener('click', (e) => {
+        const url = textArea.dataset.url;
+  
+        if (!tapped) {
+          e.preventDefault();
+          e.stopPropagation();
+          piece.classList.add('show-description');
+          tapped = true;
+  
+          // Reset after 2 seconds if user taps elsewhere
+          setTimeout(() => tapped = false, 2000);
+        } else {
+          if (url) window.location.href = url;
+        }
+      });
+    }
+  });
+  
