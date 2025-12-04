@@ -94,38 +94,36 @@ function resizeButtonText() {
   });
 
 
-  
 
-// Detect if device supports hover
+
 const supportsHover = window.matchMedia('(hover: hover)').matches;
 
 document.querySelectorAll('.mainPiece').forEach(piece => {
-  const textArea = piece.querySelector('.mainPiecetext');
+  const link = piece.querySelector('.mainPiecetext');
   
   if (supportsHover) {
-    // Desktop: click immediately navigates (hover already revealed)
-    textArea.addEventListener('click', () => {
-      const url = textArea.dataset.url;
-      if (url) window.location.href = url;
-    });
-    
-    // Add pointer cursor for desktop
-    textArea.style.cursor = 'pointer';
+    // Desktop: click navigates
+    link.style.cursor = 'pointer';
   } else {
-    // Mobile: first tap reveals, second tap navigates
+    // Mobile: use touchstart to detect first tap
     let isRevealed = false;
     
-    textArea.addEventListener('click', (e) => {
+    link.addEventListener('touchstart', (e) => {
       if (!isRevealed) {
         e.preventDefault();
+        e.stopPropagation();
         piece.classList.add('show-description');
         isRevealed = true;
-      } else {
-        const url = textArea.dataset.url;
-        if (url) window.location.href = url;
       }
+    }, { passive: false });
+    
+    link.addEventListener('click', (e) => {
+      if (!isRevealed) {
+        e.preventDefault(); // Backup for devices that don't fire touchstart
+      }
+      // Second interaction lets link work
     });
     
-    textArea.style.cursor = 'pointer';
+    link.style.cursor = 'pointer';
   }
 });
