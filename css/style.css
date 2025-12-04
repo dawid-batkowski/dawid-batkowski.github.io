@@ -185,7 +185,7 @@ header {
   text-align: center;
   color: #ffffff;
   object-fit: fill;
-  pointer-events:none;
+  transition: all 2s ease;
 }
 
 .mainPiecetext {
@@ -194,6 +194,8 @@ header {
   justify-content: space-between; 
   height: 100%;
   text-decoration: none;
+  position: relative;
+  z-index: 20;
 }
 
 .mainPiecetext h3 {
