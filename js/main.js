@@ -54,15 +54,13 @@ const cubeScales = [];
 let i = 0;
 for (let x = 0; x < cubeCount; x++) {
   for (let y = 0; y < cubeCount; y++) {
-    const posX = (cubeOffset - x) * 80; // Use 80 for spacing
+    const posX = (cubeOffset - x) * 80;
     const posY = (cubeOffset - y) * 80;
     const randomSize = Math.random() * 0.5;
     cubeScales.push(randomSize);
     // Store initial position
     initialPositions.push({ x: posX, y: posY });
     
-    // Generate random size between 25 and 55 and apply it ONCE
-
     dummy.position.set(posX, posY, 0);
     dummy.scale.set(randomSize, randomSize, randomSize); // Set scale once here
     dummy.rotation.set(0, 0, 0);
