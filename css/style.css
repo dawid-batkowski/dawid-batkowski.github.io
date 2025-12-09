@@ -243,6 +243,10 @@ header {
   transition: all 0.5s ease;
 }
 
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 .mainPiece, .about {
   animation: fadeIn linear;
   animation-timeline: view();
@@ -310,3 +314,61 @@ footer {
   letter-spacing: 0.5px;
 }
 
+.cv-snippet-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 0 2%;
+}
+
+.cv-snippet-box {
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+  border-left-style: groove;
+  border-right-style: groove;
+  border-color: #ffffff98;
+}
+
+ul {
+  text-align: justify;
+  align-self: center;
+  list-style-position: inside;
+  list-style: none;
+  padding-left: 1.5em;  
+}
+
+.icon-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+  row-gap: 12px;
+  font-size: var(--font-size, 16px);
+}
+
+.icon-list li {
+  position: relative;
+  padding-left: calc(var(--icon-size, 20px) + 12px); 
+  margin-bottom: 0.5rem;
+}
+
+.icon-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--icon-size, 20px);
+  height: var(--icon-size, 20px);
+  background-image: var(--icon);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.dark-background {
+  background: linear-gradient(-117deg, rgba(27, 27, 27, 0.829) 0%, rgba(8, 8, 8, 0.781) 50%);
+}
