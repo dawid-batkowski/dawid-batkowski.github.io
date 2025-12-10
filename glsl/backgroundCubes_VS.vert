@@ -25,7 +25,8 @@ void main()
 {
     vec2 clickPos = u_clickPos / u_resolution;
 
-    vec2 mousePos = u_mouse / u_resolution;
+    vec2 fixU_mouse = length(u_mouse) > 0.001 ? u_mouse : vec2(0, 0);
+    vec2 mousePos = fixU_mouse / u_resolution;
     vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
     float sinceClick = max(u_time - u_clickTime, 0.001);
 
@@ -36,16 +37,10 @@ void main()
 
     vec4 worldPosition = instanceMatrix * vec4(position, 1.0);
     vec3 instanceWorldPos = instanceMatrix[3].xyz;
-    //--- PULSE
-    float maskPulse = saturate(length((instanceWorldPos.xy - u_clickPos) * aspect) / sinceClick);
-    float ripple = (sin(length((instanceWorldPos.xy - u_clickPos) * aspect * 50.0) - sinceClick * 5.0));
-    float fade = exp(-sinceClick * 3.0);
-    float rippleDisplacement = ((saturate(1.0 + ripple * fade) * 2.0 - 1.0) * 100.0 - 50.0) * maskPulse;
-    //---
 
-    vec3 toMouse = instanceWorldPos.xyz - vec3((u_mouse - u_resolution / 2.0) / 2.0, 1.0);
+    vec3 toMouse = instanceWorldPos.xyz - vec3((fixU_mouse - u_resolution / 2.0) / 2.0, 1.0);
     float lenToMouse = length(toMouse);
-    vec3 dirToMouse = lenToMouse > 0.001 ? normalize(toMouse) * 200.0 : vec3(0.0);
+    vec3 dirToMouse = lenToMouse > 0.001 ? normalize(toMouse) * 200.0 : vec3(0, 0, 0);
 
     vec4 worldPosOffset = vec4(((mousePos.x - 0.5) * 2.0) * 100.0 * shapeID, ((mousePos.y - 0.5) * 2.0) * 100.0 * shapeID, 0, 0);
     worldPosition += vec4(dirToMouse, 0.0);
