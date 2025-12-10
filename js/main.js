@@ -95,7 +95,7 @@ renderer.render(scene, camera);
 const uniforms = {
   u_time: { value: 0 },
   u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-  u_mouse: { value: new THREE.Vector2() },
+  u_mouse: { value: new THREE.Vector2(window.innerWidth * 0.5, window.innerHeight * 0.5) },
   u_clickPos: { value: new THREE.Vector2() },
   u_clickTime: { value: 0 },
 };

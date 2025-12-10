@@ -60,6 +60,6 @@ void main()
     pulse = smoothstep(0.0, 0.01, pulse);  
     pulse *= step(0.0, sinceClick);
 
-    vec4 finalColor = mix(vec4(0.0, 1.0, 0.4, 1.0), color * clamp(dirLight, 0.2, 1.0), pulse);
+    vec4 finalColor = mix(vec4(0.0, 1.0, 0.4, 1.0), color * clamp(dirLight, 0.5, 1.0), pulse);
     gl_FragColor = color * clamp(dirLight, 0.2, 1.0);
 }
