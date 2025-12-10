@@ -43,7 +43,9 @@ void main()
     float rippleDisplacement = ((saturate(1.0 + ripple * fade) * 2.0 - 1.0) * 100.0 - 50.0) * maskPulse;
     //---
 
-    vec3 dirToMouse = normalize(instanceWorldPos.xyz - vec3((u_mouse - u_resolution / 2.0) / 2.0 , 1.0)) * 200.0;
+    vec3 toMouse = instanceWorldPos.xyz - vec3((u_mouse - u_resolution / 2.0) / 2.0, 1.0);
+    float lenToMouse = length(toMouse);
+    vec3 dirToMouse = lenToMouse > 0.001 ? normalize(toMouse) * 200.0 : vec3(0.0);
 
     vec4 worldPosOffset = vec4(((mousePos.x - 0.5) * 2.0) * 100.0 * shapeID, ((mousePos.y - 0.5) * 2.0) * 100.0 * shapeID, 0, 0);
     worldPosition += vec4(dirToMouse, 0.0);
