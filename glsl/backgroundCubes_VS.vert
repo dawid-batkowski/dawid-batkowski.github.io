@@ -46,11 +46,11 @@ void main()
     vec3 dirToMouse = normalize(instanceWorldPos.xyz - vec3((u_mouse - u_resolution / 2.0) / 2.0 , 1.0)) * 200.0;
 
     vec4 worldPosOffset = vec4(((mousePos.x - 0.5) * 2.0) * 100.0 * shapeID, ((mousePos.y - 0.5) * 2.0) * 100.0 * shapeID, 0, 0);
-    worldPosition += vec4(dirToMouse, 0.0);
+    //worldPosition += vec4(dirToMouse, 0.0);
     vPosition = worldPosition.xyz + worldPosOffset.xyz;
     //float forceField = length((mousePos + vec2(0.5, 0.5)) * 2.0 - worldPosition.xz) * 1.0;
 
-    vec4 projectionSpace = projectionMatrix * modelViewMatrix * (worldPosition + worldPosOffset);
+    vec4 projectionSpace = projectionMatrix * modelViewMatrix * (worldPosition);
 
     vec4 test = projectionSpace;
     gl_Position = test;
