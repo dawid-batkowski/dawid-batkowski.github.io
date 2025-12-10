@@ -96,7 +96,7 @@ const uniforms = {
   u_time: { value: 0 },
   u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
   u_mouse: { value: new THREE.Vector2(window.innerWidth * 0.5, window.innerHeight * 0.5) },
-  u_clickPos: { value: new THREE.Vector2() },
+  u_clickPos: { value: new THREE.Vector2(window.innerWidth * 0.5, window.innerHeight * 0.5) },
   u_clickTime: { value: 0 },
 };
 
@@ -200,7 +200,7 @@ function setPointerPos(e) {
 }
 
 window.addEventListener("mousemove", setPointerPos);
-window.addEventListener("touchmove", setPointerPos);
+window.addEventListener("touchmove", setPointerPos, { passive: false });
 window.addEventListener("touchstart", e => {
   setPointerPos(e);
   uniforms.u_clickTime.value = uniforms.u_time.value;
