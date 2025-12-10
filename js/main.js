@@ -74,7 +74,7 @@ for (let x = 0; x < cubeCount; x++) {
 cubeInstance.instanceMatrix.needsUpdate = true;
 
 Promise.all([
-  fetch("glsl/backgroundcubes_VS.vert").then(r => r.text()),
+  fetch("glsl/backgroundCubes_VS.vert").then(r => r.text()),
   fetch("glsl/backgroundCubes_PS.frag").then(r => r.text())
 ]).then(([vertexShader, fragmentShader]) => {
 
