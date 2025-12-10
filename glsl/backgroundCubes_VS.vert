@@ -27,7 +27,7 @@ void main()
 
     vec2 mousePos = u_mouse / u_resolution;
     vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
-    float sinceClick = u_time - u_clickTime;
+    float sinceClick = max(u_time - u_clickTime, 0.001);
 
 
 
