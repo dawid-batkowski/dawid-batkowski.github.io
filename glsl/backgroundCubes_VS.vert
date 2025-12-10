@@ -27,8 +27,6 @@ void main()
 
     vec2 mousePos = u_mouse / u_resolution;
     vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
-    vec2 diff = ((uv - mousePos) * aspect);
-    float gradient = clamp(length(diff) * 6.0, 0.0, 1.0);
     float sinceClick = u_time - u_clickTime;
 
 
