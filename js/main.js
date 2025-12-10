@@ -34,13 +34,12 @@ scene.add(ambientLight);
 
 // cube
 const cubeSize = 55;
-const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-const material2 = new THREE.MeshStandardMaterial({});
-
+const geometry = new THREE.SphereGeometry(cubeSize, cubeSize, cubeSize);
+const tempMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
 
 const cubeCount = 10;
 const totalInstances = cubeCount * cubeCount;
-const cubeInstance = new THREE.InstancedMesh(geometry, material2, totalInstances);
+const cubeInstance = new THREE.InstancedMesh(geometry, tempMaterial, totalInstances);
 
 cubeInstance.position.z += 50;
 scene.add(cubeInstance);
@@ -57,11 +56,12 @@ for (let x = 0; x < cubeCount; x++) {
     const posX = (cubeOffset - x) * 80;
     const posY = (cubeOffset - y) * 80;
     const randomSize = Math.random() * 0.5;
+    const randomVal = Math.random() * 2 - 1;
     cubeScales.push(randomSize);
     // Store initial position
     initialPositions.push({ x: posX, y: posY });
     
-    dummy.position.set(posX, posY, 0);
+    dummy.position.set(posX + randomVal, posY + randomVal, 0);
     dummy.scale.set(randomSize, randomSize, randomSize); // Set scale once here
     dummy.rotation.set(0, 0, 0);
     dummy.updateMatrix();
@@ -72,6 +72,23 @@ for (let x = 0; x < cubeCount; x++) {
 
 // tell Three.js matrices changed
 cubeInstance.instanceMatrix.needsUpdate = true;
+
+Promise.all([
+  fetch("glsl/backgroundcubes_VS.vert").then(r => r.text()),
+  fetch("glsl/backgroundCubes_PS.frag").then(r => r.text())
+]).then(([vertexShader, fragmentShader]) => {
+
+  const material = new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms
+  });
+
+  // Replace the material
+  cubeInstance.material.dispose(); // Clean up old material
+  cubeInstance.material = material;
+
+}).catch(err => console.error("Shader load error:", err));
 
 renderer.render(scene, camera);
 // Uniforms
