@@ -2,14 +2,14 @@ console.log("JS Loaded");
 
 
 // Grab canvas
-const canvas = document.getElementById("bgCanvas");
+const canvas = document.getElementById("playgroundCanvas");
 
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight, false);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog( new THREE.Color(0, 0, 0) , 200, 750 );
+scene.fog = new THREE.Fog( new THREE.Color(0, 0, 0) , 200, 600 );
 
 const aspect = window.innerWidth / window.innerHeight;
 const frustum = 300.0;
@@ -34,18 +34,18 @@ scene.add(ambientLight);
 
 // cube
 const cubeSize = 55;
-const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-const tempMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
+const geometry = new THREE.SphereGeometry(cubeSize, cubeSize, cubeSize);
+const tempMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
 
 const cubeCount = 10;
 const totalInstances = cubeCount * cubeCount;
 const cubeInstance = new THREE.InstancedMesh(geometry, tempMaterial, totalInstances);
 
+cubeInstance.position.z += 50;
 scene.add(cubeInstance);
 
 const cubeOffset = (cubeCount - 1) * 0.5;
 const dummy = new THREE.Object3D();
-cubeInstance.position.z += 50;
 
 // Store initial positions for each cube
 const initialPositions = [];
@@ -61,7 +61,6 @@ for (let x = 0; x < cubeCount; x++) {
     // Store initial position
     initialPositions.push({ x: posX, y: posY });
     
-    dummy.position.z += Math.random() * 20 - 10;
     dummy.position.set(posX + randomVal, posY + randomVal, 0);
     dummy.scale.set(randomSize, randomSize, randomSize); // Set scale once here
     dummy.rotation.set(0, 0, 0);
@@ -73,6 +72,23 @@ for (let x = 0; x < cubeCount; x++) {
 
 // tell Three.js matrices changed
 cubeInstance.instanceMatrix.needsUpdate = true;
+
+Promise.all([
+  fetch("glsl/backgroundCubes_VS.vert").then(r => r.text()),
+  fetch("glsl/backgroundCubes_PS.frag").then(r => r.text())
+]).then(([vertexShader, fragmentShader]) => {
+
+  const material = new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms
+  });
+
+
+  cubeInstance.material.dispose();
+  cubeInstance.material = material;
+
+}).catch(err => console.error("Shader load error:", err));
 
 renderer.render(scene, camera);
 // Uniforms
