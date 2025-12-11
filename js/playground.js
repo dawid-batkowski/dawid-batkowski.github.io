@@ -50,17 +50,21 @@ const dummy = new THREE.Object3D();
 // Store initial positions for each cube
 const initialPositions = [];
 const cubeScales = [];
+
+const scalesArray = new Float32Array(totalInstances);
+
 let i = 0;
 for (let x = 0; x < cubeCount; x++) {
   for (let y = 0; y < cubeCount; y++) {
     const posX = (cubeOffset - x) * 80;
     const posY = (cubeOffset - y) * 80;
-    const randomSize = Math.random() * 0.5;
+    const randomSize = Math.random() * 0.4 + 0.2;
     const randomVal = Math.random() * 2 - 1;
     cubeScales.push(randomSize);
     // Store initial position
     initialPositions.push({ x: posX, y: posY });
-    
+    scalesArray[i] = randomSize;
+
     dummy.position.set(posX + randomVal, posY + randomVal, 0);
     dummy.scale.set(randomSize, randomSize, randomSize); // Set scale once here
     dummy.rotation.set(0, 0, 0);
@@ -91,6 +95,20 @@ Promise.all([
 }).catch(err => console.error("Shader load error:", err));
 
 renderer.render(scene, camera);
+
+const textureLoader = new THREE.TextureLoader();
+
+// Load multiple textures
+const albedoTexture = textureLoader.load('Material/Textures/eye_C.png');
+const normalTexture = textureLoader.load('Material/Textures/eye_N.png');
+const roughnessTexture = textureLoader.load('Material/Textures/eye_R.png');
+
+// Optional: Configure texture settings
+albedoTexture.wrapS = THREE.RepeatWrapping;
+albedoTexture.wrapT = THREE.RepeatWrapping;
+albedoTexture.repeat.set(2, 2); // Tile texture 2x2
+
+
 // Uniforms
 const uniforms = {
   u_time: { value: 0 },
@@ -98,8 +116,16 @@ const uniforms = {
   u_mouse: { value: new THREE.Vector2() },
   u_clickPos: { value: new THREE.Vector2() },
   u_clickTime: { value: 0 },
+
+  u_albedoMap: { value: albedoTexture },
+  u_normalMap: { value: normalTexture },
+  u_roughnessMap: { value: roughnessTexture }
 };
 
+geometry.setAttribute(
+  'instanceScale', 
+  new THREE.InstancedBufferAttribute(scalesArray, 1) // 1 = one float per instance
+);
 // Shader Material
 const material = new THREE.ShaderMaterial({
   uniforms,
