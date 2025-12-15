@@ -46,7 +46,7 @@ body > * {
   pointer-events: none; 
 }
 
-#bgCanvas {
+#textureShowcaseCanvas {
   position: fixed;
   top: 0;
   left: 0;
@@ -197,7 +197,6 @@ header {
   text-decoration: none;
   position: relative;
   z-index: 20;
-  
 }
 
 .mainPiecetext h3 {
