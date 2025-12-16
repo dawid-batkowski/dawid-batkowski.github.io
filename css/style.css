@@ -113,7 +113,7 @@ header {
 .mainPieceContainer {
   display: grid;
   container-type: inline-size;
-  grid-template-columns: repeat(auto-fit, minmax(min(600px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(500px, 100%), 1fr));
   gap: 2rem;
   padding: 2rem;
   margin: 20px auto;

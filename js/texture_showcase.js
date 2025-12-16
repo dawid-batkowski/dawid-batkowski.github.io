@@ -1,5 +1,6 @@
 console.log("JS Loaded");
-
+import * as THREE from 'three';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 // Grab canvas
 const canvas = document.getElementById("textureShowcaseCanvas");
@@ -9,7 +10,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight, false);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog( new THREE.Color(0, 0, 0) , 200, 600 );
+scene.fog = new THREE.Fog( new THREE.Color(0, 0, 0) , 0, 1000);
 
 const aspect = window.innerWidth / window.innerHeight;
 const frustum = 300.0;
@@ -32,10 +33,40 @@ scene.add(directionalLight);
 const ambientLight = new THREE.AmbientLight(new THREE.Color(0.8, 0.8, 0.9), 1);
 scene.add(ambientLight);
 
+
+const loader = new FBXLoader();
+loader.load('Material/Models/SM_Mountain.fbx', (object) => {
+  object.position.y -= 320;
+  object.position.z -= 50;
+  object.rotation.set(0.1, 0, 0);
+  object.scale.set(2.5, 1.5, 1.1);
+  scene.add(object);
+});
+
+loader.load('Material/Models/SM_Mountain.fbx', (object) => {
+  object.position.y -= 320;
+  object.position.x -= 350;
+  object.position.z -= 200;
+  object.rotation.set(0.1, 0, 0);
+  object.scale.set(4.5, 1.7, 2.1);
+  scene.add(object);
+});
+
+loader.load('Material/Models/SM_Mountain.fbx', (object) => {
+  object.position.y -= 320;
+  object.position.x += 320;
+  object.position.z -= 200;
+  object.rotation.set(0.1, 0, 0);
+  object.scale.set(-4, 2, 3);
+  scene.add(object);
+});
+
+
+
 // cube
-const cubeSize = 55;
-const geometry = new THREE.SphereGeometry(cubeSize, cubeSize, cubeSize);
-const tempMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+const cubeSize = 15;
+const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+const tempMaterial = new THREE.MeshLambertMaterial({ color: 0x888888 });
 
 const cubeCount = 10;
 const totalInstances = cubeCount * cubeCount;
@@ -56,16 +87,17 @@ const scalesArray = new Float32Array(totalInstances);
 let i = 0;
 for (let x = 0; x < cubeCount; x++) {
   for (let y = 0; y < cubeCount; y++) {
-    const posX = (cubeOffset - x) * 80;
-    const posY = (cubeOffset - y) * 80;
+    const posX = (cubeOffset - x) * 100;
+    const posY = (cubeOffset - y) * 100;
     const randomSize = Math.random() * 0.4 + 0.2;
-    const randomVal = Math.random() * 2 - 1;
+    const randomVal = Math.random() * 200 - 100;
+    const randomValZ = Math.random() * 200 - 100;
     cubeScales.push(randomSize);
     // Store initial position
-    initialPositions.push({ x: posX, y: posY });
+    initialPositions.push({ x: posX + randomVal, y: posY + randomVal,  z: randomValZ});
     scalesArray[i] = randomSize;
 
-    dummy.position.set(posX + randomVal, posY + randomVal, 0);
+    dummy.position.set(posX + randomVal, posY + randomVal, randomValZ);
     dummy.scale.set(randomSize, randomSize, randomSize); // Set scale once here
     dummy.rotation.set(0, 0, 0);
     dummy.updateMatrix();
@@ -77,6 +109,7 @@ for (let x = 0; x < cubeCount; x++) {
 // tell Three.js matrices changed
 cubeInstance.instanceMatrix.needsUpdate = true;
 
+/*
 Promise.all([
   fetch("glsl/backgroundCubes_VS.vert").then(r => r.text()),
   fetch("glsl/backgroundCubes_PS.frag").then(r => r.text())
@@ -93,7 +126,7 @@ Promise.all([
   cubeInstance.material = material;
 
 }).catch(err => console.error("Shader load error:", err));
-
+*/
 renderer.render(scene, camera);
 
 const textureLoader = new THREE.TextureLoader();
@@ -162,13 +195,13 @@ function animate(t) {
   for (let i = 0; i < totalInstances; i++) {
     const initialPos = initialPositions[i];
 
-    dummy.position.set(initialPos.x, initialPos.y, 0);
+    dummy.position.set(initialPos.x, initialPos.y, initialPos.z);
 
     dummy.rotation.x = time * 0.5 + (i * 0.1 * initialPos.y);
     dummy.rotation.y = time * 1.0 + (initialPos.x * 0.01 + i);
 
-    dummy.position.x += Math.sin(time + i + initialPos.x * 0.01) * 100;
-    dummy.position.y += Math.sin(time + i + initialPos.y * 0.01) * 100;
+    dummy.position.x += Math.sin(time + i + initialPos.x * 0.01) * 25;
+    dummy.position.y += Math.sin(time + i + initialPos.y * 0.01) * 25;
     dummy.position.z += Math.sin(time + i) * 50;
 
     const s = cubeScales[i];          // read precomputed scale
