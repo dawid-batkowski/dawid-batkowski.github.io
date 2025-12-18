@@ -27,13 +27,19 @@ const camera = new THREE.OrthographicCamera(
 camera.position.z = 500;
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-directionalLight.position.set(1, 1, 1);
+directionalLight.position.set(-2, 2, -1.5);
 scene.add(directionalLight);
 
-const ambientLight = new THREE.AmbientLight(new THREE.Color(0.8, 0.8, 0.9), 1);
+const lightDirection = new THREE.Vector3();
+lightDirection.subVectors(
+  directionalLight.target.position,  // (0, 0, 0) by default
+  directionalLight.position  
+).normalize();
+
+const ambientLight = new THREE.AmbientLight(new THREE.Color(1.0, 0.0, 0.0), 1);
 scene.add(ambientLight);
 
-
+const mountains = [];
 const loader = new FBXLoader();
 loader.load('Material/Models/SM_Mountain.fbx', (object) => {
   object.position.y -= 320;
@@ -41,6 +47,7 @@ loader.load('Material/Models/SM_Mountain.fbx', (object) => {
   object.rotation.set(0.1, 0, 0);
   object.scale.set(2.5, 1.5, 1.1);
   scene.add(object);
+  mountains.push(object);
 });
 
 loader.load('Material/Models/SM_Mountain.fbx', (object) => {
@@ -50,6 +57,7 @@ loader.load('Material/Models/SM_Mountain.fbx', (object) => {
   object.rotation.set(0.1, 0, 0);
   object.scale.set(4.5, 1.7, 2.1);
   scene.add(object);
+  mountains.push(object);
 });
 
 loader.load('Material/Models/SM_Mountain.fbx', (object) => {
@@ -59,9 +67,30 @@ loader.load('Material/Models/SM_Mountain.fbx', (object) => {
   object.rotation.set(0.1, 0, 0);
   object.scale.set(-4, 2, 3);
   scene.add(object);
+  mountains.push(object);
 });
 
+Promise.all([
+  fetch("glsl/mountain_VS.vert").then(r => r.text()),
+  fetch("glsl/mountain_PS.frag").then(r => r.text())
+]).then(([vertexShader, fragmentShader]) => {
 
+  const mountainMaterial = new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms
+  });
+
+  // Apply to all loaded mountains
+  mountains.forEach(mountain => {
+    mountain.traverse((child) => {
+      if (child.isMesh) {
+        child.material = mountainMaterial;
+      }
+    });
+  });
+
+}).catch(err => console.error("Shader load error:", err));
 
 // cube
 const cubeSize = 15;
@@ -150,6 +179,11 @@ const uniforms = {
   u_clickPos: { value: new THREE.Vector2() },
   u_clickTime: { value: 0 },
 
+  u_directionalLightDir: { value: lightDirection },
+  u_directionalLightColorAndIntensity: { value: new THREE.Vector4(directionalLight.color.r, directionalLight.color.g, directionalLight.color.b, directionalLight.intensity) },
+
+  u_ambientLightColorAndIntensity: { value: new THREE.Vector4(ambientLight.color.r, ambientLight.color.g, ambientLight.color.b, ambientLight.intensity) },
+
   u_albedoMap: { value: albedoTexture },
   u_normalMap: { value: normalTexture },
   u_roughnessMap: { value: roughnessTexture }
@@ -204,8 +238,8 @@ function animate(t) {
     dummy.position.y += Math.sin(time + i + initialPos.y * 0.01) * 25;
     dummy.position.z += Math.sin(time + i) * 50;
 
-    const s = cubeScales[i];          // read precomputed scale
-    dummy.scale.set(s, s, s);         // apply here
+    const s = cubeScales[i]; 
+    dummy.scale.set(s, s, s);
 
     dummy.updateMatrix();
     cubeInstance.setMatrixAt(i, dummy.matrix);
@@ -231,7 +265,7 @@ function resize() {
   camera.right = frustum * aspect;
   camera.top = frustum;
   camera.bottom = -frustum;
-  camera.updateProjectionMatrix(); // CRITICAL: This applies the changes
+  camera.updateProjectionMatrix();
 
   // Update shader uniforms
   uniforms.u_resolution.value.set(
