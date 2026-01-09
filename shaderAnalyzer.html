@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChartVisualizer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
+    <link rel="stylesheet" href="css/shaderAnalyzer.css">
+</head>
+<body>
+    <form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+
+        <fieldset>
+          <h2>Select JSON file:</h2>
+           <input type='file' id='fileinput'>
+           <input type='button' id='btnLoad' value='Load' onclick='loadFile();'>
+        </fieldset>
+      </form>
+
+    <div class="container">
+        <div id="barChartContainer">
+            <canvas id="barChart"></canvas>
+        </div>
+        <div id="radarChartContainer">
+            <canvas id="radarChart"></canvas>
+        </div>
+    </div>
+
+    <div>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="js/shaderAnalyzer.js"></script>
+
+</body>
+</html>

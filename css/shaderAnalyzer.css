@@ -1,0 +1,22 @@
+body {
+    background-color: rgb(228, 219, 199);
+    font-family: 'Exo', 'Helvetica', 'Arial', sans-serif;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    height: auto;
+    display: grid;
+    container-type: inline-size;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    margin: 20px auto;
+    max-width: 90vw;
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+}
