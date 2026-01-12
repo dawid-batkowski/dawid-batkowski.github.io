@@ -87,7 +87,9 @@ new Chart(ctzx, {
 });
 
 function readProperties(data) {
-  const labels = data.properties.map(p => p.name);
+  //const labels = data.Shader_Name.map(p => p.Shader_Name);
+  const labels = data.map(shader => shader.Shader_Name);
+  const functions = data.Intrinsic_Functions;
   createBarChart(labels);
 }
 
@@ -111,12 +113,12 @@ function createBarChart(labels) {
   if (barChart) barChart.destroy();
 
   const neutral = 5;
-  const data = [3, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6, 2, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6];
+  const data = [3, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6, 2, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6, 2, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6, 2, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6];
   const chartData = data.map(v => v - neutral);
   barChart = new Chart(ctz, {
     type: 'bar',
     data: {
-      labels: ['Shader1', 'Shader2', 'Shader3', 'Shader4', 'Shader4', 'Shader5', 'Shader6', 'Shader7', 'Shader8', 'Shader9', 'Shader10', 'Shader11', 'Shader1', 'Shader2', 'Shader3', 'Shader4', 'Shader4', 'Shader5', 'Shader6', 'Shader7', 'Shader8', 'Shader9', 'Shader10', 'Shader11'],
+      labels: labels,//['Shader1', 'Shader2', 'Shader3', 'Shader4', 'Shader4', 'Shader5', 'Shader6', 'Shader7', 'Shader8', 'Shader9', 'Shader10', 'Shader11', 'Shader1', 'Shader2', 'Shader3', 'Shader4', 'Shader4', 'Shader5', 'Shader6', 'Shader7', 'Shader8', 'Shader9', 'Shader10', 'Shader11'],
       datasets: [{
         label: 'Budget',
         data: chartData,
