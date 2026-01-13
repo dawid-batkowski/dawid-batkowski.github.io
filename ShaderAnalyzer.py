@@ -1,4 +1,7 @@
 from tkinter import Tk, filedialog
+from pygments import lex
+from pygments.lexers import get_lexer_by_name
+from pygments.token import *
 import os
 import json
 import datetime 
@@ -89,6 +92,17 @@ Texture_Method = {
 }
 
 
+def token_test(shader_text):
+    
+    shader_code = shader_text
+    hlsl_lexer = get_lexer_by_name('hlsl')
+    tokens = list(lex(shader_code, hlsl_lexer))
+    for token_type, value in tokens:
+        if value.strip() and token_type == Token.Name.Builtin:
+            print(f"{str(token_type):40s} {repr(value)}")
+            
+    return tokens
+    
 def choose_directory():
     root = Tk()
     root.withdraw() 
@@ -112,10 +126,10 @@ def scan_for_extension(base_dir, extension):
 def scan_file_for_keywords(filepath, keywords):
     found = {k: 0 for k in keywords}
 
-
     with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
         content = f.read()
 
+        token_test(content)
         for key in keywords:
             pattern = f"{key}("
             found[key] = content.count(pattern)
@@ -123,7 +137,6 @@ def scan_file_for_keywords(filepath, keywords):
     return found
 
 def main():
-    
     scan_directory, save_directory = choose_directory()
     
     if not scan_directory:
@@ -133,7 +146,6 @@ def main():
     files = scan_for_extension(scan_directory, extension)
 
     output = []
-    
     for file in files:
         intrinsic_functions_results = scan_file_for_keywords(file, Intrinsic_Functions)
         texture_method_results = scan_file_for_keywords(file, Texture_Method)
