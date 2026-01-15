@@ -93,8 +93,7 @@ Texture_Method = [
 ]
 
 Operators = [
-    '+', '-', '*', '/', '%', 
-    '+=', '-=', '*=', '/=', '%=',
+    '+', '-', '*', '/', '%', '+=', '-=', '*=', '/=', '%='
 ]
 
 def scan_file_for_functions(filepath, function_names, token_method):
@@ -112,6 +111,22 @@ def scan_file_for_functions(filepath, function_names, token_method):
                     found[value] += 1
     
     return found
+
+def scan_file_for_functions2(filepath, token_method):
+    
+    found = []
+    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+        content = f.read()
+        
+        hlsl_lexer = get_lexer_by_name('hlsl')
+        tokens = list(lex(content, hlsl_lexer))
+        
+        for token_type in tokens:
+            if token_type in [Token.Literal]:
+                found.append(token_type)
+                print(token_type)
+    
+    return found
     
 def choose_directory():
     root = Tk()
@@ -119,7 +134,6 @@ def choose_directory():
     folder_to_scan = filedialog.askdirectory(title="Select project directory")
     folder_to_saveJSON = filedialog.askdirectory(title="Select JSON save path")
     return folder_to_scan, folder_to_saveJSON
-
 
 def scan_for_extension(base_dir, extension):
     matches = []
@@ -163,6 +177,9 @@ def console_output(operators, texture_methods):
         result.append(output_result)
     return result
 
+#def detect_pow2():
+    
+    
 def main():
     scan_directory, save_directory = choose_directory()
     
@@ -177,6 +194,7 @@ def main():
         intrinsic_functions_results = scan_file_for_functions(file, Intrinsic_Functions, Token.Name.Function)
         texture_method_results = scan_file_for_functions(file, Texture_Method, Token.Name)
         operator_results = scan_file_for_functions(file, Operators, Token.Operator)
+        test = scan_file_for_functions2(file, Token.Literal.Number)
         
         filtered_intrinsic_functions = filer_null_results(intrinsic_functions_results)
         filtered_texture_method = filer_null_results(texture_method_results)
@@ -195,7 +213,8 @@ def main():
                 "Stats": {
                     "Intrinsic_Functions": filtered_intrinsic_functions,
                     "Texture_Methods": filtered_texture_method,
-                    "Operators": filtered_operators
+                    "Operators": filtered_operators,
+                    "TEST": test
                 },
                 "Issues": console_output(filtered_operators, filtered_texture_method)
             }
