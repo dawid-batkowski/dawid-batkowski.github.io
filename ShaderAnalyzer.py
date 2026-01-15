@@ -124,7 +124,6 @@ def scan_file_for_functions2(filepath, token_method):
         for token_type in tokens:
             if token_type in [Token.Literal]:
                 found.append(token_type)
-                print(token_type)
     
     return found
     
