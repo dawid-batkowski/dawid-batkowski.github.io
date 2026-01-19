@@ -13,7 +13,7 @@ Intrinsic_Functions = [
     "any",
     "asin",
     "asint",
-    "atan"
+    "atan",
     "atan2",
     "ceil",
     "clamp",
@@ -96,7 +96,7 @@ Operators = [
     '+', '-', '*', '/', '%', '+=', '-=', '*=', '/=', '%='
 ]
 
-def scan_file_for_functions(filepath, function_names, token_method):
+def scan_file_for_functions(filepath, function_names, token_method, return_tokens=False):
     found = {name: 0 for name in function_names}
     
     with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
@@ -110,7 +110,10 @@ def scan_file_for_functions(filepath, function_names, token_method):
                 if value in function_names:
                     found[value] += 1
     
-    return found
+    if return_tokens:
+        return found, content, tokens
+    else:
+        return found
     
 def choose_directory():
     root = Tk()
@@ -133,7 +136,7 @@ def scan_for_extension(base_dir, extension):
 def filer_null_results(result_type):
     return {k: count for k, count in result_type.items() if count > 0}
 
-def console_output(operators, texture_methods):
+def console_output(operators, texture_methods): # To be deleted later on
     output_severity = ['critical', 'warning', 'low']
     output_line = []
     output_message = ['High operator count', 'High texture method count', 'High instruction count']
@@ -161,8 +164,79 @@ def console_output(operators, texture_methods):
         result.append(output_result)
     return result
 
-#def detect_pow2():
+def scan_tokens(tokens, function_names, token_method):
+    found = {name: 0 for name in function_names}
     
+    for token_type, value in tokens:
+        if token_type in [Token.Name.Builtin, token_method]:
+            if value in function_names:
+                found[value] += 1
+    
+    return found
+
+def detect_pow_issues(tokens):
+    issues = []
+    
+    for i in range(len(tokens)):
+        if tokens[i][0] == Token.Name.Builtin and tokens[i][1] == 'pow':
+            exponent = find_pow_exponent(tokens, i)
+            
+            if exponent in ['2', '2.0', '2.f', '3', '3.0', '3.f', '0.5', '4', '4.0', '5', '5.0']:
+                issues.append({
+                    'severity': 'warning',
+                    'type': 'inefficient_pow',
+                    'line': [],
+                    'exponent': exponent,
+                    'message': f"pow(x, {exponent}) should be optimized",
+                    'suggestion': get_suggestion(exponent)
+                })
+    
+    return issues
+
+def find_pow_exponent(tokens, pow_index):
+    i = pow_index + 1
+    
+    while i < len(tokens):
+        if tokens[i][1] == ',':
+            break
+        i += 1
+    else:
+        return None
+    
+    i += 1
+    while i < len(tokens):
+        token_type, value = tokens[i]
+        
+        if token_type == Token.Text.Whitespace:
+            i += 1
+            continue
+        
+        if token_type in Number:
+            return value.rstrip('fF')
+        
+        return None
+    
+    
+    return None
+
+def get_suggestion(exponent):
+    exp = exponent.rstrip('fF')
+    
+    suggestions = {
+        '2': 'x * x',
+        '2.0': 'x * x',
+        '3': 'x * x * x',
+        '3.0': 'x * x * x',
+        '4': 'x * x * x * x',
+        '4.0': 'x * x * x * x',
+        '5': 'x * x * x * x * x',
+        '5.0': 'x * x * x * x * x',
+        '0.5': 'sqrt(x)'
+    }
+    
+    return suggestions.get(exp, f'optimize pow(x, {exp})')
+    
+
     
 def main():
     scan_directory, save_directory = choose_directory()
@@ -175,36 +249,42 @@ def main():
 
     output = []
     for file in files:
-        intrinsic_functions_results = scan_file_for_functions(file, Intrinsic_Functions, Token.Name.Function)
-        texture_method_results = scan_file_for_functions(file, Texture_Method, Token.Name)
-        operator_results = scan_file_for_functions(file, Operators, Token.Operator)
+        intrinsic_results, content, tokens = scan_file_for_functions(
+            file, Intrinsic_Functions, Token.Name.Function, return_tokens=True
+        )
         
-        filtered_intrinsic_functions = filer_null_results(intrinsic_functions_results)
-        filtered_texture_method = filer_null_results(texture_method_results)
+        texture_results = scan_tokens(tokens, Texture_Method, Token.Name)
+        operator_results = scan_tokens(tokens, Operators, Token.Operator)
+
+        filtered_intrinsic_functions = filer_null_results(intrinsic_results)
+        filtered_textures = filer_null_results(texture_results)
         filtered_operators = filer_null_results(operator_results)
         
         filtered_intrinsic_functions['TOTAL'] = sum(filtered_intrinsic_functions.values())
-        filtered_texture_method['TOTAL'] = sum(filtered_texture_method.values())
+        filtered_textures['TOTAL'] = sum(filtered_textures.values())
         filtered_operators['TOTAL'] = sum(filtered_operators.values())
+
+        pow_issues = detect_pow_issues(tokens)
+
         shader_path = file.replace('\\','/')
         
-        if filtered_intrinsic_functions:
+        if filtered_intrinsic_functions or filtered_textures or filtered_operators:
             filename = os.path.basename(file)
             shader_data = {
                 "Shader_Name": filename,
                 "Shader_Path": shader_path,
                 "Stats": {
                     "Intrinsic_Functions": filtered_intrinsic_functions,
-                    "Texture_Methods": filtered_texture_method,
+                    "Texture_Methods": filtered_textures,
                     "Operators": filtered_operators
                 },
-                "Issues": console_output(filtered_operators, filtered_texture_method)
+                "Issues": pow_issues
             }
             output.append(shader_data)
             
             print(file)
             print(filtered_intrinsic_functions)
-            print(filtered_texture_method)
+            print(filtered_textures)
             print(filtered_operators)
             
     current_date = datetime.date.today()
