@@ -136,34 +136,6 @@ def scan_for_extension(base_dir, extension):
 def filer_null_results(result_type):
     return {k: count for k, count in result_type.items() if count > 0}
 
-def console_output(operators, texture_methods): # To be deleted later on
-    output_severity = ['critical', 'warning', 'low']
-    output_line = []
-    output_message = ['High operator count', 'High texture method count', 'High instruction count']
-    output_suggestion = ['Reduce operator count', 'Reduce sample count', 'Reduce instruction count']
-    
-    output_result = {}
-    result = []
-    if sum(operators.values()) > 55:
-        output_result = {
-                "severity": output_severity[1],
-                "line": output_line,
-                "message": output_message[0],
-                "suggestion": output_suggestion[0]
-                }
-        result.append(output_result)
-        
-    if sum(texture_methods.values()) > 2:
-        output_result = {
-                "severity": output_severity[2],
-                "line": output_line,
-                "message": output_message[1],
-                "suggestion": output_suggestion[1]
-                }
-
-        result.append(output_result)
-    return result
-
 def scan_tokens(tokens, function_names, token_method):
     found = {name: 0 for name in function_names}
     
