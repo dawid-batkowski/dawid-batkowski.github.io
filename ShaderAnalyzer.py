@@ -5,6 +5,9 @@ from pygments.token import *
 import os
 import json
 import datetime 
+import subprocess
+import re
+import tempfile
 
 Intrinsic_Functions = [
     "abs",
@@ -209,6 +212,42 @@ def get_suggestion(exponent):
     return suggestions.get(exp, f'optimize pow(x, {exp})')
     
 
+
+def get_instruction_count(shader_path, optimized=True):
+    fxc_path = r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe"
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".asm") as tmp:
+        asm_path = tmp.name
+
+    if optimized:
+        optimization_flag = "/O3"
+    else:
+        optimization_flag = "/Od"
+
+    cmd = [
+        fxc_path,
+        "/T", "ps_5_1",
+        "/E", "main",
+        optimization_flag,
+        "/Fc", asm_path,
+        shader_path
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+
+    if result.returncode != 0:
+        print(result.stderr)
+        return None
+
+    with open(asm_path, "r", encoding="utf-8", errors="ignore") as f:
+        asm = f.read()
+
+    os.remove(asm_path)
+
+    match = re.search(r"Approximately\s+(\d+)\s+instruction", asm)
+    return int(match.group(1)) if match else None
+
+
     
 def main():
     scan_directory, save_directory = choose_directory()
@@ -237,6 +276,8 @@ def main():
         filtered_operators['TOTAL'] = sum(filtered_operators.values())
 
         pow_issues = detect_pow_issues(tokens)
+        instruction_count_O3 = get_instruction_count(file)
+        instruction_count_Od = get_instruction_count(file, False)
 
         shader_path = file.replace('\\','/')
         
@@ -250,6 +291,10 @@ def main():
                     "Texture_Methods": filtered_textures,
                     "Operators": filtered_operators
                 },
+                "Compiler_Data": {
+                    "Instruction_Count_Optimized": instruction_count_O3,
+                    "Instruction_Count_Raw": instruction_count_Od
+                    },
                 "Issues": pow_issues
             }
             output.append(shader_data)
@@ -258,6 +303,7 @@ def main():
             print(filtered_intrinsic_functions)
             print(filtered_textures)
             print(filtered_operators)
+            print(f"Optimized: {instruction_count_O3}, not optimized: {instruction_count_Od}")
             
     current_date = datetime.date.today()
     json_file_path = os.path.join(save_directory, f"shader_report_{current_date}.json")
