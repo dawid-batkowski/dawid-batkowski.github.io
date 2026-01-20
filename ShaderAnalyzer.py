@@ -8,6 +8,7 @@ import datetime
 import subprocess
 import re
 import tempfile
+from pathlib import Path
 
 Intrinsic_Functions = [
     "abs",
@@ -213,26 +214,32 @@ def get_suggestion(exponent):
     
 
 
-def get_instruction_count(shader_path, optimized=True):
+def get_instruction_count(shader_path, name, content, optimized=True):
     fxc_path = r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe"
-
+    name = name.lower()
+    name = os.path.basename(name).split('.')[0]
+    
     with tempfile.NamedTemporaryFile(delete=False, suffix=".asm") as tmp:
         asm_path = tmp.name
 
-    if optimized:
-        optimization_flag = "/O3"
+    optimization_flag = "/O3" if optimized else "/Od"
+    
+    
+    if name[-2:] == "vs":
+        shader_category = "vs_5_1"
     else:
-        optimization_flag = "/Od"
-
+        shader_category = "ps_5_1" 
+        
     cmd = [
         fxc_path,
-        "/T", "ps_5_1",
+        "/T", shader_category,
         "/E", "main",
         optimization_flag,
         "/Fc", asm_path,
         shader_path
     ]
 
+    print(name)
     result = subprocess.run(cmd, capture_output=True, text=True)
 
     if result.returncode != 0:
@@ -264,6 +271,7 @@ def main():
             file, Intrinsic_Functions, Token.Name.Function, return_tokens=True
         )
         
+        filename = os.path.basename(file)
         texture_results = scan_tokens(tokens, Texture_Method, Token.Name)
         operator_results = scan_tokens(tokens, Operators, Token.Operator)
 
@@ -276,13 +284,13 @@ def main():
         filtered_operators['TOTAL'] = sum(filtered_operators.values())
 
         pow_issues = detect_pow_issues(tokens)
-        instruction_count_O3 = get_instruction_count(file)
-        instruction_count_Od = get_instruction_count(file, False)
+        instruction_count_O3 = get_instruction_count(file, filename, content)
+        instruction_count_Od = get_instruction_count(file, filename, content, False)
 
         shader_path = file.replace('\\','/')
+
         
         if filtered_intrinsic_functions or filtered_textures or filtered_operators:
-            filename = os.path.basename(file)
             shader_data = {
                 "Shader_Name": filename,
                 "Shader_Path": shader_path,
@@ -292,8 +300,8 @@ def main():
                     "Operators": filtered_operators
                 },
                 "Compiler_Data": {
-                    "Instruction_Count_Optimized": instruction_count_O3,
-                    "Instruction_Count_Raw": instruction_count_Od
+                    "Instruction_Count_Raw": instruction_count_Od,
+                    "Instruction_Count_Optimized": instruction_count_O3
                     },
                 "Issues": pow_issues
             }

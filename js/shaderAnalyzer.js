@@ -87,10 +87,12 @@ new Chart(ctzx, {
 });
 
 function readProperties(data) {
-  //const labels = data.Shader_Name.map(p => p.Shader_Name);
   const labels = data.map(shader => shader.Shader_Name);
-  const functions = data.Intrinsic_Functions;
-  createBarChart(labels);
+  const instruction_count_O3 = data.map(p => p.Compiler_Data.Instruction_Count_Optimized)
+  const intrinsic_count = data.map(p => p.Stats.Intrinsic_Functions.TOTAL);
+  const texture_method_count = data.map(p => p.Stats.Texture_Methods.TOTAL);
+  const operator_count = data.map(p => p.Stats.Operators.TOTAL);
+  createBarChart(labels, instruction_count_O3, intrinsic_count, texture_method_count, operator_count);
 }
 
 function loadFile() {
@@ -107,21 +109,25 @@ function loadFile() {
 
 let barChart;
 
-function createBarChart(labels) {
+function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_method_count, operator_count) {
   const ctz = document.getElementById('barChart');
 
   if (barChart) barChart.destroy();
 
-  const neutral = 5;
-  const data = [3, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6, 2, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6, 2, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6, 2, -11, -5, 15, -5, 3, 2, -2, 12, 8, -5, 4.6];
+  const neutral = 400;
+  const data = instruction_count_O3;
   const chartData = data.map(v => v - neutral);
   barChart = new Chart(ctz, {
     type: 'bar',
     data: {
-      labels: labels,//['Shader1', 'Shader2', 'Shader3', 'Shader4', 'Shader4', 'Shader5', 'Shader6', 'Shader7', 'Shader8', 'Shader9', 'Shader10', 'Shader11', 'Shader1', 'Shader2', 'Shader3', 'Shader4', 'Shader4', 'Shader5', 'Shader6', 'Shader7', 'Shader8', 'Shader9', 'Shader10', 'Shader11'],
+      labels: labels,
       datasets: [{
         label: 'Budget',
         data: chartData,
+        instruction_count_O3: instruction_count_O3,
+        intrinsic_count: intrinsic_count,
+        texture_method_count: texture_method_count,
+        operator_count: operator_count,
         borderWidth: 2,
         backgroundColor: (ctx) => {
           const value = ctx.raw;
@@ -175,14 +181,16 @@ function createBarChart(labels) {
         tooltip: {
           callbacks: {
             label: (context) => {
-              const budget = (context.raw).toFixed(2);
-              const testStat1 = (Math.abs(context.raw) * 10).toFixed(2);
-              const testStat2 = (Math.abs(context.raw) * 0.1).toFixed(2);
+              const est_instructions_O3 = context.dataset.instruction_count_O3[context.dataIndex];
+              const est_intrinsics = context.dataset.intrinsic_count[context.dataIndex];
+              const est_texture_methods = context.dataset.texture_method_count[context.dataIndex];
+              const est_operators = context.dataset.operator_count[context.dataIndex];
 
               return [
-                `Budget: ${budget}`,
-                `Test1: ${testStat1}`,
-                `Test2: ${testStat2}%`
+                `Instruction Function Count: ~${est_instructions_O3}`,
+                `Intrinsic Count: ~${est_intrinsics}`,
+                `Texture Method Count: ~${est_texture_methods}`,
+                `Operator Count: ~${est_operators}`
               ];
             }
           }
