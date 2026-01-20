@@ -1,11 +1,11 @@
 Chart.register(ChartDataLabels);
 
 const ctx = document.getElementById('radarChart');
-
-const greenColor = 'rgba(68, 168, 38, 0.9)';
-const greenHighlitColor = 'rgba(111, 255, 68, 0.9)';
-const redColor = 'rgba(190, 36, 36, 0.9)';
-const redHighlitColor = 'rgb(255, 57, 57)';
+const barChart_under_budget_color = 'rgba(65, 202, 207, 0.68)';
+const barChart_under_budget_highlit_color = 'rgba(107, 250, 255, 0.96)';
+const barChart_over_budget_color = 'rgba(209, 168, 31, 0.68)';
+const barChart_over_budget_highlit_color = 'rgba(255, 213, 74, 0.92)';
+const chart_text_color = 'rgba(217, 236, 243, 0.92)';
 
 const data = {
   labels: [
@@ -86,12 +86,22 @@ new Chart(ctzx, {
   }
 });
 
+
+
 function readProperties(data) {
-  const labels = data.map(shader => shader.Shader_Name);
-  const instruction_count_O3 = data.map(p => p.Compiler_Data.Instruction_Count_Optimized)
-  const intrinsic_count = data.map(p => p.Stats.Intrinsic_Functions.TOTAL);
-  const texture_method_count = data.map(p => p.Stats.Texture_Methods.TOTAL);
-  const operator_count = data.map(p => p.Stats.Operators.TOTAL);
+
+  data.sort((a, b) => {
+    const aCount = a.Compiler_Data?.Instruction_Count_Optimized || 0;
+    const bCount = b.Compiler_Data?.Instruction_Count_Optimized || 0;
+    return bCount - aCount; 
+  });
+
+  const intrinsic_count = data.map(p => p.Stats?.Intrinsic_Functions?.TOTAL || 0);
+  const texture_method_count = data.map(p => p.Stats?.Texture_Methods?.TOTAL || 0);
+  const operator_count = data.map(p => p.Stats?.Operators?.TOTAL || 0);
+  const labels = data.map(shader => shader.Shader_Name || 'Unknown');
+  const instruction_count_O3 = data.map(p => p.Compiler_Data?.Instruction_Count_Optimized || 0);
+
   createBarChart(labels, instruction_count_O3, intrinsic_count, texture_method_count, operator_count);
 }
 
@@ -131,28 +141,41 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
         borderWidth: 2,
         backgroundColor: (ctx) => {
           const value = ctx.raw;
-          return value < 0 ? greenColor : redColor;
+          return value < 0 ? barChart_under_budget_color : barChart_over_budget_color;
         },
         borderColor: (ctx) => {
           const value = ctx.raw;
-          return value < 0 ? greenHighlitColor : redHighlitColor;
+          return value < 0 ? barChart_under_budget_highlit_color : barChart_over_budget_highlit_color;
         }
       }]
     },
     options: {
       scales: {
+        x: {
+          ticks: {
+            color: chart_text_color
+          }
+        },
         y: {
+          ticks: {
+            color: chart_text_color
+          },
           beginAtZero: false,
         }
       },
       plugins: {
         datalabels: {
           formatter: (value, context) => {
-            const data = context.chart.data.datasets[0].data;
-            const total = data.reduce((a, b) => a + b, 0);
-            const percentage = (value / total * 100).toFixed(1);
-            const result = percentage < 0 ? '+' + Math.abs(percentage) + '%' : '-' + Math.abs(percentage) + '%';
-            return result;
+            const budget = 400;
+        
+
+            const percentageOverBudget = (value / budget * 100).toFixed(1);
+        
+            if (value > 0) {
+              return '+' + percentageOverBudget + '%';  
+            } else {
+              return percentageOverBudget + '%'; 
+            }
           },
           color: '#fff',
           textShadowColor: 'rgb(0, 0, 0)',
@@ -164,14 +187,14 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
               return [
                 {
                   text: 'Above Budget',
-                  fillStyle: redColor,
-                  strokeStyle: redHighlitColor,
+                  fillStyle: barChart_over_budget_color,
+                  strokeStyle: barChart_over_budget_highlit_color,
                   hidden: false
                 },
                 {
                   text: 'Below Budget',
-                  fillStyle: greenColor,
-                  strokeStyle: greenHighlitColor,
+                  fillStyle: barChart_under_budget_color,
+                  strokeStyle: barChart_under_budget_highlit_color,
                   hidden: false
                 }
               ];
@@ -204,3 +227,4 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
   });
 }
 createBarChart();
+barChart.defaults.color = 'rgb(255, 0, 0)';
