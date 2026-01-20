@@ -22,6 +22,6 @@ body {
     box-sizing: border-box;
 }
 
-#radarChartContainer {
+#barChartContainer {
     height: 500px;
 }

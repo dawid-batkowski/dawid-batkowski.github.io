@@ -25,7 +25,8 @@ const data = {
     pointBackgroundColor: 'rgb(255, 99, 132)',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgb(255, 99, 132)'
+    pointHoverBorderColor: 'rgb(255, 99, 132)',
+    borderWidth: 2
   }]
 };
 
@@ -38,13 +39,18 @@ new Chart(ctx, {
         display: false
       }
     },
-    scales: {
-      y: {
-        beginAtZero: true
-      },
-      x: {
-        beginAtZero: true
-      }
+      scales: {
+        x: {
+          ticks: {
+            color: chart_text_color
+          }
+        },
+        y: {
+          ticks: {
+            color: chart_text_color
+          },
+          beginAtZero: false,
+        }
     },
     responsive: true,
     maintainAspectRatio: false
@@ -139,6 +145,7 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
         texture_method_count: texture_method_count,
         operator_count: operator_count,
         borderWidth: 2,
+        hoverBorderWidth: 4,
         backgroundColor: (ctx) => {
           const value = ctx.raw;
           return value < 0 ? barChart_under_budget_color : barChart_over_budget_color;
@@ -163,12 +170,15 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
           beginAtZero: false,
         }
       },
+      interaction: {
+        mode: 'index',  
+        intersect: false,
+        axis: 'x' 
+      },
       plugins: {
         datalabels: {
           formatter: (value, context) => {
             const budget = 400;
-        
-
             const percentageOverBudget = (value / budget * 100).toFixed(1);
         
             if (value > 0) {
@@ -177,6 +187,14 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
               return percentageOverBudget + '%'; 
             }
           },
+          font: {
+            size: 14,
+            weight: 'normal'
+          },
+          anchor: 'end', 
+          align: 'top',
+          offset: 4,
+          rotation: -25,
           color: '#fff',
           textShadowColor: 'rgb(0, 0, 0)',
           textShadowBlur: 3,
