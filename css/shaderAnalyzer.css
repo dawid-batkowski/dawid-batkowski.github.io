@@ -9,19 +9,16 @@ body {
 
 .container {
     width: 100%;
-    height: auto;
+    height: 1000px;
     display: grid;
     container-type: inline-size;
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(600px, 100%), 1fr));
+    gap: 2%;
+    padding: 0;
     margin: 20px auto;
-    max-width: 90vw;
+    max-width: 95vw;
     width: 100%;
     justify-content: center;
     box-sizing: border-box;
 }
 
-#barChartContainer {
-    height: 500px;
-}

@@ -173,8 +173,9 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
       interaction: {
         mode: 'index',  
         intersect: false,
-        axis: 'x' 
+        axis: 'y' 
       },
+      indexAxis: 'y',
       plugins: {
         datalabels: {
           formatter: (value, context) => {
@@ -192,12 +193,13 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
             weight: 'normal'
           },
           anchor: 'end', 
-          align: 'top',
+          align: 'right',
           offset: 4,
-          rotation: -25,
+          rotation: -0,
           color: '#fff',
           textShadowColor: 'rgb(0, 0, 0)',
-          textShadowBlur: 3,
+          textShadowBlur: 1,
+          indexAxis: 'y'
         },
         legend: {
           labels: {
@@ -207,15 +209,24 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
                   text: 'Above Budget',
                   fillStyle: barChart_over_budget_color,
                   strokeStyle: barChart_over_budget_highlit_color,
-                  hidden: false
+                  hidden: false,
+                  fontColor: chart_text_color
                 },
                 {
                   text: 'Below Budget',
                   fillStyle: barChart_under_budget_color,
                   strokeStyle: barChart_under_budget_highlit_color,
-                  hidden: false
+                  hidden: false,
+                  fontColor: chart_text_color
                 }
               ];
+            },
+            padding: 20, 
+            boxWidth: 20,
+            boxHeight: 20, 
+            font: {
+              size: 26,
+              family: 'Exo'
             }
           }
         },
