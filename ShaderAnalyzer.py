@@ -213,6 +213,44 @@ def get_suggestion(exponent):
     return suggestions.get(exp, f'optimize pow(x, {exp})')
     
 
+def parse_fxc_asm(asm_content):
+    lines = asm_content.split('\n')
+    
+    metrics = {
+        'texture_samples': 0,
+        'texture_loads': 0,
+        'branches': 0,
+        'loops': 0,
+        'temp_registers': 0
+    }
+    
+    temp_regs = set()
+    
+    for line in lines:
+        line = line.strip()
+        
+        if not line or line.startswith('//') or line.startswith('dcl_') or line.startswith('ps_') or line.startswith('vs_'):
+            continue
+        
+        if re.match(r'^\s*(sample|gather)', line):
+            metrics['texture_samples'] += 1
+        
+        if re.match(r'^\s*ld\b', line):
+            metrics['texture_loads'] += 1
+        
+        if re.match(r'^\s*(if|if_nz|if_z)\b', line):
+            metrics['branches'] += 1
+        
+        if re.match(r'^\s*loop\b', line):
+            metrics['loops'] += 1
+        
+        regs = re.findall(r'\br(\d+)', line)
+        temp_regs.update(int(r) for r in regs)
+    
+    metrics['temp_registers'] = max(temp_regs) + 1 if temp_regs else 0
+    
+    return metrics
+
 
 def get_instruction_count(shader_path, name, content, optimized=True):
     fxc_path = r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe"
@@ -251,8 +289,19 @@ def get_instruction_count(shader_path, name, content, optimized=True):
 
     os.remove(asm_path)
 
+    asm_metrics = parse_fxc_asm(asm)
+
     match = re.search(r"Approximately\s+(\d+)\s+instruction", asm)
-    return int(match.group(1)) if match else None
+    fxc_reported_count = int(match.group(1)) if match else None
+
+    return {
+        'fxc_reported_count': fxc_reported_count,
+        'texture_samples': asm_metrics['texture_samples'],
+        'texture_loads': asm_metrics['texture_loads'],
+        'branches': asm_metrics['branches'],
+        'loops': asm_metrics['loops'],
+        'temp_registers': asm_metrics['temp_registers']
+    }
 
 
     
