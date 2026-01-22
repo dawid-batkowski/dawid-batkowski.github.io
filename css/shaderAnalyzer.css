@@ -1,5 +1,6 @@
 body {
-    background-color: rgb(43, 43, 46);
+    background-color: rgb(56, 56, 59);
+    background: linear-gradient(90deg, rgb(45, 45, 48) 0%, rgb(68, 68, 71) 100%);
     font-family: 'Exo', 'Helvetica', 'Arial', sans-serif;
     margin: 0;
     border: 0;
@@ -9,7 +10,7 @@ body {
 
 .container {
     width: 100%;
-    height: 1000px;
+    height: 100vh;
     display: grid;
     container-type: inline-size;
     grid-template-columns: repeat(auto-fit, minmax(min(600px, 100%), 1fr));
@@ -20,5 +21,20 @@ body {
     width: 100%;
     justify-content: center;
     box-sizing: border-box;
+}
+
+#radarAndWarnings {
+    display: flex;
+    flex-direction: column;
+
+}
+
+#radarChartContainer {
+    height: 40%;
+}
+
+#warningWindow {
+    overflow-y: scroll;
+    height: 40%;
 }
 

@@ -1,105 +1,27 @@
 Chart.register(ChartDataLabels);
 
-const ctx = document.getElementById('radarChart');
 const barChart_under_budget_color = 'rgba(65, 202, 207, 0.68)';
 const barChart_under_budget_highlit_color = 'rgba(107, 250, 255, 0.96)';
 const barChart_over_budget_color = 'rgba(209, 168, 31, 0.68)';
 const barChart_over_budget_highlit_color = 'rgba(255, 213, 74, 0.92)';
+
+const radarChart_background_color = 'rgba(135, 255, 99, 0.2)';
+const radarChart_border_color = 'rgb(117, 255, 99)';
+const radarChart_pointBorder_color = 'rgb(199, 255, 192)';
+const radarCHart_pointHoverBackground_color = 'rgba(128, 179, 121, 0.4)';
+
 const chart_text_color = 'rgba(217, 236, 243, 0.92)';
 
-const data = {
-  labels: [
-    'Tex sample count',
-    'Instruction estimate',
-    'Branch count',
-    'Loop usage',
-    'Variant explosion risk',
-    'Sampler state usage',
-  ],
-  datasets: [{
-    label: 'Shader1',
-    data: [65, 59, 25, 81, 56, 87],
-    fill: true,
-    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-    borderColor: 'rgb(255, 99, 132)',
-    pointBackgroundColor: 'rgb(255, 99, 132)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgb(255, 99, 132)',
-    borderWidth: 2
-  }]
-};
-
-new Chart(ctx, {
-  type: 'radar',
-  data: data,
-  options: {
-    plugins: {
-      datalabels: {
-        display: false
-      }
-    },
-      scales: {
-        x: {
-          ticks: {
-            color: chart_text_color
-          }
-        },
-        y: {
-          ticks: {
-            color: chart_text_color
-          },
-          beginAtZero: false,
-        }
-    },
-    responsive: true,
-    maintainAspectRatio: false
-  }
-});
 
 
-const ctzx = document.getElementById('pieChart');
-
-new Chart(ctzx, {
-  type: 'doughnut',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [{
-      label: 'Stats',
-      data: [2, 5, 3, 5, 2, 3],
-      borderWidth: 3
-    }]
-  },
-  options: {
-    plugins: {
-      datalabels: {
-        formatter: (value, context) => {
-          const data = context.chart.data.datasets[0].data;
-          const total = data.reduce((a, b) => a + b, 0);
-          const percentage = (value / total * 100).toFixed(1);
-          return percentage + '%';
-        },
-        color: '#fff',
-        font: {
-          weight: 'bold'
-        },
-        textShadowColor: 'rgb(0, 0, 0)',
-        textShadowBlur: 3
-      }
-    },
-    responsive: true,
-    maintainAspectRatio: false
-  }
-});
-
-
+let shaderDetails = [];
 
 function readProperties(data) {
 
   data.sort((a, b) => {
     const aCount = a.Compiler_Data?.Instruction_Count_Optimized || 0;
     const bCount = b.Compiler_Data?.Instruction_Count_Optimized || 0;
-    return bCount - aCount; 
+    return bCount - aCount;
   });
 
   const intrinsic_count = data.map(p => p.Stats?.Intrinsic_Functions?.TOTAL || 0);
@@ -108,8 +30,91 @@ function readProperties(data) {
   const labels = data.map(shader => shader.Shader_Name || 'Unknown');
   const instruction_count_O3 = data.map(p => p.Compiler_Data?.Instruction_Count_Optimized || 0);
 
+  shaderDetails = data.map(shader => ({
+    name: shader.Shader_Name || 'Unknown',
+    radar: [
+      shader.Stats?.Texture_Methods?.TOTAL || 0,
+      shader.Compiler_Data?.Instruction_Count_Optimized || 0,
+      shader.Stats?.Operators?.TOTAL || 0,
+      5,
+      13,
+      25
+    ]
+  }));
+
   createBarChart(labels, instruction_count_O3, intrinsic_count, texture_method_count, operator_count);
+  createRadarChart(shaderDetails);
 }
+
+let radarChart;
+
+function createRadarChart(radarChartData) {
+  const ctx = document.getElementById('radarChart');
+
+  if (radarChart) radarChart.destroy();
+
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: [
+        'Tex sample count',
+        'Instruction estimate',
+        'Branch count',
+        'Loop usage',
+        'Variant explosion risk',
+        'Sampler state usage',
+      ],
+      datasets: [{
+        label: 'Shader',
+        data: radarChartData,
+        fill: true,
+        backgroundColor: radarChart_background_color,
+        borderColor: radarChart_border_color,
+        pointBackgroundColor: radarCHart_pointHoverBackground_color,
+        pointBorderColor: radarChart_pointBorder_color,
+        pointHoverBackgroundColor: 'rgba(0, 0, 0, 0)',
+        pointHoverBorderColor: 'rgb(255, 255, 255)',
+        borderWidth: 1,
+        pointRadius: 10,
+        pointHitRadius: 12,
+        pointHoverRadius: 18
+      }]
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          display: false
+        },
+        legend: {
+          labels: {
+            color: chart_text_color 
+          }
+        }
+      },
+      scales: {
+        r: {  
+          pointLabels: {
+            color: chart_text_color,
+            font: {
+              size: 15
+            }
+          },
+          ticks: {
+            color: chart_text_color,  
+            backdropColor: 'rgba(0, 0, 0, 0)' ,
+          },
+          grid: {
+            color: 'rgba(255, 255, 255, 0.2)' 
+          },
+          beginAtZero: true
+        }
+      },
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+}
+
 
 function loadFile() {
   const input = document.getElementById('fileinput');
@@ -157,6 +162,14 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
       }]
     },
     options: {
+      onClick: (evt, elements) => {
+        if (!elements.length) return;
+
+        const index = elements[0].index;
+        const shader = shaderDetails[index];
+
+        updateRadar(shader);
+      },
       scales: {
         x: {
           ticks: {
@@ -171,9 +184,9 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
         }
       },
       interaction: {
-        mode: 'index',  
+        mode: 'index',
         intersect: false,
-        axis: 'y' 
+        axis: 'y'
       },
       indexAxis: 'y',
       plugins: {
@@ -181,18 +194,18 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
           formatter: (value, context) => {
             const budget = 400;
             const percentageOverBudget = (value / budget * 100).toFixed(1);
-        
+
             if (value > 0) {
-              return '+' + percentageOverBudget + '%';  
+              return '+' + percentageOverBudget + '%';
             } else {
-              return percentageOverBudget + '%'; 
+              return percentageOverBudget + '%';
             }
           },
           font: {
             size: 14,
             weight: 'normal'
           },
-          anchor: 'end', 
+          anchor: 'end',
           align: 'right',
           offset: 4,
           rotation: -0,
@@ -221,9 +234,9 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
                 }
               ];
             },
-            padding: 20, 
+            padding: 20,
             boxWidth: 20,
-            boxHeight: 20, 
+            boxHeight: 20,
             font: {
               size: 26,
               family: 'Exo'
@@ -255,5 +268,10 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
     }
   });
 }
-createBarChart();
-barChart.defaults.color = 'rgb(255, 0, 0)';
+
+
+function updateRadar(shader) {
+  radarChart.data.datasets[0].data = shader.radar;
+  radarChart.data.datasets[0].label = shader.name;
+  radarChart.update();
+}
