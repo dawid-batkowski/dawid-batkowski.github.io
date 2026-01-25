@@ -295,7 +295,7 @@ def get_instruction_count(shader_path, name, content, optimized=True):
     fxc_reported_count = int(match.group(1)) if match else None
 
     return {
-        'fxc_reported_count': fxc_reported_count,
+        'Instruction_Count_Optimized': fxc_reported_count,
         'texture_samples': asm_metrics['texture_samples'],
         'texture_loads': asm_metrics['texture_loads'],
         'branches': asm_metrics['branches'],
@@ -348,10 +348,7 @@ def main():
                     "Texture_Methods": filtered_textures,
                     "Operators": filtered_operators
                 },
-                "Compiler_Data": {
-                    "Instruction_Count_Raw": instruction_count_Od,
-                    "Instruction_Count_Optimized": instruction_count_O3
-                    },
+                "Compiler_Data": instruction_count_O3,
                 "Issues": pow_issues
             }
             output.append(shader_data)

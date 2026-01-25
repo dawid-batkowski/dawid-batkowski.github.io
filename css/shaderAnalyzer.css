@@ -8,9 +8,13 @@ body {
     color: rgb(179, 208, 245);
 }
 
+.bodyContainer {
+  padding: 155px 0 0 0;
+
+}
+
 .container {
     width: 100%;
-    height: 100vh;
     display: grid;
     container-type: inline-size;
     grid-template-columns: repeat(auto-fit, minmax(min(600px, 100%), 1fr));
@@ -23,18 +27,132 @@ body {
     box-sizing: border-box;
 }
 
+.file-upload-section {
+    background: rgba(40, 40, 40, 0.6);
+    padding: 30px;
+    margin: 20px;
+    border-radius: 12px;
+    border: 2px dashed rgba(78, 205, 196, 0.5);
+}
+
+.upload-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-label {
+    background: rgba(78, 205, 196, 0.2);
+    padding: 15px 30px;
+    border-radius: 8px;
+    border: 2px solid #4ecdc4;
+    color: #4ecdc4;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.upload-label:hover {
+    background: rgba(78, 205, 196, 0.3);
+    border-color: #6ee7d7;
+    transform: translateY(-2px);
+}
+
+.load-button {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+.load-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(78, 205, 196, 0.5);
+}
+
+
+#barChartContainer {
+    height: 1100px;
+}
+
 #radarAndWarnings {
     display: flex;
     flex-direction: column;
-
+    height: 1100px;
+    min-height: 600px;
 }
 
 #radarChartContainer {
-    height: 40%;
+    height: 500px;
+    position: relative; 
 }
 
 #warningWindow {
-    overflow-y: scroll;
-    height: 40%;
+    flex: 1; /* Take remaining space */
+    overflow-y: auto;
+    background-color: rgb(43, 43, 44);
+    border-radius: 8px;
+    margin: 20px 0 0 0;
+    padding: 10px;
 }
 
+#barChart, #radarChart {
+    max-height: 100%;
+}
+
+#warningWindow p {
+  margin: 2% 3%; 
+  padding: 12px;
+  border-radius: 4px;
+  line-height: 1.6;
+}
+
+.issue-warning {
+  background-color: rgba(255, 193, 7, 0.2);
+  border-left: 4px solid #ffc107;
+  color: #ffd54f;
+}
+
+.issue-error {
+  background-color: rgba(244, 67, 54, 0.2);
+  border-left: 4px solid #f44336;
+  color: #ff8a80;
+}
+
+#warningWindow strong {
+  display: block;
+  margin-bottom: 1%;
+  font-size: 1rem;
+}
+
+#warningWindow em {
+  display: block;
+  margin-top: 1%;
+  color: #4ecdc4;
+  font-style: italic;
+}
+
+.chart-card {
+    background: rgba(40, 40, 40, 0.8);
+    border-radius: 12px;
+    padding: 2%;
+    padding-bottom: 10%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(78, 205, 196, 0.2);
+    transition: all 0.3s ease;
+}
+
+.chart-card h2 {
+    color: #4ecdc4;
+    font-size: 1.5rem;
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+}

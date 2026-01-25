@@ -39,7 +39,8 @@ function readProperties(data) {
       5,
       13,
       25
-    ]
+    ],
+    issues: shader.Issues || []
   }));
 
   createBarChart(labels, instruction_count_O3, intrinsic_count, texture_method_count, operator_count);
@@ -168,7 +169,7 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
         const index = elements[0].index;
         const shader = shaderDetails[index];
 
-        updateRadar(shader);
+        updateShaderDetails(shader);
       },
       scales: {
         x: {
@@ -270,8 +271,38 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
 }
 
 
-function updateRadar(shader) {
+function updateShaderDetails(shader) {
   radarChart.data.datasets[0].data = shader.radar;
   radarChart.data.datasets[0].label = shader.name;
   radarChart.update();
+
+  displayIssues(shader.issues);
+}
+
+function displayIssues(issues) {
+  const warningWindow = d3.select('#warningWindow');
+  
+  warningWindow.html('');
+  
+  if (!issues || issues.length === 0) {
+    warningWindow.append('p')
+      .style('color', '#4ecdc4')
+      .text('No issues found in this shader');
+    return;
+  }
+  
+  warningWindow
+    .selectAll('p')
+    .data(issues)
+    .enter()
+    .append('p')
+    .attr('class', issue => `issue-${issue.severity}`)
+    .html(issue => {
+      const icon = '⚠';
+      return `
+        <strong>${icon} ${issue.type.replace(/_/g, ' ').toUpperCase()}</strong><br>
+        ${issue.message}<br>
+        ${issue.suggestion ? `<em>Suggestion: ${issue.suggestion}</em>` : ''}
+      `;
+    });
 }
