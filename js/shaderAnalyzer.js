@@ -271,18 +271,6 @@ function createBarChart(labels, instruction_count_O3) {
 }
 
 
-// -- D3 test
-
-function createD3Visualization(data) {
-  d3.select('#d3-body')
-    .selectAll('p')
-    .data(data)
-    .enter()
-    .append('p')
-    .text(d => d.Shader_Name);
-}
-
-
 
 function updateShaderDetails(shader) {
   radarChart.data.datasets[0].data = shader.radar;
@@ -321,5 +309,63 @@ function displayIssues(issues) {
 }
 
 
-
-
+function createD3Visualization(jsonData) {
+  d3.select('#d3Container').selectAll('*').remove();
+  
+  const includeFiles = new Set();
+  jsonData.forEach(shader => {
+    if (shader.Includes) {
+      shader.Includes.forEach(include => includeFiles.add(include));
+    }
+  });
+  
+  const includes = Array.from(includeFiles);
+  
+  const width = 900;
+  const height = Math.max(400, Math.max(includes.length, jsonData.length) * 30);
+  const leftMargin = 200;
+  const rightMargin = 300;
+  
+  const svg = d3.select('#d3Container')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .style('background', '#1a1a2e');
+  
+  svg.selectAll('.include-text')
+    .data(includes)
+    .enter()
+    .append('text')
+    .attr('x', 20)
+    .attr('y', (d, i) => 30 + i * 30)
+    .text(d => d)
+    .style('fill', '#d1a81f')
+    .style('font-size', '14px');
+  
+  svg.selectAll('.shader-text')
+    .data(jsonData)
+    .enter()
+    .append('text')
+    .attr('x', leftMargin + rightMargin)
+    .attr('y', (d, i) => 30 + i * 30)
+    .text(d => d.Shader_Name)
+    .style('fill', '#41cace')
+    .style('font-size', '14px');
+  
+  jsonData.forEach((shader, shaderIndex) => {
+    if (shader.Includes) {
+      shader.Includes.forEach(include => {
+        const includeIndex = includes.indexOf(include);
+        
+        svg.append('line')
+          .attr('x1', leftMargin)
+          .attr('y1', 30 + includeIndex * 30 - 5)
+          .attr('x2', leftMargin + rightMargin - 10)
+          .attr('y2', 30 + shaderIndex * 30 - 5)
+          .style('stroke', '#4ecdc4')
+          .style('stroke-width', 5)
+          .style('stroke-opacity', 0.4);
+      });
+    }
+  });
+}
