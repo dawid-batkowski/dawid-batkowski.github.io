@@ -24,26 +24,26 @@ function readProperties(data) {
     return bCount - aCount;
   });
 
-  const intrinsic_count = data.map(p => p.Stats?.Intrinsic_Functions?.TOTAL || 0);
-  const texture_method_count = data.map(p => p.Stats?.Texture_Methods?.TOTAL || 0);
-  const operator_count = data.map(p => p.Stats?.Operators?.TOTAL || 0);
+  //const intrinsic_count = data.map(p => p.Stats?.Intrinsic_Functions?.TOTAL || 0);
+  //const texture_method_count = data.map(p => p.Stats?.Texture_Methods?.TOTAL || 0);
+  //const operator_count = data.map(p => p.Stats?.Operators?.TOTAL || 0);
   const labels = data.map(shader => shader.Shader_Name || 'Unknown');
   const instruction_count_O3 = data.map(p => p.Compiler_Data?.Instruction_Count_Optimized || 0);
 
   shaderDetails = data.map(shader => ({
     name: shader.Shader_Name || 'Unknown',
     radar: [
-      shader.Stats?.Texture_Methods?.TOTAL || 0,
-      shader.Compiler_Data?.Instruction_Count_Optimized || 0,
-      shader.Stats?.Operators?.TOTAL || 0,
-      5,
-      13,
-      25
+      shader.Compiler_Data?.texture_samples || 0,
+      shader.Compiler_Data?.texture_loads || 0,
+      shader.Compiler_Data?.branches || 0,
+      shader.Compiler_Data?.loops || 0,
+      shader.Compiler_Data?.temp_registers || 0,
+      4
     ],
     issues: shader.Issues || []
   }));
 
-  createBarChart(labels, instruction_count_O3, intrinsic_count, texture_method_count, operator_count);
+  createBarChart(labels, instruction_count_O3);
   createRadarChart(shaderDetails);
 }
 
@@ -59,26 +59,25 @@ function createRadarChart(radarChartData) {
     data: {
       labels: [
         'Tex sample count',
-        'Instruction estimate',
+        'Tex load count',
         'Branch count',
         'Loop usage',
+        'Temp register count',
         'Variant explosion risk',
-        'Sampler state usage',
       ],
       datasets: [{
         label: 'Shader',
         data: radarChartData,
-        fill: true,
         backgroundColor: radarChart_background_color,
         borderColor: radarChart_border_color,
         pointBackgroundColor: radarCHart_pointHoverBackground_color,
         pointBorderColor: radarChart_pointBorder_color,
         pointHoverBackgroundColor: 'rgba(0, 0, 0, 0)',
-        pointHoverBorderColor: 'rgb(255, 255, 255)',
+        pointHoverBorderColor: 'rgba(255, 255, 255, 0)',
         borderWidth: 1,
-        pointRadius: 10,
-        pointHitRadius: 12,
-        pointHoverRadius: 18
+        pointRadius: 9,
+        pointHitRadius: 11,
+        pointHoverRadius: 55
       }]
     },
     options: {
@@ -102,10 +101,18 @@ function createRadarChart(radarChartData) {
           },
           ticks: {
             color: chart_text_color,  
-            backdropColor: 'rgba(0, 0, 0, 0)' ,
+            backdropColor: 'rgba(0, 0, 0, 0)',
+            callback: (value, tick, values) => {
+              if (value < 0) {return ''};
+              if (Math.floor(value) === value) { return value};
+              return ''
+            }
           },
           grid: {
             color: 'rgba(255, 255, 255, 0.2)' 
+          },
+          afterDataLimits: function(scale) {
+            scale.min = scale.max * -0.1;
           },
           beginAtZero: true
         }
@@ -125,20 +132,21 @@ function loadFile() {
   reader.onload = function (e) {
     const json = JSON.parse(e.target.result);
     readProperties(json);
+    createD3Visualization(json);
   };
   return reader.readAsText(input.files[0]);
 }
 
 let barChart;
 
-function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_method_count, operator_count) {
+function createBarChart(labels, instruction_count_O3) {
   const ctz = document.getElementById('barChart');
 
   if (barChart) barChart.destroy();
 
-  const neutral = 400;
+  const budget = 400;
   const data = instruction_count_O3;
-  const chartData = data.map(v => v - neutral);
+  const chartData = data.map(v => v - budget);
   barChart = new Chart(ctz, {
     type: 'bar',
     data: {
@@ -147,9 +155,6 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
         label: 'Budget',
         data: chartData,
         instruction_count_O3: instruction_count_O3,
-        intrinsic_count: intrinsic_count,
-        texture_method_count: texture_method_count,
-        operator_count: operator_count,
         borderWidth: 2,
         hoverBorderWidth: 4,
         backgroundColor: (ctx) => {
@@ -193,7 +198,7 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
       plugins: {
         datalabels: {
           formatter: (value, context) => {
-            const budget = 400;
+
             const percentageOverBudget = (value / budget * 100).toFixed(1);
 
             if (value > 0) {
@@ -248,15 +253,10 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
           callbacks: {
             label: (context) => {
               const est_instructions_O3 = context.dataset.instruction_count_O3[context.dataIndex];
-              const est_intrinsics = context.dataset.intrinsic_count[context.dataIndex];
-              const est_texture_methods = context.dataset.texture_method_count[context.dataIndex];
-              const est_operators = context.dataset.operator_count[context.dataIndex];
+
 
               return [
-                `Instruction Function Count: ~${est_instructions_O3}`,
-                `Intrinsic Count: ~${est_intrinsics}`,
-                `Texture Method Count: ~${est_texture_methods}`,
-                `Operator Count: ~${est_operators}`
+                `Optimized Instruction Count: ~${est_instructions_O3}`,
               ];
             }
           }
@@ -269,6 +269,19 @@ function createBarChart(labels, instruction_count_O3, intrinsic_count, texture_m
     }
   });
 }
+
+
+// -- D3 test
+
+function createD3Visualization(data) {
+  d3.select('#d3-body')
+    .selectAll('p')
+    .data(data)
+    .enter()
+    .append('p')
+    .text(d => d.Shader_Name);
+}
+
 
 
 function updateShaderDetails(shader) {
@@ -306,3 +319,7 @@ function displayIssues(issues) {
       `;
     });
 }
+
+
+
+

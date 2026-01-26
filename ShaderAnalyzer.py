@@ -304,7 +304,12 @@ def get_instruction_count(shader_path, name, content, optimized=True):
     }
 
 
+def find_includes(shader_content):
+    pattern = r'#include\s+[\"<]([^">]+)[\">]'
+    includes = re.findall(pattern, shader_content)
     
+    return includes
+
 def main():
     scan_directory, save_directory = choose_directory()
     
@@ -337,17 +342,13 @@ def main():
         instruction_count_Od = get_instruction_count(file, filename, content, False)
 
         shader_path = file.replace('\\','/')
-
+        include_result = find_includes(content)
         
         if filtered_intrinsic_functions or filtered_textures or filtered_operators:
             shader_data = {
                 "Shader_Name": filename,
                 "Shader_Path": shader_path,
-                "Stats": {
-                    "Intrinsic_Functions": filtered_intrinsic_functions,
-                    "Texture_Methods": filtered_textures,
-                    "Operators": filtered_operators
-                },
+                "Includes": include_result,
                 "Compiler_Data": instruction_count_O3,
                 "Issues": pow_issues
             }
@@ -358,13 +359,14 @@ def main():
             print(filtered_textures)
             print(filtered_operators)
             print(f"Optimized: {instruction_count_O3}, not optimized: {instruction_count_Od}")
-            
+         
+
     current_date = datetime.date.today()
     json_file_path = os.path.join(save_directory, f"shader_report_{current_date}.json")
     
+    
     with open(json_file_path, "w", encoding="utf-8") as json_file:
         json.dump(output, json_file, indent=4)
-
 
 
 if __name__ == "__main__":
