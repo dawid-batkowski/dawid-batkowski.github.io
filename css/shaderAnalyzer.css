@@ -104,34 +104,6 @@ body {
     
 }
 
-#shader-text-data {
-    margin: 30px 5% 30px 5%;
-    -webkit-transition-duration: 0.4s; 
-    transition-duration: 0.4s;
-    text-decoration: none;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-#shader-text-data:after {
-    content: "";
-    background: #4ecdc4;
-    display: block;
-    position: absolute;
-    padding-top: 300%;
-    padding-left: 350%;
-    margin-left: -5%!important;
-    margin-top: -100%;
-    opacity: 0;
-    transition: all 1s
-  }
-  
-#shader-text-data:active:after {
-    padding: 0;
-    margin: 0;
-    opacity: 1;
-    transition: 0s
-  }
 
 #barChart, #radarChart {
     max-height: 100%;

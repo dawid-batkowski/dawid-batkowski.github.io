@@ -38,7 +38,7 @@ function readProperties(data) {
       shader.Compiler_Data?.branches || 0,
       shader.Compiler_Data?.loops || 0,
       shader.Compiler_Data?.temp_registers || 0,
-      4
+      shader.Estimated_Variants?.variant_risk || 0
     ],
     issues: shader.Issues || [],
     path: shader.Shader_Path || []

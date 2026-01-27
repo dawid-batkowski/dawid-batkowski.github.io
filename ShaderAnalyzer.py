@@ -137,19 +137,6 @@ def scan_for_extension(base_dir, extension):
 
     return matches
 
-def filer_null_results(result_type):
-    return {k: count for k, count in result_type.items() if count > 0}
-
-def scan_tokens(tokens, function_names, token_method):
-    found = {name: 0 for name in function_names}
-    
-    for token_type, value in tokens:
-        if token_type in [Token.Name.Builtin, token_method]:
-            if value in function_names:
-                found[value] += 1
-    
-    return found
-
 def detect_pow_issues(tokens):
     issues = []
     
@@ -312,7 +299,31 @@ def find_includes(shader_content):
     
     return lowIncludes
 
-
+def find_variant_patterns(tokens):  
+    variant_risk = 0
+    preprocessor_symbols = []
+    nesting_level = 0
+    max_nesting = 0
+    
+    for token_type, value in tokens:
+        if token_type in Token.Comment.Preproc:
+            if value.strip().startswith('#if'):
+                variant_risk += 1
+                nesting_level += 1
+                max_nesting = max(max_nesting, nesting_level)
+                
+                match = re.search(r'#if(?:n?def)?\s+(?:defined\()?\s*(\w+)', value)
+                if match:
+                    preprocessor_symbols.append(match.group(1))
+            
+            elif value.strip().startswith('#endif'):
+                nesting_level = max(0, nesting_level - 1)
+    
+    return {
+        'variant_risk': variant_risk,
+        'max_nesting': max_nesting,
+        'unique_keywords': len(set(preprocessor_symbols))
+    }
 
 def main():
     scan_directory, save_directory = choose_directory()
@@ -330,20 +341,10 @@ def main():
         )
         
         filename = os.path.basename(file)
-        #texture_results = scan_tokens(tokens, Texture_Method, Token.Name)
-        #operator_results = scan_tokens(tokens, Operators, Token.Operator)
-
-        #filtered_intrinsic_functions = filer_null_results(intrinsic_results)
-        #filtered_textures = filer_null_results(texture_results)
-        #filtered_operators = filer_null_results(operator_results)
-        
-        #filtered_intrinsic_functions['TOTAL'] = sum(filtered_intrinsic_functions.values())
-        #filtered_textures['TOTAL'] = sum(filtered_textures.values())
-        #filtered_operators['TOTAL'] = sum(filtered_operators.values())
 
         pow_issues = detect_pow_issues(tokens)
         instruction_count_O3 = get_instruction_count(file, filename, content)
-        #instruction_count_Od = get_instruction_count(file, filename, content, False)
+        est_variant_explosion_risk = find_variant_patterns(tokens)
 
         shader_path = file.replace('\\','/')
         include_result = find_includes(content)
@@ -354,14 +355,12 @@ def main():
                 "Shader_Path": shader_path,
                 "Includes": include_result,
                 "Compiler_Data": instruction_count_O3,
+                "Estimated_Variants": est_variant_explosion_risk,
                 "Issues": pow_issues
             }
             output.append(shader_data)
             
             print(file)
-            #print(filtered_intrinsic_functions)
-            #print(filtered_textures)
-            #print(filtered_operators)
             print(f"Optimized: {instruction_count_O3}")
          
     
