@@ -8,7 +8,7 @@ import datetime
 import subprocess
 import re
 import tempfile
-from pathlib import Path
+from collections import Counter
 
 Intrinsic_Functions = [
     "abs",
@@ -308,7 +308,11 @@ def find_includes(shader_content):
     pattern = r'#include\s+[\"<]([^">]+)[\">]'
     includes = re.findall(pattern, shader_content)
     
-    return includes
+    lowIncludes = [x.lower() for x in includes]
+    
+    return lowIncludes
+
+
 
 def main():
     scan_directory, save_directory = choose_directory()
@@ -326,25 +330,25 @@ def main():
         )
         
         filename = os.path.basename(file)
-        texture_results = scan_tokens(tokens, Texture_Method, Token.Name)
-        operator_results = scan_tokens(tokens, Operators, Token.Operator)
+        #texture_results = scan_tokens(tokens, Texture_Method, Token.Name)
+        #operator_results = scan_tokens(tokens, Operators, Token.Operator)
 
-        filtered_intrinsic_functions = filer_null_results(intrinsic_results)
-        filtered_textures = filer_null_results(texture_results)
-        filtered_operators = filer_null_results(operator_results)
+        #filtered_intrinsic_functions = filer_null_results(intrinsic_results)
+        #filtered_textures = filer_null_results(texture_results)
+        #filtered_operators = filer_null_results(operator_results)
         
-        filtered_intrinsic_functions['TOTAL'] = sum(filtered_intrinsic_functions.values())
-        filtered_textures['TOTAL'] = sum(filtered_textures.values())
-        filtered_operators['TOTAL'] = sum(filtered_operators.values())
+        #filtered_intrinsic_functions['TOTAL'] = sum(filtered_intrinsic_functions.values())
+        #filtered_textures['TOTAL'] = sum(filtered_textures.values())
+        #filtered_operators['TOTAL'] = sum(filtered_operators.values())
 
         pow_issues = detect_pow_issues(tokens)
         instruction_count_O3 = get_instruction_count(file, filename, content)
-        instruction_count_Od = get_instruction_count(file, filename, content, False)
+        #instruction_count_Od = get_instruction_count(file, filename, content, False)
 
         shader_path = file.replace('\\','/')
         include_result = find_includes(content)
         
-        if filtered_intrinsic_functions or filtered_textures or filtered_operators:
+        if instruction_count_O3:
             shader_data = {
                 "Shader_Name": filename,
                 "Shader_Path": shader_path,
@@ -355,16 +359,15 @@ def main():
             output.append(shader_data)
             
             print(file)
-            print(filtered_intrinsic_functions)
-            print(filtered_textures)
-            print(filtered_operators)
-            print(f"Optimized: {instruction_count_O3}, not optimized: {instruction_count_Od}")
+            #print(filtered_intrinsic_functions)
+            #print(filtered_textures)
+            #print(filtered_operators)
+            print(f"Optimized: {instruction_count_O3}")
          
-
+    
     current_date = datetime.date.today()
     json_file_path = os.path.join(save_directory, f"shader_report_{current_date}.json")
-    
-    
+
     with open(json_file_path, "w", encoding="utf-8") as json_file:
         json.dump(output, json_file, indent=4)
 

@@ -12,7 +12,7 @@ const radarCHart_pointHoverBackground_color = 'rgba(128, 179, 121, 0.4)';
 
 const chart_text_color = 'rgba(217, 236, 243, 0.92)';
 
-
+let currentShaderPath = '';
 
 let shaderDetails = [];
 
@@ -40,7 +40,8 @@ function readProperties(data) {
       shader.Compiler_Data?.temp_registers || 0,
       4
     ],
-    issues: shader.Issues || []
+    issues: shader.Issues || [],
+    path: shader.Shader_Path || []
   }));
 
   createBarChart(labels, instruction_count_O3);
@@ -66,8 +67,8 @@ function createRadarChart(radarChartData) {
         'Variant explosion risk',
       ],
       datasets: [{
-        label: 'Shader',
-        data: radarChartData,
+        label: radarChartData[0].name,
+        data: radarChartData[0].radar,
         backgroundColor: radarChart_background_color,
         borderColor: radarChart_border_color,
         pointBackgroundColor: radarCHart_pointHoverBackground_color,
@@ -87,12 +88,12 @@ function createRadarChart(radarChartData) {
         },
         legend: {
           labels: {
-            color: chart_text_color 
+            color: chart_text_color
           }
         }
       },
       scales: {
-        r: {  
+        r: {
           pointLabels: {
             color: chart_text_color,
             font: {
@@ -100,18 +101,18 @@ function createRadarChart(radarChartData) {
             }
           },
           ticks: {
-            color: chart_text_color,  
+            color: chart_text_color,
             backdropColor: 'rgba(0, 0, 0, 0)',
             callback: (value, tick, values) => {
-              if (value < 0) {return ''};
-              if (Math.floor(value) === value) { return value};
+              if (value < 0) { return '' };
+              if (Math.floor(value) === value) { return value };
               return ''
             }
           },
           grid: {
-            color: 'rgba(255, 255, 255, 0.2)' 
+            color: 'rgba(255, 255, 255, 0.2)'
           },
-          afterDataLimits: function(scale) {
+          afterDataLimits: function (scale) {
             scale.min = scale.max * -0.1;
           },
           beginAtZero: true
@@ -278,20 +279,21 @@ function updateShaderDetails(shader) {
   radarChart.update();
 
   displayIssues(shader.issues);
+  displayPath(shader.path);
 }
 
 function displayIssues(issues) {
   const warningWindow = d3.select('#warningWindow');
-  
+
   warningWindow.html('');
-  
+
   if (!issues || issues.length === 0) {
     warningWindow.append('p')
       .style('color', '#4ecdc4')
       .text('No issues found in this shader');
     return;
   }
-  
+
   warningWindow
     .selectAll('p')
     .data(issues)
@@ -309,29 +311,40 @@ function displayIssues(issues) {
 }
 
 
+function displayPath(path) {
+  const pathWindow = d3.select('#shader-text-data');
+  currentShaderPath = path;
+
+  pathWindow.html('');
+
+  pathWindow
+    .append('p')
+    .text("test")
+}
+
 function createD3Visualization(jsonData) {
   d3.select('#d3Container').selectAll('*').remove();
-  
+
   const includeFiles = new Set();
   jsonData.forEach(shader => {
     if (shader.Includes) {
       shader.Includes.forEach(include => includeFiles.add(include));
     }
   });
-  
+
   const includes = Array.from(includeFiles);
-  
+
   const width = 900;
   const height = Math.max(400, Math.max(includes.length, jsonData.length) * 30);
   const leftMargin = 200;
   const rightMargin = 300;
-  
+
   const svg = d3.select('#d3Container')
     .append('svg')
     .attr('width', width)
-    .attr('height', height)
-    .style('background', '#1a1a2e');
-  
+    .attr('height', height);
+  //.style('background', '#1a1a2e');
+
   svg.selectAll('.include-text')
     .data(includes)
     .enter()
@@ -341,7 +354,7 @@ function createD3Visualization(jsonData) {
     .text(d => d)
     .style('fill', '#d1a81f')
     .style('font-size', '14px');
-  
+
   svg.selectAll('.shader-text')
     .data(jsonData)
     .enter()
@@ -351,21 +364,32 @@ function createD3Visualization(jsonData) {
     .text(d => d.Shader_Name)
     .style('fill', '#41cace')
     .style('font-size', '14px');
-  
+
+  const includeColors = {};
+  includes.forEach(include => {
+    includeColors[include] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+  });
+
   jsonData.forEach((shader, shaderIndex) => {
     if (shader.Includes) {
       shader.Includes.forEach(include => {
         const includeIndex = includes.indexOf(include);
-        
+        const lineColor = includeColors[include];
+
         svg.append('line')
           .attr('x1', leftMargin)
           .attr('y1', 30 + includeIndex * 30 - 5)
           .attr('x2', leftMargin + rightMargin - 10)
           .attr('y2', 30 + shaderIndex * 30 - 5)
-          .style('stroke', '#4ecdc4')
-          .style('stroke-width', 5)
-          .style('stroke-opacity', 0.4);
+          .style('stroke', lineColor)
+          //.style("stroke-dasharray", ("10,3"))
+          .style('stroke-width', 2)
+          .style('stroke-opacity', 1);
       });
     }
   });
+}
+
+function copyPath() {
+  navigator.clipboard.writeText(currentShaderPath);
 }
