@@ -1,0 +1,563 @@
+[
+    {
+        "Shader_Name": "AnimatedPbrModelShaderVS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/AnimatedPbrModelShaderVS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 210,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 4,
+            "loops": 0,
+            "temp_registers": 12
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "animated_model_shader_VS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/animated_model_shader_VS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 44,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "custom_shape_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/custom_shape_PS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 2,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 0
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "custom_shape_VS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/custom_shape_VS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 15,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 2
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "deferred_gbuffer_setup_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/deferred_gbuffer_setup_PS.hlsl",
+        "Includes": [],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 156,
+            "texture_samples": 13,
+            "texture_loads": 1,
+            "branches": 3,
+            "loops": 0,
+            "temp_registers": 8
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "deferred_pointlight_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/deferred_pointlight_PS.hlsl",
+        "Includes": [
+            "common.hlsli",
+            "pbrfunctions.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 4,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 1
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "deferred_render_pass_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/deferred_render_pass_PS.hlsl",
+        "Includes": [
+            "common.hlsli",
+            "pbrfunctions.hlsli",
+            "postprocessstructs.hlsli",
+            "uncommon.hlsli",
+            "ssao.hlsl"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 195,
+            "texture_samples": 9,
+            "texture_loads": 0,
+            "branches": 3,
+            "loops": 1,
+            "temp_registers": 15
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "Flipbook_MuzzleFlash_Shotgun_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/Flipbook_MuzzleFlash_Shotgun_PS.hlsl",
+        "Includes": [
+            "pbrfunctions.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 61,
+            "texture_samples": 2,
+            "texture_loads": 0,
+            "branches": 1,
+            "loops": 0,
+            "temp_registers": 4
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "flipbook_template_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/flipbook_template_PS.hlsl",
+        "Includes": [
+            "pbrfunctions.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 53,
+            "texture_samples": 2,
+            "texture_loads": 0,
+            "branches": 1,
+            "loops": 0,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "fog_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/fog_PS.hlsl",
+        "Includes": [],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 934,
+            "texture_samples": 2,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 8
+        },
+        "Issues": [
+            {
+                "severity": "warning",
+                "type": "inefficient_pow",
+                "line": [],
+                "exponent": "2",
+                "message": "pow(x, 2) should be optimized",
+                "suggestion": "x * x"
+            }
+        ]
+    },
+    {
+        "Shader_Name": "id_shader_ps.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/id_shader_ps.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 8,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 1,
+            "loops": 0,
+            "temp_registers": 1
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "id_shader_vs.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/id_shader_vs.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 22,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "instanced_sprite_shader_VS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/instanced_sprite_shader_VS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 34,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "lineshader_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/lineshader_PS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 2,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 0
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "lineshader_VS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/lineshader_VS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 10,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 2
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "model_shader_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/model_shader_PS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 10,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 1,
+            "loops": 0,
+            "temp_registers": 2
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "model_shader_VS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/model_shader_VS.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 51,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 6
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "Particles_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/Particles_PS.hlsl",
+        "Includes": [],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 12,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 1,
+            "loops": 0,
+            "temp_registers": 1
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "Particles_VS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/Particles_VS.hlsl",
+        "Includes": [
+            "common.hlsli",
+            "uncommon.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 435,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 3,
+            "loops": 0,
+            "temp_registers": 7
+        },
+        "Issues": [
+            {
+                "severity": "warning",
+                "type": "inefficient_pow",
+                "line": [],
+                "exponent": "0.5",
+                "message": "pow(x, 0.5) should be optimized",
+                "suggestion": "sqrt(x)"
+            }
+        ]
+    },
+    {
+        "Shader_Name": "PbrModelShaderPS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PbrModelShaderPS.hlsl",
+        "Includes": [
+            "common.hlsli",
+            "pbrfunctions.hlsli",
+            "uncommon.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 363,
+            "texture_samples": 18,
+            "texture_loads": 1,
+            "branches": 5,
+            "loops": 1,
+            "temp_registers": 13
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PbrModelShaderVs.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PbrModelShaderVs.hlsl",
+        "Includes": [
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 36,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "Player_gBuffer_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/Player_gBuffer_PS.hlsl",
+        "Includes": [],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 156,
+            "texture_samples": 12,
+            "texture_loads": 1,
+            "branches": 3,
+            "loops": 0,
+            "temp_registers": 8
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PostprocessCopyPS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PostprocessCopyPS.hlsl",
+        "Includes": [
+            "postprocessstructs.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 4,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 1
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PostprocessGaussianH_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PostprocessGaussianH_PS.hlsl",
+        "Includes": [
+            "postprocessstructs.hlsli",
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 18,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 1,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PostprocessGaussianV_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PostprocessGaussianV_PS.hlsl",
+        "Includes": [
+            "postprocessstructs.hlsli",
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 18,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 1,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PostprocessPixelate_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PostprocessPixelate_PS.hlsl",
+        "Includes": [
+            "postprocessstructs.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 11,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 1
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PostprocessSelectionOutline_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PostprocessSelectionOutline_PS.hlsl",
+        "Includes": [
+            "postprocessstructs.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 157,
+            "texture_samples": 0,
+            "texture_loads": 3,
+            "branches": 8,
+            "loops": 12,
+            "temp_registers": 4
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PostprocessTonemapPS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PostprocessTonemapPS.hlsl",
+        "Includes": [
+            "postprocessstructs.hlsli",
+            "common.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 14,
+            "texture_samples": 1,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 3
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "PostprocessVS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/PostprocessVS.hlsl",
+        "Includes": [
+            "postprocessstructs.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 11,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 0,
+            "loops": 0,
+            "temp_registers": 1
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "Shotgun_shooting_Particles_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/Shotgun_shooting_Particles_PS.hlsl",
+        "Includes": [],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 11,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 1,
+            "loops": 0,
+            "temp_registers": 1
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "Shotgun_Shooting_Particles_VS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/Shotgun_Shooting_Particles_VS.hlsl",
+        "Includes": [
+            "common.hlsli",
+            "uncommon.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 435,
+            "texture_samples": 0,
+            "texture_loads": 0,
+            "branches": 3,
+            "loops": 0,
+            "temp_registers": 7
+        },
+        "Issues": [
+            {
+                "severity": "warning",
+                "type": "inefficient_pow",
+                "line": [],
+                "exponent": "0.5",
+                "message": "pow(x, 0.5) should be optimized",
+                "suggestion": "sqrt(x)"
+            }
+        ]
+    },
+    {
+        "Shader_Name": "ssao_render_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/ssao_render_PS.hlsl",
+        "Includes": [
+            "common.hlsli",
+            "pbrfunctions.hlsli",
+            "postprocessstructs.hlsli",
+            "ssao.hlsl"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 2122,
+            "texture_samples": 46,
+            "texture_loads": 0,
+            "branches": 140,
+            "loops": 0,
+            "temp_registers": 12
+        },
+        "Issues": []
+    },
+    {
+        "Shader_Name": "tileable_model_shader_PS.hlsl",
+        "Shader_Path": "C:/Users/Dawid.Batkowski/Desktop/P6/EngineAssets/Shaders/tileable_model_shader_PS.hlsl",
+        "Includes": [
+            "common.hlsli",
+            "uncommon.hlsli"
+        ],
+        "Compiler_Data": {
+            "Instruction_Count_Optimized": 75,
+            "texture_samples": 7,
+            "texture_loads": 1,
+            "branches": 3,
+            "loops": 0,
+            "temp_registers": 7
+        },
+        "Issues": []
+    }
+]

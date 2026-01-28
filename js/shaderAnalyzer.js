@@ -315,11 +315,11 @@ function displayPath(path) {
   const pathWindow = d3.select('#shader-text-data');
   currentShaderPath = path;
 
-  pathWindow.html('');
+  pathWindow.html('Copy Shader Path');
 
   pathWindow
     .append('p')
-    .text("test")
+    .text(currentShaderPath)
 }
 
 function createD3Visualization(jsonData) {
@@ -339,6 +339,7 @@ function createD3Visualization(jsonData) {
   const leftMargin = 200;
   const rightMargin = 300;
 
+  const includeSpreadY = 200;
   const svg = d3.select('#d3Container')
     .append('svg')
     .attr('width', width)
@@ -350,10 +351,29 @@ function createD3Visualization(jsonData) {
     .enter()
     .append('text')
     .attr('x', 20)
-    .attr('y', (d, i) => 30 + i * 30)
+    .attr('y', (d, i) => 30 + i * includeSpreadY)
     .text(d => d)
     .style('fill', '#d1a81f')
-    .style('font-size', '14px');
+    .style('font-size', '14px')
+    .style('background', '#1a1a2e');
+
+  svg.selectAll("text")
+    .each(function (d) { d.bbox = this.getBBox(); });
+
+  const xMargin = 4
+  const yMargin = 2
+  svg.append("g")
+    .selectAll("rect")
+    .join("rect")
+    .attr("x", d => d.x)
+    .attr("y", d => d.y)
+    .attr("width", d => d.bbox.width + 2 * xMargin)
+    .attr("height", d => d.bbox.height + 2 * yMargin)
+    .attr('transform', function (d) {
+      return `translate(-${xMargin}, -${d.bbox.height * 0.8 + yMargin})`
+    })
+    .style("fill", "black")
+    .style("opacity", "1");
 
   svg.selectAll('.shader-text')
     .data(jsonData)
@@ -378,11 +398,10 @@ function createD3Visualization(jsonData) {
 
         svg.append('line')
           .attr('x1', leftMargin)
-          .attr('y1', 30 + includeIndex * 30 - 5)
+          .attr('y1', 30 + includeIndex * includeSpreadY - 5)
           .attr('x2', leftMargin + rightMargin - 10)
           .attr('y2', 30 + shaderIndex * 30 - 5)
           .style('stroke', lineColor)
-          //.style("stroke-dasharray", ("10,3"))
           .style('stroke-width', 2)
           .style('stroke-opacity', 1);
       });
@@ -393,3 +412,19 @@ function createD3Visualization(jsonData) {
 function copyPath() {
   navigator.clipboard.writeText(currentShaderPath);
 }
+
+
+// -- For debuging, pre loads a JSON file
+window.addEventListener('DOMContentLoaded', () => {
+  loadDebugFile();
+});
+
+function loadDebugFile() {
+  fetch('shader_report_2026-01-27.json')
+    .then(response => response.json())
+    .then(json => {
+      readProperties(json);
+      createD3Visualization(json);
+    });
+}
+//----
