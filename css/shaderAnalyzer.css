@@ -180,3 +180,9 @@ body {
     direction: rtl; 
     font-style: italic;
 }
+
+
+
+.bar {
+    fill: #44a08d;
+}

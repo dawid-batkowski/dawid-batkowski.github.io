@@ -413,7 +413,28 @@ function copyPath() {
   navigator.clipboard.writeText(currentShaderPath);
 }
 
+const someData = [
+  {id: 'd1', value: 5, region: 'Poland'},
+  {id: 'd2', value: 14, region: 'Germany'},
+  {id: 'd3', value: 2, region: 'Sweden'},
+  {id: 'd4', value: 7, region: 'USA'},
+  {id: 'd5', value: 11, region: 'Ukraine'}
+]
 
+
+const container = d3.select('svg')
+  .classed('test-chart', true)
+  .style('border', '1px solid red');
+
+container
+  .selectAll('svg')
+  .data(someData)
+  .enter()
+  .append('rect')
+  .classed('bar', true)
+  .attr('width', 50)
+  .attr('height', d => (d.value * 5))
+  
 // -- For debuging, pre loads a JSON file
 window.addEventListener('DOMContentLoaded', () => {
   loadDebugFile();
