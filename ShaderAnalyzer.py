@@ -298,6 +298,63 @@ def find_includes(shader_content):
     lowIncludes = [x.lower() for x in includes]
     
     return lowIncludes
+    
+def parse_include_file(include_path, base_directory):
+    functions = set()
+
+    include_file_path = os.path.join(base_directory, include_path)
+    
+    try:
+        with open(include_file_path, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        
+        hlsl_lexer = get_lexer_by_name('hlsl')
+        tokens = list(lex(content, hlsl_lexer))
+        
+        all_calls = recognize_function_calls(tokens)
+        functions = {
+            f for f in all_calls
+            if f not in Intrinsic_Functions and f not in Texture_Method
+        }
+        
+        return functions
+    
+    except Exception as e:
+        print(f"Error parsing {include_path}: {e}")
+        return functions
+
+def recognize_function_calls(tokens):
+    calls = set()
+    for i in range(len(tokens) - 2):
+        token_type, value = tokens[i]
+
+        if token_type in (Token.Name, Token.Name.Function):
+            j = i + 1
+            while j < len(tokens) and tokens[j][0] == Token.Text.Whitespace:
+                j += 1
+
+            if j < len(tokens) and tokens[j][1] == '(':
+                calls.add(value)
+    return calls
+
+def find_function_calls(tokens):
+    return {
+        f for f in recognize_function_calls(tokens)
+        if f not in Intrinsic_Functions and f not in Texture_Method
+    }
+    
+
+def map_functions_to_includes(shader_tokens, includes, base_directory):
+    function_calls = find_function_calls(shader_tokens)
+    
+    include_usage = {}
+    for include in includes:
+        defined_functions = parse_include_file(include, base_directory)
+        used_functions = list(function_calls & defined_functions)
+        
+        include_usage[include] = used_functions
+    
+    return include_usage
 
 def find_variant_patterns(tokens):  
     variant_risk = 0
@@ -349,11 +406,15 @@ def main():
         shader_path = file.replace('\\','/')
         include_result = find_includes(content)
         
+        base_dir = os.path.dirname(file)
+        include_usage = map_functions_to_includes(tokens, include_result, base_dir)
+        
+
         if instruction_count_O3:
             shader_data = {
                 "Shader_Name": filename,
                 "Shader_Path": shader_path,
-                "Includes": include_result,
+                "Includes": include_usage,
                 "Compiler_Data": instruction_count_O3,
                 "Estimated_Variants": est_variant_explosion_risk,
                 "Issues": pow_issues
