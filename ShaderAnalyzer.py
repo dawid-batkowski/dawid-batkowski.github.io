@@ -292,7 +292,7 @@ def get_instruction_count(shader_path, name, content, optimized=True):
 
 
 def find_includes(shader_content):
-    pattern = r'#include\s+[\"<]([^">]+)[\">]'
+    pattern = r'#include\s*[\"<]([^">]+)[\">]'
     includes = re.findall(pattern, shader_content)
     
     lowIncludes = [x.lower() for x in includes]

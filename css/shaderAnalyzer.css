@@ -181,8 +181,14 @@ body {
     font-style: italic;
 }
 
-
-
 .bar {
     fill: #44a08d;
+}
+
+.class-test {
+    background-color: #44a08d;
+}
+
+.redundant {
+    background-color: #ff6021;
 }

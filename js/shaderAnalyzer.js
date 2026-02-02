@@ -226,6 +226,13 @@ function createBarChart(labels, instruction_count_O3) {
             generateLabels: (ds) => {
               return [
                 {
+                  text: `Budget: ${budget}`,
+                  fillStyle: 'rgba(0, 0, 0, 0)',
+                  strokeStyle: 'rgba(0, 0, 0, 0)',
+                  hidden: false,
+                  fontColor: chart_text_color
+                },
+                {
                   text: 'Above Budget',
                   fillStyle: barChart_over_budget_color,
                   strokeStyle: barChart_over_budget_highlit_color,
@@ -344,7 +351,6 @@ function createD3Visualization(jsonData) {
     .append('svg')
     .attr('width', width)
     .attr('height', height);
-  //.style('background', '#1a1a2e');
 
   svg.selectAll('.include-text')
     .data(includes)
@@ -355,25 +361,46 @@ function createD3Visualization(jsonData) {
     .text(d => d)
     .style('fill', '#d1a81f')
     .style('font-size', '14px')
-    .style('background', '#1a1a2e');
+    .style('background', '#1a1a2e')
+    .on('mouseover', function(event, d) {
+      svg.selectAll('path[data-include]:not([data-include="' + d + '"])')
+        .style('stroke', nonSelectedIncludeColor);
 
-  svg.selectAll("text")
-    .each(function (d) { d.bbox = this.getBBox(); });
+      svg.selectAll('path[data-include="' + d + '"]')
+        .style('stroke', selectedIncludeColor);
+    });
+    
+const textData = [];
+console.log(textData);
+svg.selectAll("text")
+  .each(function(d) {
+    const bbox = this.getBBox();
+    textData.push({ bbox: bbox, data: d });
+  });
 
-  const xMargin = 4
-  const yMargin = 2
-  svg.append("g")
-    .selectAll("rect")
-    .join("rect")
-    .attr("x", d => d.x)
-    .attr("y", d => d.y)
-    .attr("width", d => d.bbox.width + 2 * xMargin)
-    .attr("height", d => d.bbox.height + 2 * yMargin)
-    .attr('transform', function (d) {
-      return `translate(-${xMargin}, -${d.bbox.height * 0.8 + yMargin})`
-    })
-    .style("fill", "black")
-    .style("opacity", "1");
+const xMargin = 15;
+const yMargin = 5;
+const boxBackgroundColor = 'rgba(124, 124, 124, 0.19)';
+const boxBorderColor = 'rgb(255, 195, 116)';
+
+svg.append("g")
+  .attr("class", "background-boxes")
+  .selectAll("rect")
+  .data(textData)
+  .enter()
+  .append("rect")
+  .attr("x", d => d.bbox.x - xMargin)
+  .attr("y", d => d.bbox.y - yMargin)
+  .attr("width", d => d.bbox.width + 2 * xMargin)
+  .attr("height", d => d.bbox.height + 2 * yMargin)
+  .attr('rx', 2)
+  .attr('ry', 2)
+  .style("stroke", boxBorderColor)
+  .style("stroke-width", 1) 
+  .style("fill", boxBackgroundColor)
+  .style("opacity", "1");
+
+  svg.selectAll('text').raise();
 
   svg.selectAll('.shader-text')
     .data(jsonData)
@@ -385,24 +412,29 @@ function createD3Visualization(jsonData) {
     .style('fill', '#41cace')
     .style('font-size', '14px');
 
-  const includeColors = {};
-  includes.forEach(include => {
-    includeColors[include] = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
-  });
+  const nonSelectedIncludeColor = 'rgba(255, 218, 137, 0.19)';
+  const selectedIncludeColor = 'rgba(167, 252, 255, 0.88)';
 
   jsonData.forEach((shader, shaderIndex) => {
     if (shader.Includes) {
       shader.Includes.forEach(include => {
         const includeIndex = includes.indexOf(include);
-        const lineColor = includeColors[include];
 
-        svg.append('line')
-          .attr('x1', leftMargin)
-          .attr('y1', 30 + includeIndex * includeSpreadY - 5)
-          .attr('x2', leftMargin + rightMargin - 10)
-          .attr('y2', 30 + shaderIndex * 30 - 5)
-          .style('stroke', lineColor)
-          .style('stroke-width', 2)
+        const x1 = leftMargin;
+        const y1 = 30 + includeIndex * includeSpreadY - 5;
+        const x2 = leftMargin + rightMargin - 10;
+        const y2 = 30 + shaderIndex * 30 - 5;
+
+        const controlPointOffset = (x2 - x1) * 0.5; 
+        const path = `M ${x1} ${y1} C ${x1 + controlPointOffset} ${y1}, ${x2 - controlPointOffset} ${y2}, ${x2} ${y2}`;
+
+        svg.append('path')
+          .attr('d', path)
+          .attr('data-include', 'connection-line')
+          .attr('data-include', include)
+          .style('stroke', nonSelectedIncludeColor)
+          .style('stroke-width', 1.5)
+          .style('fill', 'none')
           .style('stroke-opacity', 1);
       });
     }
@@ -412,29 +444,8 @@ function createD3Visualization(jsonData) {
 function copyPath() {
   navigator.clipboard.writeText(currentShaderPath);
 }
-
-const someData = [
-  {id: 'd1', value: 5, region: 'Poland'},
-  {id: 'd2', value: 14, region: 'Germany'},
-  {id: 'd3', value: 2, region: 'Sweden'},
-  {id: 'd4', value: 7, region: 'USA'},
-  {id: 'd5', value: 11, region: 'Ukraine'}
-]
-
-
-const container = d3.select('svg')
-  .classed('test-chart', true)
-  .style('border', '1px solid red');
-
-container
-  .selectAll('svg')
-  .data(someData)
-  .enter()
-  .append('rect')
-  .classed('bar', true)
-  .attr('width', 50)
-  .attr('height', d => (d.value * 5))
   
+
 // -- For debuging, pre loads a JSON file
 window.addEventListener('DOMContentLoaded', () => {
   loadDebugFile();
