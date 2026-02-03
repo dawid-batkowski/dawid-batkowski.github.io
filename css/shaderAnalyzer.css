@@ -181,6 +181,11 @@ body {
     font-style: italic;
 }
 
+#dependency-chart {
+    grid-column: 1 / -1;
+}
+
+
 .bar {
     fill: #44a08d;
 }

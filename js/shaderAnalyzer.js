@@ -341,12 +341,14 @@ function createD3Visualization(jsonData) {
     }
   });
 
+  const containerWidth = d3.select('#d3Container').node().getBoundingClientRect().width;
+
   const includes = Array.from(includeFiles);
 
-  const width = 900;
+  const width = containerWidth;
   const height = Math.max(400, Math.max(includes.length, jsonData.length) * 30);
-  const leftMargin = 200;
-  const rightMargin = 300;
+  const leftMargin = Math.min(200, width * 0.2);
+  const rightMargin = width - 450; 
   const includeSpreadY = 200;
 
   let hoveredInclude = null;
@@ -356,7 +358,9 @@ function createD3Visualization(jsonData) {
   const svg = d3.select('#d3Container')
     .append('svg')
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', height)
+    .attr('preserveAspectRatio', 'xMinYMin meet') 
+
 
   svg.selectAll('.include-text')
     .data(includes)
@@ -413,18 +417,44 @@ function createD3Visualization(jsonData) {
             .enter()
             .append('text')
             .classed('function-label', true)
-            .attr('x', leftMargin + rightMargin - 150)
+            .attr('x', leftMargin + rightMargin - 75)
             .attr('y', (d, i, nodes) => parseFloat(shaderY) + (i * 40) - (nodes.length !== 1 ? nodes.length * 20 : 0))
+            .attr('text-anchor', 'end')
             .text(d => d + '()')
             .style('fill', 'white')
             .style('font-size', '12px');
+
+          svg.selectAll('.function-line')
+            .data(usedFunctions)
+            .enter()
+            .append('path')
+            .classed('function-line', true)
+            .attr('d', (d, i, nodes) => {
+              const x1 = leftMargin + rightMargin - 5; 
+              const y1 = parseFloat(shaderY) - 5;
+              const x2 = leftMargin + rightMargin - 65; 
+              const y2 = parseFloat(shaderY) + (i * 40) - (nodes.length !== 1 ? nodes.length * 20 : 0) - 4;
+              const controlOffset = 50;
+
+              return `M ${x1} ${y1} C ${x1 - controlOffset} ${y1}, ${x2 + controlOffset} ${y2}, ${x2} ${y2}`;
+            })
+            .style('stroke', 'rgb(116, 255, 116)')
+            .style('stroke-width', 1.5)
+            .style('fill', 'none')
+            .style('opacity', 0.6);
 
           const boxBackgroundColor = 'rgb(75, 75, 75)';
           const boxBorderColor = 'rgb(116, 255, 116)';
           createTextBackrounds('.function-label', boxBackgroundColor, boxBorderColor)
         }
       });
-    });
+    })
+  .on('mouseout', function() {
+    hoveredShader = null;
+    svg.selectAll('.function-label').remove();
+    svg.selectAll('.function-line').remove();  // ← Add this
+    svg.selectAll('g').remove();
+  });
 
 
 
