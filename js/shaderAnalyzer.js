@@ -335,7 +335,9 @@ function createD3Visualization(jsonData) {
   const includeFiles = new Set();
   jsonData.forEach(shader => {
     if (shader.Includes) {
-      shader.Includes.forEach(include => includeFiles.add(include));
+      Object.keys(shader.Includes).forEach(include => {
+        includeFiles.add(include);
+      });
     }
   });
 
@@ -345,8 +347,12 @@ function createD3Visualization(jsonData) {
   const height = Math.max(400, Math.max(includes.length, jsonData.length) * 30);
   const leftMargin = 200;
   const rightMargin = 300;
-
   const includeSpreadY = 200;
+
+  let hoveredInclude = null;
+  let hoveredShader = null;
+  let usedFunctions = null;
+
   const svg = d3.select('#d3Container')
     .append('svg')
     .attr('width', width)
@@ -361,46 +367,22 @@ function createD3Visualization(jsonData) {
     .text(d => d)
     .style('fill', '#d1a81f')
     .style('font-size', '14px')
-    .style('background', '#1a1a2e')
-    .on('mouseover', function(event, d) {
+    .on('mouseover', function (event, d) {
       svg.selectAll('path[data-include]:not([data-include="' + d + '"])')
         .style('stroke', nonSelectedIncludeColor);
+      hoveredInclude = d;
 
       svg.selectAll('path[data-include="' + d + '"]')
         .style('stroke', selectedIncludeColor);
     });
-    
-const textData = [];
-console.log(textData);
-svg.selectAll("text")
-  .each(function(d) {
-    const bbox = this.getBBox();
-    textData.push({ bbox: bbox, data: d });
-  });
 
-const xMargin = 15;
-const yMargin = 5;
-const boxBackgroundColor = 'rgba(124, 124, 124, 0.19)';
-const boxBorderColor = 'rgb(255, 195, 116)';
+  createTextBackrounds();
 
-svg.append("g")
-  .attr("class", "background-boxes")
-  .selectAll("rect")
-  .data(textData)
-  .enter()
-  .append("rect")
-  .attr("x", d => d.bbox.x - xMargin)
-  .attr("y", d => d.bbox.y - yMargin)
-  .attr("width", d => d.bbox.width + 2 * xMargin)
-  .attr("height", d => d.bbox.height + 2 * yMargin)
-  .attr('rx', 2)
-  .attr('ry', 2)
-  .style("stroke", boxBorderColor)
-  .style("stroke-width", 1) 
-  .style("fill", boxBackgroundColor)
-  .style("opacity", "1");
 
-  svg.selectAll('text').raise();
+
+  const functionTextColor = 'rgb(1,1,1)';
+  const functionBackgroundColor = 'rgb(255, 69, 69)';
+  const functionBorderColor = 'rgb(255, 245, 245)';
 
   svg.selectAll('.shader-text')
     .data(jsonData)
@@ -410,14 +392,80 @@ svg.append("g")
     .attr('y', (d, i) => 30 + i * 30)
     .text(d => d.Shader_Name)
     .style('fill', '#41cace')
-    .style('font-size', '14px');
+    .style('font-size', '14px')
+    .on('mouseover', function (event, d) {
+      hoveredShader = d.Shader_Name;
 
-  const nonSelectedIncludeColor = 'rgba(255, 218, 137, 0.19)';
+      svg.selectAll('.function-label').remove();
+      svg.selectAll('g').remove();
+
+      Object.keys(d.Includes).forEach(include => {
+        if (include === hoveredInclude) {
+          console.log(include);
+          console.log(hoveredShader);
+          usedFunctions = d.Includes[include];
+          console.log('Functions:', usedFunctions);
+
+          const shaderY = d3.select(this).attr('y');
+
+          svg.selectAll('.function-label')
+            .data(usedFunctions)
+            .enter()
+            .append('text')
+            .classed('function-label', true)
+            .attr('x', leftMargin + rightMargin - 150)
+            .attr('y', (d, i, nodes) => parseFloat(shaderY) + (i * 40) - (nodes.length !== 1 ? nodes.length * 20 : 0))
+            .text(d => d + '()')
+            .style('fill', 'white')
+            .style('font-size', '12px');
+
+          const boxBackgroundColor = 'rgb(75, 75, 75)';
+          const boxBorderColor = 'rgb(116, 255, 116)';
+          createTextBackrounds('.function-label', boxBackgroundColor, boxBorderColor)
+        }
+      });
+    });
+
+
+
+
+  function createTextBackrounds(typeOfText, boxBackgroundColor, boxBorderColor) {
+    const textData = [];
+    svg.selectAll(typeOfText)
+      .each(function (d) {
+        const bbox = this.getBBox();
+        textData.push({ bbox: bbox, data: d });
+      });
+
+    const xMargin = 15;
+    const yMargin = 5;
+
+
+    svg.append("g")
+      .attr("class", "background-boxes")
+      .selectAll("rect")
+      .data(textData)
+      .enter()
+      .append("rect")
+      .attr("x", d => d.bbox.x - xMargin)
+      .attr("y", d => d.bbox.y - yMargin)
+      .attr("width", d => d.bbox.width + 2 * xMargin)
+      .attr("height", d => d.bbox.height + 2 * yMargin)
+      .attr('rx', 2)
+      .attr('ry', 2)
+      .style("stroke", boxBorderColor)
+      .style("stroke-width", 1)
+      .style("fill", boxBackgroundColor)
+      .style("opacity", "1");
+
+    svg.selectAll('text').raise();
+  }
+  const nonSelectedIncludeColor = 'rgba(255, 218, 137, 0.1)';
   const selectedIncludeColor = 'rgba(167, 252, 255, 0.88)';
 
   jsonData.forEach((shader, shaderIndex) => {
     if (shader.Includes) {
-      shader.Includes.forEach(include => {
+      Object.keys(shader.Includes).forEach(include => {
         const includeIndex = includes.indexOf(include);
 
         const x1 = leftMargin;
@@ -425,7 +473,7 @@ svg.append("g")
         const x2 = leftMargin + rightMargin - 10;
         const y2 = 30 + shaderIndex * 30 - 5;
 
-        const controlPointOffset = (x2 - x1) * 0.5; 
+        const controlPointOffset = (x2 - x1) * 0.5;
         const path = `M ${x1} ${y1} C ${x1 + controlPointOffset} ${y1}, ${x2 - controlPointOffset} ${y2}, ${x2} ${y2}`;
 
         svg.append('path')
@@ -444,7 +492,7 @@ svg.append("g")
 function copyPath() {
   navigator.clipboard.writeText(currentShaderPath);
 }
-  
+
 
 // -- For debuging, pre loads a JSON file
 window.addEventListener('DOMContentLoaded', () => {
@@ -452,7 +500,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadDebugFile() {
-  fetch('shader_report_2026-01-27.json')
+  fetch('NEW_shader_report_2026-02-03.json')
     .then(response => response.json())
     .then(json => {
       readProperties(json);
