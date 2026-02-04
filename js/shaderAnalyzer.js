@@ -395,8 +395,16 @@ function createD3Visualization(jsonData) {
 
       svg.selectAll('path[data-include="' + d + '"]')
         .transition().duration(400)
-        .style('stroke', selectedIncludeColor)
-        .style("filter", "url(#glow)");
+        .style('stroke', selectedIncludeColor);
+
+      svg.selectAll('.background-boxes rect')
+      .transition().duration(400)
+      .style("filter", "none");
+
+      svg.selectAll('.background-boxes rect')
+        .filter((boxData, i) => includes[i] === d)
+        .transition().duration(400)
+        .style("filter", "drop-shadow(0 0 6px " + includeBoxBorderColor + ")");
     });
 
   const includeBoxBackgroundColor = 'rgb(66, 66, 66)';
@@ -435,7 +443,7 @@ function createD3Visualization(jsonData) {
             .append('text')
             .classed('function-label', true)
             .attr('x', leftMargin + rightMargin - 240)
-            .attr('y', (d, i, nodes) => parseFloat(shaderY) + (i * 40) - (nodes.length !== 1 ? nodes.length * 20 : 0))
+            .attr('y', (d, i, nodes) => parseFloat(shaderY) + (i * 40) - nodes.length * 20)
             .attr('text-anchor', 'end')
             .text(d => d + '()')
             .style('fill', 'white')
@@ -454,7 +462,7 @@ function createD3Visualization(jsonData) {
               const x1 = leftMargin + rightMargin - 15;
               const y1 = parseFloat(shaderY) - 5;
               const x2 = leftMargin + rightMargin - 105;
-              const y2 = parseFloat(shaderY) + (i * 40) - (nodes.length !== 1 ? nodes.length * 20 : 0) - 4;
+              const y2 = parseFloat(shaderY) + (i * 40) - nodes.length * 20 - 4;
               const controlOffset = 50;
 
               return `M ${x1} ${y1} C ${x1 - controlOffset} ${y1}, ${x2 + controlOffset} ${y2}, ${x2} ${y2}`;
@@ -467,6 +475,12 @@ function createD3Visualization(jsonData) {
             .style('opacity', 0.8)
             .style("filter", "url(#glow)");
 
+            svg.selectAll('.shader-background rect')
+              .filter(function(boxData) {
+                return boxData.data && boxData.data.Shader_Name === hoveredShader;
+              })
+              .style("filter", "drop-shadow(0 0 6px " + shaderBoxBorderColor + ")");
+
           const boxBackgroundColor = 'rgb(75, 75, 75)';
           const boxBorderColor = 'rgb(116, 255, 116)';
           createTextBackrounds('.function-label', boxBackgroundColor, boxBorderColor, 'function-background', true, 120, (d, i) => (i + 1) * animationSpeed);
@@ -478,11 +492,12 @@ function createD3Visualization(jsonData) {
       svg.selectAll('.function-label').remove();
       svg.selectAll('.function-line').remove();
       svg.selectAll('.function-background').remove();
+      svg.selectAll('.shader-background rect').style('filter', null);
     });
 
   const shaderBoxBackgroundColor = 'rgb(66, 66, 66)';
   const shaderBoxBorderColor = 'rgb(74, 198, 255)';
-  createTextBackrounds('.shader-text', shaderBoxBackgroundColor, shaderBoxBorderColor);
+  createTextBackrounds('.shader-text', shaderBoxBackgroundColor, shaderBoxBorderColor, 'shader-background');
 
 
 
@@ -574,3 +589,6 @@ function loadDebugFile() {
     });
 }
 //----
+
+
+//TODO: Set up proper margin, fix resizing, chill with glow go with flow
