@@ -346,9 +346,9 @@ function createD3Visualization(jsonData) {
   const includes = Array.from(includeFiles);
 
   const width = containerWidth;
-  const height = Math.max(400, Math.max(includes.length, jsonData.length) * 30);
+  const height = Math.max(400, Math.max(includes.length, jsonData.length) * 31);
   const leftMargin = Math.min(200, width * 0.2);
-  const rightMargin = width - 450; 
+  const rightMargin = width - 450;
   const includeSpreadY = 200;
 
   let hoveredInclude = null;
@@ -359,34 +359,51 @@ function createD3Visualization(jsonData) {
     .append('svg')
     .attr('width', width)
     .attr('height', height)
-    .attr('preserveAspectRatio', 'xMinYMin meet') 
+    .attr('preserveAspectRatio', 'xMinYMin meet')
+
+
+  var defs = svg.append("defs");
+
+  var filter = defs.append("filter").attr("id", "glow");
+  filter.append("feGaussianBlur")
+    .attr("stdDeviation", "3.5")
+    .attr("result", "coloredBlur");
+
+  var feMerge = filter.append("feMerge");
+  feMerge.append("feMergeNode").attr("in", "coloredBlur");
+  feMerge.append("feMergeNode").attr("in", "SourceGraphic");
 
 
   svg.selectAll('.include-text')
     .data(includes)
     .enter()
     .append('text')
-    .attr('x', 20)
+    .classed('include-text', true)
+    .attr('x', 185)
     .attr('y', (d, i) => 30 + i * includeSpreadY)
+    .attr('text-anchor', 'end')
     .text(d => d)
     .style('fill', '#d1a81f')
     .style('font-size', '14px')
     .on('mouseover', function (event, d) {
       svg.selectAll('path[data-include]:not([data-include="' + d + '"])')
-        .style('stroke', nonSelectedIncludeColor);
+        .transition().duration(400)
+        .style('stroke', nonSelectedIncludeColor)
+        .style("filter", null);
+
       hoveredInclude = d;
 
       svg.selectAll('path[data-include="' + d + '"]')
-        .style('stroke', selectedIncludeColor);
+        .transition().duration(400)
+        .style('stroke', selectedIncludeColor)
+        .style("filter", "url(#glow)");
     });
 
-  createTextBackrounds();
+  const includeBoxBackgroundColor = 'rgb(66, 66, 66)';
+  const includeBoxBorderColor = 'rgb(255, 213, 74)';
+  createTextBackrounds('.include-text', includeBoxBackgroundColor, includeBoxBorderColor);
 
-
-
-  const functionTextColor = 'rgb(1,1,1)';
-  const functionBackgroundColor = 'rgb(255, 69, 69)';
-  const functionBorderColor = 'rgb(255, 245, 245)';
+  const animationSpeed = 200;
 
   svg.selectAll('.shader-text')
     .data(jsonData)
@@ -394,21 +411,21 @@ function createD3Visualization(jsonData) {
     .append('text')
     .attr('x', leftMargin + rightMargin)
     .attr('y', (d, i) => 30 + i * 30)
+    .classed('shader-text', true)
     .text(d => d.Shader_Name)
     .style('fill', '#41cace')
     .style('font-size', '14px')
-    .on('mouseover', function (event, d) {
+    .on('mouseover', function (event, d, index) {
       hoveredShader = d.Shader_Name;
 
       svg.selectAll('.function-label').remove();
-      svg.selectAll('g').remove();
+      svg.selectAll('.function-line').remove();
+      svg.selectAll('.function-background').remove();
+
 
       Object.keys(d.Includes).forEach(include => {
         if (include === hoveredInclude) {
-          console.log(include);
-          console.log(hoveredShader);
           usedFunctions = d.Includes[include];
-          console.log('Functions:', usedFunctions);
 
           const shaderY = d3.select(this).attr('y');
 
@@ -417,12 +434,16 @@ function createD3Visualization(jsonData) {
             .enter()
             .append('text')
             .classed('function-label', true)
-            .attr('x', leftMargin + rightMargin - 75)
+            .attr('x', leftMargin + rightMargin - 240)
             .attr('y', (d, i, nodes) => parseFloat(shaderY) + (i * 40) - (nodes.length !== 1 ? nodes.length * 20 : 0))
             .attr('text-anchor', 'end')
             .text(d => d + '()')
             .style('fill', 'white')
-            .style('font-size', '12px');
+            .style('font-size', '12px')
+            .style("opacity", "0")
+            .transition().duration((d, i) => (i + 1) * animationSpeed)
+            .attr('x', leftMargin + rightMargin - 120)
+            .style("opacity", "1");
 
           svg.selectAll('.function-line')
             .data(usedFunctions)
@@ -430,9 +451,9 @@ function createD3Visualization(jsonData) {
             .append('path')
             .classed('function-line', true)
             .attr('d', (d, i, nodes) => {
-              const x1 = leftMargin + rightMargin - 5; 
+              const x1 = leftMargin + rightMargin - 15;
               const y1 = parseFloat(shaderY) - 5;
-              const x2 = leftMargin + rightMargin - 65; 
+              const x2 = leftMargin + rightMargin - 105;
               const y2 = parseFloat(shaderY) + (i * 40) - (nodes.length !== 1 ? nodes.length * 20 : 0) - 4;
               const controlOffset = 50;
 
@@ -441,25 +462,31 @@ function createD3Visualization(jsonData) {
             .style('stroke', 'rgb(116, 255, 116)')
             .style('stroke-width', 1.5)
             .style('fill', 'none')
-            .style('opacity', 0.6);
+            .style('opacity', 0.0)
+            .transition().duration((d, i) => (i + 2) * animationSpeed)
+            .style('opacity', 0.8)
+            .style("filter", "url(#glow)");
 
           const boxBackgroundColor = 'rgb(75, 75, 75)';
           const boxBorderColor = 'rgb(116, 255, 116)';
-          createTextBackrounds('.function-label', boxBackgroundColor, boxBorderColor)
+          createTextBackrounds('.function-label', boxBackgroundColor, boxBorderColor, 'function-background', true, 120, (d, i) => (i + 1) * animationSpeed);
         }
       });
     })
-  .on('mouseout', function() {
-    hoveredShader = null;
-    svg.selectAll('.function-label').remove();
-    svg.selectAll('.function-line').remove();  // ← Add this
-    svg.selectAll('g').remove();
-  });
+    .on('mouseout', function () {
+      hoveredShader = null;
+      svg.selectAll('.function-label').remove();
+      svg.selectAll('.function-line').remove();
+      svg.selectAll('.function-background').remove();
+    });
+
+  const shaderBoxBackgroundColor = 'rgb(66, 66, 66)';
+  const shaderBoxBorderColor = 'rgb(74, 198, 255)';
+  createTextBackrounds('.shader-text', shaderBoxBackgroundColor, shaderBoxBorderColor);
 
 
 
-
-  function createTextBackrounds(typeOfText, boxBackgroundColor, boxBorderColor) {
+  function createTextBackrounds(typeOfText, boxBackgroundColor, boxBorderColor, classType = "background-boxes", animated = false, xMovement = 0, delay = 0) {
     const textData = [];
     svg.selectAll(typeOfText)
       .each(function (d) {
@@ -472,7 +499,7 @@ function createD3Visualization(jsonData) {
 
 
     svg.append("g")
-      .attr("class", "background-boxes")
+      .attr("class", classType)
       .selectAll("rect")
       .data(textData)
       .enter()
@@ -486,9 +513,18 @@ function createD3Visualization(jsonData) {
       .style("stroke", boxBorderColor)
       .style("stroke-width", 1)
       .style("fill", boxBackgroundColor)
+      .style("opacity", "0")
+      .transition().duration(delay)
+      .attr("x", d => (animated ? d.bbox.x - xMargin + xMovement : d.bbox.x - xMargin))
       .style("opacity", "1");
 
-    svg.selectAll('text').raise();
+      if (animated === true)
+      {
+        svg.selectAll("." + classType)
+          .style("filter", "drop-shadow(0 0 2px " + boxBorderColor + ")");
+      }
+
+    svg.selectAll(typeOfText).raise();
   }
   const nonSelectedIncludeColor = 'rgba(255, 218, 137, 0.1)';
   const selectedIncludeColor = 'rgba(167, 252, 255, 0.88)';
@@ -500,7 +536,7 @@ function createD3Visualization(jsonData) {
 
         const x1 = leftMargin;
         const y1 = 30 + includeIndex * includeSpreadY - 5;
-        const x2 = leftMargin + rightMargin - 10;
+        const x2 = leftMargin + rightMargin - 15;
         const y2 = 30 + shaderIndex * 30 - 5;
 
         const controlPointOffset = (x2 - x1) * 0.5;
