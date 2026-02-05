@@ -17,7 +17,7 @@ body {
     width: 100%;
     display: grid;
     container-type: inline-size;
-    grid-template-columns: repeat(auto-fit, minmax(min(600px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(800px, 100%), 1fr));
     gap: 2%;
     padding: 0;
     margin: 20px auto;
