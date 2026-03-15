@@ -122,9 +122,20 @@ def scan_file_for_functions(filepath, function_names, token_method, return_token
 def choose_directory():
     root = Tk()
     root.withdraw() 
+    
     folder_to_scan = filedialog.askdirectory(title="Select project directory")
-    folder_to_saveJSON = filedialog.askdirectory(title="Select JSON save path")
-    return folder_to_scan, folder_to_saveJSON
+    
+    current_date = datetime.date.today()
+    default_name = f"shader_report_{current_date}.json"
+    
+    save_file_path = filedialog.asksaveasfilename(
+        title="Save report as",
+        defaultextension=".json",
+        filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+        initialfile=default_name
+    )
+    
+    return folder_to_scan, save_file_path
 
 def scan_for_extension(base_dir, extension):
     matches = []
@@ -246,58 +257,65 @@ def get_instruction_count(shader_path, name, content, optimized=True):
     
     with tempfile.NamedTemporaryFile(delete=False, suffix=".asm") as tmp:
         asm_path = tmp.name
-
+    
     optimization_flag = "/O3" if optimized else "/Od"
     
-    
-    if name[-2:] == "vs":
+    shader_category = None
+    if "_vs" in name or name.endswith("vs"):
         shader_category = "vs_5_1"
+    elif "_ps" in name or name.endswith("ps"):
+        shader_category = "ps_5_1"
+    
+    shader_types_to_try = []
+    
+    if shader_category:
+        shader_types_to_try.append(shader_category)
+        shader_types_to_try.append("ps_5_1" if shader_category == "vs_5_1" else "vs_5_1")
     else:
-        shader_category = "ps_5_1" 
+        shader_types_to_try = ["ps_5_1", "vs_5_1"]
+    
+    for shader_type in shader_types_to_try:
+        cmd = [
+            fxc_path,
+            "/T", shader_type,
+            "/E", "main",
+            optimization_flag,
+            "/Fc", asm_path,
+            shader_path
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True)
         
-    cmd = [
-        fxc_path,
-        "/T", shader_category,
-        "/E", "main",
-        optimization_flag,
-        "/Fc", asm_path,
-        shader_path
-    ]
-
-    print(name)
-    result = subprocess.run(cmd, capture_output=True, text=True)
-
-    if result.returncode != 0:
-        print(result.stderr)
-        return None
-
-    with open(asm_path, "r", encoding="utf-8", errors="ignore") as f:
-        asm = f.read()
-
+        if result.returncode == 0:
+            with open(asm_path, "r", encoding="utf-8", errors="ignore") as f:
+                asm = f.read()
+            
+            os.remove(asm_path)
+            
+            asm_metrics = parse_fxc_asm(asm)
+            match = re.search(r"Approximately\s+(\d+)\s+instruction", asm)
+            fxc_reported_count = int(match.group(1)) if match else None
+            
+            return {
+                'Instruction_Count_Optimized': fxc_reported_count,
+                'texture_samples': asm_metrics['texture_samples'],
+                'texture_loads': asm_metrics['texture_loads'],
+                'branches': asm_metrics['branches'],
+                'loops': asm_metrics['loops'],
+                'temp_registers': asm_metrics['temp_registers']
+            }
     os.remove(asm_path)
-
-    asm_metrics = parse_fxc_asm(asm)
-
-    match = re.search(r"Approximately\s+(\d+)\s+instruction", asm)
-    fxc_reported_count = int(match.group(1)) if match else None
-
-    return {
-        'Instruction_Count_Optimized': fxc_reported_count,
-        'texture_samples': asm_metrics['texture_samples'],
-        'texture_loads': asm_metrics['texture_loads'],
-        'branches': asm_metrics['branches'],
-        'loops': asm_metrics['loops'],
-        'temp_registers': asm_metrics['temp_registers']
-    }
-
+    return None
 
 def find_includes(shader_content):
     pattern = r'#include\s*[\"<]([^">]+)[\">]'
     includes = re.findall(pattern, shader_content)
     
-    lowIncludes = [x.lower() for x in includes]
+    filenames = []
+    for include in includes:
+        filename = include.replace('\\', '/').split('/')[-1]
+        filenames.append(filename.lower())
     
-    return lowIncludes
+    return filenames
     
 def parse_include_file(include_path, base_directory):
     functions = set()
@@ -383,11 +401,11 @@ def find_variant_patterns(tokens):
     }
 
 def main():
-    scan_directory, save_directory = choose_directory()
+    scan_directory, save_file_path = choose_directory()
     
-    if not scan_directory:
+    if not scan_directory or not save_file_path:
         return
-
+    
     extension = ".hlsl"
     files = scan_for_extension(scan_directory, extension)
 
@@ -424,11 +442,7 @@ def main():
             print(file)
             print(f"Optimized: {instruction_count_O3}")
          
-    
-    current_date = datetime.date.today()
-    json_file_path = os.path.join(save_directory, f"shader_report_{current_date}.json")
-
-    with open(json_file_path, "w", encoding="utf-8") as json_file:
+    with open(save_file_path, "w", encoding="utf-8") as json_file:
         json.dump(output, json_file, indent=4)
 
 
