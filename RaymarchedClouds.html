@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Exo font -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+  </style>
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/PersonalBreakdowns.css">
+</head>
+
+<body>
+  <!-- Shader Canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Navigation -->
+  <header>
+    <div class="logo">Dawid Batkowski</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#personalInfo">About</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="personal-title">
+    <h1>Raymarched Clouds</h1>
+  </section>
+
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+  </div>
+  
+  <div class="project-grid-setup">
+    <div>
+      <h1 class="padded-h2">Project Goal</h1>
+      <p class="background-text">Create a surface shader in Unreal Engine that allows user to create variety of volumetric clouds.
+        The shader is usable in both large and small volumes and it is optimized for gameplay usage. Additionally, shader is done mostly using custom nodes, without 
+        utilizing Unreal-specific volume nodes for easier porting between engines.
+      </p>
+    </div>
+    <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy12k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy2k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy32k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy42k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic2k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic32k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic42k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic52k.png">
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div class="video-wrapper">
+      <video width="100%" height="100%" controls autoplay muted loop>
+        <source src="Material/Videos/Clouds/BreakDownPlaceholder.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+      </video>
+    </div>
+    <div>
+      <h2 class="padded-h2">Overview</h2>
+      <p class="background-text auto-params"><b>Specifications:</b> <br>
+        - Engine: <code>Unreal Engine 5.6.1</code> <br>
+        - Material Domain: <code>Surface</code> <br>
+        - Blending Mode: <code>Premultiplied Alpha, Translucent, Additive</code> <br>
+        - Shading: <code>Unlit</code><br> <br>
+
+        <b>General UX:</b> There is a single cloud shader that holds all the functionality. From that, multiple material instances can be created which allow user
+         to control parameters to create the type of cloud they desire. While shader can be applied on any mesh it works the best with front face culled boxes.
+         The box can be moved around, scaled and rotated freely; It can even overlap with another cloud volume. Coloring and shadows are controlled via both DirectionalLight
+         color/direction and exposed instance parameters. <br> <br>
+         <b>Adjustable Parameters:</b> The shader allows user to modify variety of parameters. These include parameters that affect: <br>
+         - Form of clouds (NoiseSize, NoiseDitort, CloudVisibility, CloudDefinition) <br>
+         - Color of clouds (ShadowValue, ShadowOffset, ShadowColor, TintColor, TintSpread, TintMultiplier, TintDefinition) <br>
+         - Optimization/quality (RaymarchedSteps, StepSizeMultiplier, LOD_Distance, EdgeFadeOut) <br>
+      </p>
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Technical Breakdown</h2>
+      <p class="background-text">The volume within box is rendered using <code>Raymarching</code>. Each ray starts it's march either from a surface of the box
+      or it's volume depending on camera position. The continues to march, sampling nonoise functions along the way to accumulate density of cloud and it's shadows.
+      Initially, each step was additionally executing additional steps towards light direction to accumulate shadows. However, this approach has been changed
+      later on and replaced with <a class="link-no-effect" href="https://iquilezles.org/articles/derivative/">directional derivative</a> approach to save on performance.
+      <br><br>
+      The coloring of clouds is calculated using multiple variables. <code>DirectionalLight</code> gives clouds their base color. 
+      Shadow color and intensity is controllerd using exposed parameters. Additionally, a tint can be added to create color variations or hightlights.
+       </p>
+        <img  class="image-holder-underText under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/MaterialGraph.png">
+    </div>
+    <div class="under-shadow image-holder image-right">
+      <img clas="under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/MaterialGraphParameters.png">
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
+  </footer>
+
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script> <!--Three.js-->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <!--Smooth Scrolling-->
+  <script src="js/UX_Functionality.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

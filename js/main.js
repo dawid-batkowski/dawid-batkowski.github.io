@@ -196,4 +196,3 @@ window.addEventListener("click", e => {
   uniforms.u_clickPos.value.copy(uniforms.u_mouse.value);
 });
 
-

@@ -272,6 +272,11 @@ header {
   overflow: hidden;
 }
 
+.projectDescription p {
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
 .mainPiece:hover .projectDescription {
   opacity: 1;          
 }

@@ -99,6 +99,7 @@ function resizeButtonText() {
 
   document.querySelectorAll('.mainPiece').forEach(piece => {
     const textArea = piece.querySelector('.mainPiecetext');
+    if (!textArea) return;
     let tapped = false;
   
     if (supportsHover) {
@@ -111,6 +112,7 @@ function resizeButtonText() {
       // Mobile = tap to reveal, second tap to open
       textArea.addEventListener('click', (e) => {
         const url = textArea.dataset.url;
+        
   
         if (!tapped) {
           e.preventDefault();
@@ -126,4 +128,32 @@ function resizeButtonText() {
       });
     }
   });
+
+
+  function openLightbox(img) {
+    const overlay = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = img.src;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('active'));
+  }
   
+  function closeLightbox() {
+    const overlay = document.getElementById('lightbox');
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.style.display = 'none', 250);
+  }
+  
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+  
+  document.getElementById('lightbox').style.display = 'none';
+
+  document.querySelectorAll('.auto-params').forEach(el => {
+    el.innerHTML = el.innerHTML.replace(/\(([^)]+)\)/g, (match, inner) => {
+      const colored = inner.split(',').map(p => 
+        `<span class="param">${p.trim()}</span>`
+      ).join(', ');
+      return `(${colored})`;
+    });
+  });
