@@ -15,8 +15,8 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
     gap: 0 2%;
-    margin: 5vw 10vw;
-    min-height: 20vw;
+    margin: 5vh 10vw;
+    min-height: 10vw;
 }
 
 .project-grid-setup p {
@@ -104,6 +104,11 @@
 
 code {
     color: #ffe09c;
+    font-family: inherit;
+}
+
+history {
+    color: #b69cff;
     font-family: inherit;
 }
 

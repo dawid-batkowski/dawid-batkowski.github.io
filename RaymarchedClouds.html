@@ -41,22 +41,28 @@
   <div class="project-grid-setup">
     <div>
       <h1 class="padded-h2">Project Goal</h1>
-      <p class="background-text">Create a surface shader in Unreal Engine that allows user to create variety of volumetric clouds.
-        The shader is usable in both large and small volumes and it is optimized for gameplay usage. Additionally, shader is done mostly using custom nodes, without 
-        utilizing Unreal-specific volume nodes for easier porting between engines.
+      <p class="background-text">
+        The goal of this project was to develop a flexible volumetric cloud shader in Unreal Engine. 
+        The system is designed to support both small, localized effects and large-scale cloud formations, while remaining performant enough for real-time gameplay scenarios.<br><br>
+        An additional requirement was portability.
+         The shader is implemented primarily using custom HLSL nodes rather than Unreal-specific volumetric features, making it easier to adapt the solution to other engines or rendering pipelines.
       </p>
     </div>
     <div class="image-holder-grid  image-bottom">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy12k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy2k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy32k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy42k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsFantasy22k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic2k.png">
+
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic32k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic42k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic22k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudsRealistic52k.png">
+
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudUpdated12k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudUpdated22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudUpdated2k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudUpdated32k.png">
     </div>
   </div>
 
@@ -70,33 +76,40 @@
     <div>
       <h2 class="padded-h2">Overview</h2>
       <p class="background-text auto-params"><b>Specifications:</b> <br>
-        - Engine: <code>Unreal Engine 5.6.1</code> <br>
-        - Material Domain: <code>Surface</code> <br>
-        - Blending Mode: <code>Premultiplied Alpha, Translucent, Additive</code> <br>
-        - Shading: <code>Unlit</code><br> <br>
+        - <strong>Engine:</strong> <code>Unreal Engine 5.6.1</code> <br>
+        - <strong>Material Domain:</strong> <code>Surface</code> <br>
+        - <strong>Blending Mode:</strong> <code>Premultiplied Alpha / Translucent / Additive</code> <br>
+        - <strong>Shading:</strong> <code>Unlit</code><br> <br>
 
-        <b>General UX:</b> There is a single cloud shader that holds all the functionality. From that, multiple material instances can be created which allow user
-         to control parameters to create the type of cloud they desire. While shader can be applied on any mesh it works the best with front face culled boxes.
-         The box can be moved around, scaled and rotated freely; It can even overlap with another cloud volume. Coloring and shadows are controlled via both DirectionalLight
-         color/direction and exposed instance parameters. <br> <br>
-         <b>Adjustable Parameters:</b> The shader allows user to modify variety of parameters. These include parameters that affect: <br>
-         - Form of clouds (NoiseSize, NoiseDitort, CloudVisibility, CloudDefinition) <br>
-         - Color of clouds (ShadowValue, ShadowOffset, ShadowColor, TintColor, TintSpread, TintMultiplier, TintDefinition) <br>
-         - Optimization/quality (RaymarchedSteps, StepSizeMultiplier, LOD_Distance, EdgeFadeOut) <br>
+        The cloud system is built around a single master material that contains all functionality. 
+        From this, multiple material instances can be created, allowing users to quickly iterate on different cloud types through parameter adjustments.
+        <br><br>
+        The shader operates on standard geometry and works best when applied to front-face culled boxes, which define the bounds of the volumetric region. 
+        These volumes can be freely translated, rotated, and scaled, and multiple instances can overlap to create more complex cloud formations.
+        <br><br>
+        Lighting and color are influenced both by scene lighting—primarily the <code>DirectionalLight</code>—and by artist-controlled parameters exposed in the material instance.
+        This enables a wide range of visual styles, from soft atmospheric clouds to more dramatic, high-contrast formations. <br> <br>
+    <strong>Shape & Structure:</strong> Controls the overall form and detail of the clouds, including noise scale, distortion, visibility threshold, and definition.
+    <br>
+    <code>NoiseSize, NoiseDistort, CloudVisibility, CloudDefinition</code>
+    <br>
+    <strong>Lighting & Color:</strong> Adjusts shadowing, tinting, and internal color variation within the volume.
+    <br>
+    <code>ShadowValue, ShadowOffset, ShadowColor, TintColor, TintSpread, TintMultiplier, TintDefinition</code>
+    <br>
+    <strong>Performance & Quality:</strong> Balances visual fidelity against runtime cost through step count, sampling distance, and level-of-detail behavior.
+    <br>
+    <code>RaymarchSteps, StepSizeMultiplier, LOD_Distance, EdgeFadeOut</code>
       </p>
     </div>
   </div>
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Technical Breakdown</h2>
-      <p class="background-text">The volume within box is rendered using <code>Raymarching</code>. Each ray starts it's march either from a surface of the box
-      or it's volume depending on camera position. The continues to march, sampling nonoise functions along the way to accumulate density of cloud and it's shadows.
-      Initially, each step was additionally executing additional steps towards light direction to accumulate shadows. However, this approach has been changed
-      later on and replaced with <a class="link-no-effect" href="https://iquilezles.org/articles/derivative/">directional derivative</a> approach to save on performance.
-      <br><br>
-      The coloring of clouds is calculated using multiple variables. <code>DirectionalLight</code> gives clouds their base color. 
-      Shadow color and intensity is controllerd using exposed parameters. Additionally, a tint can be added to create color variations or hightlights.
+      <h2 class="padded-h2">Rymarching - density accumulation</h2>
+      <p class="background-text">At each step, a procedural noise function is evaluated to determine local density. 
+        This density is integrated along the ray using a <a class="link-no-effect" href="https://en.wikipedia.org/wiki/Beer%E2%80%93Lambert_law">Beer-Lambert formulation</a>, allowing the volume to accumulate opacity in a physically accurate way.
+         Early termination is applied once the accumulated density reaches a threshold, improving performance without significantly affecting visual quality. <br> <br>
        </p>
         <img  class="image-holder-underText under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/MaterialGraph.png">
     </div>
@@ -104,11 +117,39 @@
       <img clas="under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/MaterialGraphParameters.png">
     </div>
   </div>
+
+    <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Rymarching - shadow calculation</h2>
+      <p class="background-text">
+      Initially, each step for density accumulation was additionally executing steps towards light direction to accumulate shadows.
+      This was later replaced with a more efficient approximation based on a <a class="link-no-effect" href="https://iquilezles.org/articles/derivative/">directional derivative</a>, 
+      which estimates light attenuation using a small number of offset samples along the light direction.
+       This significantly reduces cost (instead of 6 fBm samples per step, it's 2 with current set-up) while preserving soft shadowing within the cloud. 
+       </p>
+    </div>
+  </div>
+
+      <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Rymarching - lighting</h2>
+      <p class="background-text">
+      Lighting is composed of multiple components. Direct lighting is driven by the scene's DirectionalLight, 
+      modulated by shadowing and a <a class="link-no-effect", href="https://en.wikipedia.org/wiki/Henyey%E2%80%93Greenstein_phase_function">Henyey-Greenstein phase function</a> to simulate anisotropic scattering. 
+      A secondary multiple-scattering approximation adds soft ambient light within dense regions, reducing contrast and improving perceived volume.
+       </p>
+        <img  class="image-holder-underText under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/MaterialGraph.png">
+    </div>
+    <div class="under-shadow image-holder image-holder-grid image-left">
+      <img clas="under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudUpdated32k.png">
+    </div>
+  </div>
+
+  
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
   </footer>
-
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script> <!--Three.js-->
@@ -120,3 +161,4 @@
 </body>
 
 </html>
+
