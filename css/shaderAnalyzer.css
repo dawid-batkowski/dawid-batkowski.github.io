@@ -80,6 +80,7 @@ body {
 
 #barChartContainer {
     height: 1100px;
+    overflow-y: auto; 
 }
 
 #radarAndWarnings {
@@ -103,7 +104,10 @@ body {
     padding: 10px;
     
 }
-
+#barChart {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 #barChart, #radarChart {
     max-height: 100%;

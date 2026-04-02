@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChartVisualizer</title>
+  <title>Chart Visualizer</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
   </style>
@@ -36,10 +36,12 @@
 
 
     <div class="container">
-      <div id="barChartContainer" class="chart-card">
-        <h2>Estimated Instrcution Count</h2>
-        <canvas id="barChart"></canvas>
-      </div>
+<div id="barChartContainer" class="chart-card">
+  <h2>Estimated Instrcution Count</h2>
+  <div id="barChartWrapper">
+    <canvas id="barChart"></canvas>
+  </div>
+</div>
       <div id="radarAndWarnings" class="chart-card">
         <h2>Shader Details</h2>
         <div id="radarChartContainer">

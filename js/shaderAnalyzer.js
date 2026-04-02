@@ -146,8 +146,17 @@ function createBarChart(labels, instruction_count_O3) {
   if (barChart) barChart.destroy();
 
   const budget = 400;
+
   const data = instruction_count_O3;
   const chartData = data.map(v => v - budget);
+
+const barHeight = 35;
+const minHeight = 1100;
+
+const wrapper = document.getElementById('barChartWrapper');
+wrapper.style.height = Math.max(labels.length * barHeight, minHeight) + 'px';
+const maxAbs = Math.max(...chartData.map(v => Math.abs(v)));
+const visualMax = Math.min(maxAbs, budget * 2);
   barChart = new Chart(ctz, {
     type: 'bar',
     data: {
@@ -183,11 +192,18 @@ function createBarChart(labels, instruction_count_O3) {
             color: chart_text_color
           }
         },
-        y: {
-          ticks: {
-            color: chart_text_color
-          },
+      y: {
+  min: -visualMax,
+  max: visualMax,
+        ticks: {
+          color: chart_text_color
+        },
           beginAtZero: false,
+        }
+      },
+    layout: {
+      padding: {
+        right: 80 
         }
       },
       interaction: {
@@ -214,6 +230,8 @@ function createBarChart(labels, instruction_count_O3) {
           },
           anchor: 'end',
           align: 'right',
+          clamp: true,
+          clip: false,
           offset: 4,
           rotation: -0,
           color: '#fff',
@@ -271,7 +289,10 @@ function createBarChart(labels, instruction_count_O3) {
         }
       },
       borderRadius: 0,
-      barPercentage: 1,
+      barPercentage: 0.9,
+      categoryPercentage: 0.9,
+      barThickness: 'flex',
+      maxBarThickness: 25,
       responsive: true,
       maintainAspectRatio: false,
     }

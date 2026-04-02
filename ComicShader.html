@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Exo font -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+  </style>
+  <title>Comic-style Shader</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/PersonalBreakdowns.css">
+</head>
+
+<body>
+  <!-- Shader Canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Navigation -->
+  <header>
+    <div class="logo">Dawid Batkowski</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#personalInfo">About</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="personal-title">
+    <h1>Comic-style Shader</h1>
+  </section>
+
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+  </div>
+  
+  <div class="project-grid-setup">
+    <div>
+      <h1 class="padded-h2">Project Goal</h1>
+      <p class="background-text">
+      The goal of this project was to develop a master material shader in Unity that achieves a comic-style lighting model. The shader is written in HLSL and uses a custom lighting implementation.
+      It supports cel shading, allows the user to choose between different hatching patterns for shadows, and works with directional, point, and spot lights.
+      </p>
+    </div>
+    <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/ComicShader1.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/ComicShaderThumbnail.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/ComicTPose.png">
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Overview</h2>
+      <p class="background-text auto-params">
+        <b>Specifications:</b> <br>
+        - <strong>Engine:</strong> <code>Unity 6</code> <br>
+        - <strong>Shader Domain:</strong> <code>Surface</code> <br>
+        - <strong>Blending Mode:</strong> <code>Opaque</code> <br>
+        - <strong>Default Shading:</strong> <code>Unlit</code><br><br>
+
+        When applied to an object, the shader provides a wide range of adjustable parameters to achieve different stylized looks. It allows the user to choose between two hatching patterns, each with its own configurable properties, as well as four tiling modes and multiple general, lighting-related, and shadow-related parameters.
+
+        The shader also supports albedo and normal textures.
+        <br><br>
+
+        <strong>Custom parameters supported by the shader:</strong><br><br>
+
+        <strong>Hatching Type:</strong><br>
+        <code>Dots, Hatchings</code><br>
+
+        <strong>Tilling Type:</strong><br>
+        <code>UV, Screen, TriplanarLocal, TriplanarWorld</code><br>
+
+        <strong>General:</strong><br>
+        <code>NormalMapIntensity, TilingType, ShadowScalePerIteration, MinimumShadowValue, ReplaceShadowsWithPattern</code><br>
+
+        <strong>Pattern-Specific:</strong><br>
+        <code>ShadowVisibility, AmountOfShadowIterations, ShadowPatternScale, DotRandomness, DensityOfHatchingLines</code><br>
+
+        <strong>Lighting:</strong><br>
+        <code>Specular, LightDistortionScale, LightDistortionIntensity, IsCelShaded, BandingLight</code>
+      </p>
+    </div>
+    <div class="video-container image-holder-grid image-bottom">
+      <div class="video-wrapper">
+      <video width="100%" height="100%" controls autoplay muted loop>
+        <source src="Material/Videos/ComicShader/ParameterPlay.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+      </video>
+    </div>
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Comic Shader - Lighting</h2>
+      <p class="background-text">
+          Lighting calculations are divided into two parts. Directional light handling is relatively straightforward. 
+          By using the <code>GetMainLight()</code> method, the necessary data can be obtained to compute NdL, including cel shading adjustments. <br> <br>
+
+          Incorporating point and spot lights proved to be more challenging, mainly due to limited prior experience with Unity's API. 
+          By using the additional light count from <code>GetAdditionalLightsCount()</code> and extracting relevant data from the Light struct, 
+          a modified lighting function—originally used in a custom engine for group projects—was adapted to evaluate their contribution. <br> <br>
+
+          In addition, a specular component is calculated and can be enabled or adjusted through exposed parameters.
+       </p>
+        <img  class="image-holder-underText under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/CelShadingOnPointLight.png">
+        <p class="image-explanation">Point lights being affected by celshading</p>
+    </div>
+    <div class="under-shadow image-holder image-right">
+      <img clas="under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/ParametersLong.png">
+      <p class="image-explanation">Exposed parameters</p>
+    </div>
+  </div>
+
+    <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Comic Shader - Patterns</h2>
+      <p class="background-text">
+          No textures were used to generate the hatching patterns. Instead, a combination of procedural noise and basic shader math was used to create both hatching and dot-based shadow patterns. <br><br>
+
+          These patterns are modulated using lighting information. For example, in the dot pattern, the dots become smaller as the surface approaches brighter areas. 
+          In addition to shadow patterns, subtle surface imperfections are generated using a similar approach to enhance the overall stylized look.
+       </p>
+    </div>
+  </div>
+
+      <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Comic Shader - Additional work</h2>
+      <p class="background-text">
+        While the comic shader master material is the main focus of this project, several additional features were developed to enhance both the visual quality and usability.<br><br>
+
+        <b>Custom MasterMaterialGUI</b> was implemented to improve parameter organization and usability. 
+        This allowed certain parameters to be shown or hidden dynamically based on user selections. 
+        For example, the <code>"Dot Randomness"</code> parameter is only visible when <code>"Shadow Type"</code> is set to <code>"Dots"</code>.<br><br>
+
+        <b>Full-Screen Outline Shader</b> was created using Shader Graph to further enhance the comic-style appearance. 
+        The outline effect is generated by comparing differences in depth and normals across the scene.<br><br>
+
+        A simple <b>Texture Swapper script</b> was developed to allow multiple models using the same shader to easily switch between different albedo and normal textures. 
+        The script can be attached to a model and supports assigning either or both texture types. <br> <br>
+
+        Finally, additional fullscreen background shader effects have been created to enchance final renders. 
+       </p>
+    </div>
+    <div class="image-holder image-holder-grid image-bottom">
+      <img class="mainPiece under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/AdditionalBackground.png">
+      <img class="mainPiece under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/AdditionalBackground2.png">
+      <img class="mainPiece under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/StylizedShader/AdditionalBackground3.png">
+    </div>
+  </div>
+
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script> <!--Three.js-->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <!--Smooth Scrolling-->
+  <script src="js/UX_Functionality.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
+
