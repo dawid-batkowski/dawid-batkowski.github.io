@@ -34,7 +34,11 @@
     <h1>P3 - The Misadventures of Captain Hornswaggle</h1>
   </section>
 
-
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+  </div> 
+  
   <div class="project-grid-setup">
     <div>
       <h2 class="padded-h2">TMOCH - Project Goal</h2>
@@ -43,10 +47,10 @@
       </p>
     </div>
     <div class="image-holder-grid  image-bottom">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level2_Showcase.png">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level4_Showcase.png">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level3_Showcase.png">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level1_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level2_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level4_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level3_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level1_Showcase.png">
     </div>
   </div>
 
@@ -62,7 +66,7 @@
       <h2 class="padded-h2">TMOCH Overview</h2>
       <p class="background-text">
           <b>Specifications:</b> <br>
-        - <strong>Engine:</strong> <code>TGE (Custom)</code> <br>
+        - <strong>Engine:</strong> <code>TGE (Custom DX11)</code> <br>
         - <strong>Platform:</strong> <code>PC</code> <br>
         - <strong>My Role:</strong> <code>Technical Art, Animator</code> <br><br>
 

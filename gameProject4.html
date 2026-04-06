@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Exo font -->
+  <!-- Exo font -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');   
-    </style>
-  <title>My Portfolio</title>
+    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+  </style>
+  <title>P4 - Cannibal Crossing</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/PersonalBreakdowns.css">
+  <link rel="stylesheet" href="css/gameProject.css">
 </head>
+
 <body>
   <!-- Shader Canvas -->
   <canvas id="bgCanvas"></canvas>
@@ -18,7 +22,7 @@
   <header>
     <div class="logo">Dawid Batkowski</div>
     <ul class="nav-links">
-      <li><a href="#">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="#personalInfo">About</a></li>
       <li><a href="#">Projects</a></li>
       <li><a href="#">Contact</a></li>
@@ -26,145 +30,161 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <h1>Hello, I'm Dawid</h1>
-    <p>Technical/procedural game artist</p>
-    <a href="#" class="cta-button">View Projects</a>
+  <section class="personal-title">
+    <h1>P4 - Cannibal Crossing</h1>
   </section>
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+  </div>
 
-  <!-- Section Title -->
-  <section class="about">
-    <p class="sectionTitle">Individual pieces</p>
-  </section>
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Cannibal Crossing - Project Goal</h2>
+      <p class="background-text">The goal of this project was to create a 3D top-down adventure game. The game had to
+        feature multiple different levels, two enemy types and elite enemy varaint,
+        feeling of progression and needed to have clear player motivation.
 
-  <!-- Grid Container (outside .about) -->
-  <section>
-    <div class="mainPieceContainer">
-      <div class="mainPiece">
-        <img src="Material/Screenshots/RockAndMoss1.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder1</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder2</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/StylizedRocksGrass4.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder3</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/TilesSphere.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
+      </p>
+    </div>
+    <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P4/P4Sowcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P4/P4Sowcase1.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P4/P4Sowcase2.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P4/P4Sowcase4.png">
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/KYTREdqpD-Y?si=kgtLCmPnLc0mPI8n" title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div>
+      <h2 class="padded-h2">Cannibal Crossing - Overview</h2>
+      <p class="background-text">
+        <b>Specifications:</b> <br>
+        - <strong>Engine:</strong> <code>TGE (Custom DX11)</code> <br>
+        - <strong>Platform:</strong> <code>PC</code> <br>
+        - <strong>My Role:</strong> <code>Technical Art, Animator</code> <br><br>
+
+        Second group project in TGE. The game features four distinct levels. Each levels has different obstacles player
+        has to overcome.
+        <br><br>
+        My role for the project was to create shaders, VFX, rigs and animations. I was specifically tasked with riging
+        enemy characters, creating envirmental shaders
+        such as fog, water.
+
+      </p>
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Featured work - Triplanar Shader</h2>
+      <p class="background-text">
+        My featured work in this project was a triplanar shader for tillable textures. Main function uses <code>vertex normal</code> information from the vertex shader to determine which
+         wolrd coordinates are gonna be used for tilling the texture. After that, the texture is sampled 3 times, each time with different coordinates and lerped with eachother using <code>normal</code>
+          data as a t value of the lerp. The smoothness of blending between textures and tilling density can be controlled for each case separately. <br> <br>
+          Shader can be applied on vareity of shapes other than cubes, it works with non-uniform scaling and allows for rotation.
+      </p>
+      <div class="video-container image-holder-grid image-bottom">
+        <div class="video-wrapper">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P4/P4_Triplanar.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- About Section with text content -->
-  <section class="about" id="personalInfo">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce justo nisi, sodales sit amet augue sed, bibendum hendrerit libero. Donec id sodales mi. Nunc pellentesque ante in nibh imperdiet, et finibus felis volutpat. Praesent volutpat velit a nunc faucibus sodales. Donec quis sollicitudin eros. Cras at tortor eu sapien lobortis congue in ut mi. Vestibulum ullamcorper, ante in accumsan rutrum, libero dui facilisis ante, quis porttitor libero elit vitae diam. Nam ut ligula sollicitudin, sagittis lorem vel, interdum enim. Aenean vel lacinia ligula. Nunc id velit nulla. Phasellus feugiat nisl justo. Integer fermentum ullamcorper sollicitudin.</p>
-
-    <p>Aenean sodales vitae felis vitae dapibus. Praesent vel libero nisl. Integer sodales maximus lorem et condimentum. Quisque et turpis ut neque porttitor gravida. Ut a sodales purus, sit amet vulputate mi. Duis felis orci, porta ut nisl rhoncus, vehicula congue erat. Donec pellentesque ligula ac dapibus vulputate.</p>
-    
-    <p>Quisque imperdiet volutpat maximus. Sed eget orci eget arcu interdum tincidunt. Praesent ut pretium diam. Maecenas tellus ex, blandit eu diam a, posuere dapibus leo. Maecenas ipsum nibh, placerat sit amet velit vel, dignissim sodales erat. Praesent hendrerit tellus nisi, a dictum tellus tincidunt nec. Vestibulum hendrerit libero sit amet nisi posuere, non eleifend risus fermentum. Nullam a urna quis quam mattis interdum ullamcorper ac urna. Nam suscipit ex vitae lectus accumsan, non laoreet nisl suscipit. Nunc sit amet tempor tortor, vel rutrum turpis. Duis convallis tellus a nisl consectetur, id vehicula purus facilisis. Pellentesque pellentesque bibendum ultrices. Nulla sed tincidunt risus. Sed dapibus maximus auctor. Nullam ultrices nec erat at tempus. Aliquam diam urna, laoreet id est nec, dignissim lacinia tellus.</p>
-    
-    <p>Phasellus est magna, venenatis eget lobortis at, aliquet eget felis. Sed tortor purus, finibus sit amet sagittis eget, dignissam eu velit. Donec vel lacus gravida, elementum sem nec, dictum metus. Nulla urna magna, rhoncus ac augue eget, pharetra venenatis odio. Quisque et odio enim. Phasellus eu mauris convallis felis hendrerit semper sit amet vel lorem. Duis quis hendrerit sem. Suspendisse convallis ultrices ante sit amet sollicitudin. Vestibulum ullamcorper mattis bibendum. Etiam aliquam tortor urna, sit amet pretium nisi varius dictum. Morbi quis velit et turpis pharetra egestas vel sit amet orci. Nulla facilisi.</p>
-  </section>
-  
-  <!-- Section Title -->
-  <section class="about">
-    <p class="sectionTitle">Group Game Projects</p>
-  </section>
-
-  <section>
-    <div class="mainPieceContainer mainPieceContainer--gameProject">
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P2_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 2</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P3_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 3</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P4_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 4</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P5_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 5</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 6</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 7</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 8</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
+    <div class="under-shadow image-holder image-right">
+      <img class="mainPiece under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/P4/TriplanarCode.png">
     </div>
-  </section>
+  </div>
 
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Additional work - Rigs and Destruction sims</h2>
+      <p class="background-text">
+        Creating rigs for melee and ranged enemies was one of my main tasks.
+        Those rigs would then be used by Graphic designers to create animations. <br><br>
+        Destructable objects was another requirement for this project. For that <code>Houdini</code> fracturing nodes and rbd bullet solver were used to simulate the destruction.
+        Then bones were assigned to pivot point of each piece and whole thing was then exported, imported into blender, cleaned and prepared for importing into our engine.
+      </p>
+    </div>
+        <div class="video-container image-holder-grid image-right">
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P4/P4_MeleeRig.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+        <div class="video-container image-holder-grid image-right">
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P4/P4_BushDestruction.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Additional work - VFX and shaders</h2>
+      <p class="background-text">
+        <b>Fog planes</b> were created to be placed around level. Shader was using height calculation between plane with shader and scene height.
+        Additionally, a panning noise was added to create less uniform and more dynamic effect.
+        <br><br>
+        <b>On hit effect</b> for enemy and player was created using simple Fresnel function in combination with constant buffer variables to time it properly.
+        <br><br>
+        <b>Current health indicator</b> was created for characters. It used multi-layered nosie textures in combination with health 
+        constant buffer value to make both player and enemy characters more bloody the lower health they have.
+        <br><br>
+        <b>Fire shader</b> for campfires and braziers was created by combining vertex shader displacement, panning noise for coloring and height alpha clipping. 
+          Alpha clipping was used instead of alpha or additive blend as it was less prone to encounter sorting issues and fit the stylized look of the game.
+          <br><br>
+        <b>Water shader</b> was created in similar fashion to fog planes by comparing depths to create foam and water depth. 
+         Noise texture created in <code>Substance Designer</code> was used create fake waves. Additionally, shadow map distortion was introduced to further sell the fake wave effect.
+        <br><br>
+        <b>Cloud shader</b> was a simple but noticable addition to out project. The shader was making use of cast shadows already present in our game at the time and the fact that camera could never look up.
+        By streatching a large plane above the whole level and using a simple panning noise shader on the plane with fairly agressive alpha clipping an illusion of clouds casting shadows was created.
+        <br><br>
+        <b>Post processing</b> effects were done in the fullscreen pass to further enchance visuals of our game. These effects mainly included vignette and color adjustments.
+      </p>
+    </div>
+    <div class="image-holder-grid  image-right">
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P4/P4_WaterShader.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P4/P4_FireSHowcase.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
+    </div>
+  </div>
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
   </footer>
 
+
   <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script>  <!--Three.js-->
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script> <!--Smooth Scrolling-->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script> <!--Three.js-->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <!--Smooth Scrolling-->
   <script src="js/UX_Functionality.js"></script>
   <script src="js/intro.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>

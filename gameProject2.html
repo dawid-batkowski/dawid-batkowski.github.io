@@ -33,7 +33,11 @@
   <section class="personal-title">
     <h1>P2 - Frogment</h1>
   </section>
-
+  
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+  </div>
 
   <div class="project-grid-setup">
     <div>
@@ -43,10 +47,10 @@
       </p>
     </div>
     <div class="image-holder-grid  image-bottom">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level2_Showcase.png">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level4_Showcase.png">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level3_Showcase.png">
-      <img class="mainPiece" src="Material/Screenshots/P2_Level1_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level2_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level4_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level3_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level1_Showcase.png">
     </div>
   </div>
 
