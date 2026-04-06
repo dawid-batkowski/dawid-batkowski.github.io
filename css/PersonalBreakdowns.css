@@ -79,7 +79,7 @@
 .video-container {
     width: 100%;
     height: auto;
-    align-content: start;
+    align-content: center;
 
     border-radius: 1%;
 }
