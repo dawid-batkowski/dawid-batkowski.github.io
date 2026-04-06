@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Exo font -->
+  <!-- Exo font -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');   
-    </style>
-  <title>My Portfolio</title>
+    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+  </style>
+  <title>P3 - TMOCH</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/PersonalBreakdowns.css">
+  <link rel="stylesheet" href="css/gameProject.css">
 </head>
+
 <body>
   <!-- Shader Canvas -->
   <canvas id="bgCanvas"></canvas>
@@ -18,7 +22,7 @@
   <header>
     <div class="logo">Dawid Batkowski</div>
     <ul class="nav-links">
-      <li><a href="#">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="#personalInfo">About</a></li>
       <li><a href="#">Projects</a></li>
       <li><a href="#">Contact</a></li>
@@ -26,145 +30,117 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <h1>Hello, I'm Dawid</h1>
-    <p>Technical/procedural game artist</p>
-    <a href="#" class="cta-button">View Projects</a>
+  <section class="personal-title">
+    <h1>P3 - The Misadventures of Captain Hornswaggle</h1>
   </section>
 
-  <!-- Section Title -->
-  <section class="about">
-    <p class="sectionTitle">Individual pieces</p>
-  </section>
 
-  <!-- Grid Container (outside .about) -->
-  <section>
-    <div class="mainPieceContainer">
-      <div class="mainPiece">
-        <img src="Material/Screenshots/RockAndMoss1.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder1</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder2</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/StylizedRocksGrass4.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder3</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/TilesSphere.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section with text content -->
-  <section class="about" id="personalInfo">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce justo nisi, sodales sit amet augue sed, bibendum hendrerit libero. Donec id sodales mi. Nunc pellentesque ante in nibh imperdiet, et finibus felis volutpat. Praesent volutpat velit a nunc faucibus sodales. Donec quis sollicitudin eros. Cras at tortor eu sapien lobortis congue in ut mi. Vestibulum ullamcorper, ante in accumsan rutrum, libero dui facilisis ante, quis porttitor libero elit vitae diam. Nam ut ligula sollicitudin, sagittis lorem vel, interdum enim. Aenean vel lacinia ligula. Nunc id velit nulla. Phasellus feugiat nisl justo. Integer fermentum ullamcorper sollicitudin.</p>
-
-    <p>Aenean sodales vitae felis vitae dapibus. Praesent vel libero nisl. Integer sodales maximus lorem et condimentum. Quisque et turpis ut neque porttitor gravida. Ut a sodales purus, sit amet vulputate mi. Duis felis orci, porta ut nisl rhoncus, vehicula congue erat. Donec pellentesque ligula ac dapibus vulputate.</p>
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">TMOCH - Project Goal</h2>
+      <p class="background-text">The goal of this project was to create 2.5D platformer game on a custom engine.
     
-    <p>Quisque imperdiet volutpat maximus. Sed eget orci eget arcu interdum tincidunt. Praesent ut pretium diam. Maecenas tellus ex, blandit eu diam a, posuere dapibus leo. Maecenas ipsum nibh, placerat sit amet velit vel, dignissim sodales erat. Praesent hendrerit tellus nisi, a dictum tellus tincidunt nec. Vestibulum hendrerit libero sit amet nisi posuere, non eleifend risus fermentum. Nullam a urna quis quam mattis interdum ullamcorper ac urna. Nam suscipit ex vitae lectus accumsan, non laoreet nisl suscipit. Nunc sit amet tempor tortor, vel rutrum turpis. Duis convallis tellus a nisl consectetur, id vehicula purus facilisis. Pellentesque pellentesque bibendum ultrices. Nulla sed tincidunt risus. Sed dapibus maximus auctor. Nullam ultrices nec erat at tempus. Aliquam diam urna, laoreet id est nec, dignissim lacinia tellus.</p>
-    
-    <p>Phasellus est magna, venenatis eget lobortis at, aliquet eget felis. Sed tortor purus, finibus sit amet sagittis eget, dignissam eu velit. Donec vel lacus gravida, elementum sem nec, dictum metus. Nulla urna magna, rhoncus ac augue eget, pharetra venenatis odio. Quisque et odio enim. Phasellus eu mauris convallis felis hendrerit semper sit amet vel lorem. Duis quis hendrerit sem. Suspendisse convallis ultrices ante sit amet sollicitudin. Vestibulum ullamcorper mattis bibendum. Etiam aliquam tortor urna, sit amet pretium nisi varius dictum. Morbi quis velit et turpis pharetra egestas vel sit amet orci. Nulla facilisi.</p>
-  </section>
-  
-  <!-- Section Title -->
-  <section class="about">
-    <p class="sectionTitle">Group Game Projects</p>
-  </section>
-
-  <section>
-    <div class="mainPieceContainer mainPieceContainer--gameProject">
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P2_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 2</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P3_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 3</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P4_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 4</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P5_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 5</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 6</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 7</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 8</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
+      </p>
     </div>
-  </section>
+    <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece" src="Material/Screenshots/P2_Level2_Showcase.png">
+      <img class="mainPiece" src="Material/Screenshots/P2_Level4_Showcase.png">
+      <img class="mainPiece" src="Material/Screenshots/P2_Level3_Showcase.png">
+      <img class="mainPiece" src="Material/Screenshots/P2_Level1_Showcase.png">
+    </div>
+  </div>
 
+  <div class="project-grid-setup">
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/YylO-Jorj-I?si=oq9mJ9Zpr1ux5JSj"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+    </div>
+    <div>
+      <h2 class="padded-h2">TMOCH Overview</h2>
+      <p class="background-text">
+          <b>Specifications:</b> <br>
+        - <strong>Engine:</strong> <code>TGE (Custom)</code> <br>
+        - <strong>Platform:</strong> <code>PC</code> <br>
+        - <strong>My Role:</strong> <code>Technical Art, Animator</code> <br><br>
+
+        First group project in a custom engine. The game features four distinct levels. Each levels has different obstacles player has to overcome.
+        <br><br>
+        My role for the project was to create shaders, flipbook VFX, rigs and animations. This was not only my first project in a custom engine but it was also first encounter with HLSL.
+
+      </p>
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Featured work - Cel Shader</h2>
+      <p class="background-text">
+        My featured work in this project was a cel shader master material. As a group we decided to feature in our game very cartoony style, with cel shading, outlines, exaggurated animations, disproprtional character models and vibrant enviroments.
+        The cel shader was a result of cooperation with second technical artist from my group <a class="link-no-effect" href="https://efrem-torrisi.github.io/">Efrem Torrisi</a>.
+        Shader was modyfing <code>DirectionalLight</code> information, quantazing it and remaping it's values until desired result from reference was achieved. Later on, a sharp specualr was added 
+        to further enchance stylized look.
+        <br><br>
+      </p>
+        <img  class="image-holder-underText under-shadow" src="Material/Screenshots/P2_WaterShader_Breakdown2.png">
+    </div>
+    <div class="under-shadow image-holder image-right">
+      <img clas="under-shadow" src="Material/Screenshots/P2_WaterShader_Breakdown.png">
+    </div>
+  </div>
+
+    <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Additional work - Rigs and animations</h2>
+      <p class="background-text">
+        One of my tasks during this project was to create rigs and animations for main player character and parrot enemy character.
+        All arigs and animations were created in blender. Squash and stretch techqnique was commonly used during creation process of these animations to better fit into cartoony style.
+      </p>
+    </div>
+      <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP02k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP12k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
+    </div>
+  </div>
+
+      <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Additional work - VFX and shaders</h2>
+      <p class="background-text">
+        Background fog was created using scene world position to hide sharp transition between edge of water plane and background. <br><br>
+        Death VFX for player character was created using Unreal's Niagara particle system. Each particle was using a fbx created with help of meta balls in blender with applied cel shading similar to one in our game.
+        The particles were spawned using vertex position of a skull FBX created in blender. Effect then was baked into flipbook and replayed in game using flipbook player. <br><br>
+        Water shader was created using a combination of 2D gradient and simple noises to create main water pattern. Additionally a surface foam was added by adding finner gradient noise. 
+        Shader was then applied on a subdivided plane and a simple vertex shader was written to create subtle displacement. <br><br>
+        Crate destruction simulation was created using <code>Houdini</code>. Crate fbx was imported into houdini, there using material fracture and rbd bullet solver it was fractured and simulated. 
+        Then the bones were added to the pivot point of each piece and whole thing was exported. In blender additional cleaning, bone assigning and small animation tweaking was needed before 
+        rigged mesh and animation can be imported into our engine. 
+      </p>
+    </div>
+      <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP02k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP12k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
+    </div>
+  </div>
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
   </footer>
 
+
   <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script>  <!--Three.js-->
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script> <!--Smooth Scrolling-->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script> <!--Three.js-->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <!--Smooth Scrolling-->
   <script src="js/UX_Functionality.js"></script>
   <script src="js/intro.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
