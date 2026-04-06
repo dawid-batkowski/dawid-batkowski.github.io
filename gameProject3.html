@@ -37,99 +37,128 @@
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
-  </div> 
-  
+  </div>
+
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">TMOCH - Project Goal</h2>
-      <p class="background-text">The goal of this project was to create 2.5D platformer game on a custom engine.
-    
+      <h2 class="padded-h2">TMOCH - Project Pitch</h2>
+      <p class="background-text"><i>"Step into the boots of a short, big-footed pirate in a world of high-stakes
+          adventure.
+          Leap, sprint, and battle your way uncharted lands, surviving deadly perils as you race against your nemesis to
+          uncover the Cerulean treasure."</i>
       </p>
     </div>
     <div class="image-holder-grid  image-bottom">
-      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level2_Showcase.png">
-      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level4_Showcase.png">
-      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level3_Showcase.png">
-      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P2_Level1_Showcase.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P3/Gameplay.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P3/Gameplay1.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P3/Gameplay3.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P3/Gameplay4.png">
     </div>
   </div>
 
   <div class="project-grid-setup">
     <div class="video-wrapper">
-      <iframe src="https://www.youtube.com/embed/YylO-Jorj-I?si=oq9mJ9Zpr1ux5JSj"
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/YylO-Jorj-I?si=oq9mJ9Zpr1ux5JSj" title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
     <div>
-      <h2 class="padded-h2">TMOCH Overview</h2>
+      <h2 class="padded-h2">TMOCH - Overview</h2>
       <p class="background-text">
-          <b>Specifications:</b> <br>
+        <b>Specifications:</b> <br>
         - <strong>Engine:</strong> <code>TGE (Custom DX11)</code> <br>
         - <strong>Platform:</strong> <code>PC</code> <br>
-        - <strong>My Role:</strong> <code>Technical Art, Animator</code> <br><br>
+        - <strong>My Role:</strong> <code>Technical Art, Animation</code> <br><br>
 
-        First group project in a custom engine. The game features four distinct levels. Each levels has different obstacles player has to overcome.
-        <br><br>
-        My role for the project was to create shaders, flipbook VFX, rigs and animations. This was not only my first project in a custom engine but it was also first encounter with HLSL.
+        This was the first group project developed using a custom engine.<br>
+        The game is a 2.5D platformer featuring four distinct levels, each introducing unique obstacles and gameplay
+        challenges.<br><br>
 
+        My responsibilities included creating shaders, flipbook VFX, character rigs, and animations. This project marked
+        both my first experience working with a custom engine and my introduction to HLSL.
       </p>
     </div>
   </div>
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Featured work - Cel Shader</h2>
+      <h2 class="padded-h2">Featured Work - Cel Shader</h2>
       <p class="background-text">
-        My featured work in this project was a cel shader master material. As a group we decided to feature in our game very cartoony style, with cel shading, outlines, exaggurated animations, disproprtional character models and vibrant enviroments.
-        The cel shader was a result of cooperation with second technical artist from my group <a class="link-no-effect" href="https://efrem-torrisi.github.io/">Efrem Torrisi</a>.
-        Shader was modyfing <code>DirectionalLight</code> information, quantazing it and remaping it's values until desired result from reference was achieved. Later on, a sharp specualr was added 
-        to further enchance stylized look.
+        My primary contribution to this project was a cel shader master material. The team aimed for a highly stylized,
+        cartoon-like visual direction, featuring cel shading, outlines, exaggerated animations, disproportionate
+        character models, and vibrant environments.
+
+        The shader was developed in collaboration with a fellow technical artist,
+        <a class="link-no-effect" href="https://efrem-torrisi.github.io/">Efrem Torrisi</a>.
+
         <br><br>
+
+        The implementation involved modifying <code>DirectionalLight</code> data, quantizing the lighting values, and
+        remapping them to achieve distinct shading bands based on visual references. A sharp specular highlight was
+        later introduced to further enhance the stylized appearance.
       </p>
-        <img  class="image-holder-underText under-shadow" src="Material/Screenshots/P2_WaterShader_Breakdown2.png">
     </div>
-    <div class="under-shadow image-holder image-right">
-      <img clas="under-shadow" src="Material/Screenshots/P2_WaterShader_Breakdown.png">
+    <div class="image-holder-grid  image-bottom">
+      <div class="flex-column">
+        <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P3/CellShadingRef.png">
+        <p class="image-explanation">Cel shading reference from blender</p>
+      </div>
+      <div class="flex-column">
+        <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P3/CellShadingShowcase2.png">
+        <p class="image-explanation">Early iteration of cel shader in model viewer</p>
+      </div>
     </div>
   </div>
 
-    <div class="project-grid-setup">
+  <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Additional work - Rigs and animations</h2>
+      <h2 class="padded-h2">Additional Work - Rigs and Animations</h2>
       <p class="background-text">
-        One of my tasks during this project was to create rigs and animations for main player character and parrot enemy character.
-        All arigs and animations were created in blender. Squash and stretch techqnique was commonly used during creation process of these animations to better fit into cartoony style.
+        I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
+
+        All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
+        squash-and-stretch techniques were heavily used throughout the animation process.
       </p>
     </div>
-      <div class="image-holder-grid  image-bottom">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP02k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP12k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
+    <div class="image-holder-grid gif-container-long image-bottom">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P3/DubbleJumpCropped.gif">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P3/WalkingCropped.gif">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P3/IdleCropped.gif">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P3/ParrotFlyCropped.gif">
     </div>
   </div>
 
-      <div class="project-grid-setup">
+  <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Additional work - VFX and shaders</h2>
+      <h2 class="padded-h2">Additional Work - VFX and Shaders</h2>
       <p class="background-text">
-        Background fog was created using scene world position to hide sharp transition between edge of water plane and background. <br><br>
-        Death VFX for player character was created using Unreal's Niagara particle system. Each particle was using a fbx created with help of meta balls in blender with applied cel shading similar to one in our game.
-        The particles were spawned using vertex position of a skull FBX created in blender. Effect then was baked into flipbook and replayed in game using flipbook player. <br><br>
-        Water shader was created using a combination of 2D gradient and simple noises to create main water pattern. Additionally a surface foam was added by adding finner gradient noise. 
-        Shader was then applied on a subdivided plane and a simple vertex shader was written to create subtle displacement. <br><br>
-        Crate destruction simulation was created using <code>Houdini</code>. Crate fbx was imported into houdini, there using material fracture and rbd bullet solver it was fractured and simulated. 
-        Then the bones were added to the pivot point of each piece and whole thing was exported. In blender additional cleaning, bone assigning and small animation tweaking was needed before 
-        rigged mesh and animation can be imported into our engine. 
+        <b>Background Fog</b> was implemented using world-space position to soften the transition between the edge of
+        the water plane and the background.<br><br>
+
+        <b>Death VFX</b> for the player character was created using Unreal Engine's Niagara particle system. Each
+        particle was an FBX mesh generated from metaballs in Blender and shaded to match the in-game cel
+        shading style. Particles were emitted using the vertex positions of a skull mesh. The resulting effect was baked
+        into a flipbook and played back in the game using a flipbook system.<br><br>
+
+        <b>Water Shader</b> was created using a combination of different types of procedural noise to generate the
+        base pattern. Additional surface foam was achieved using finer noise overlays. The shader was applied to a
+        subdivided plane, with vertex displacement used to introduce subtle wave motion.<br><br>
+
+        <b>Crate Destruction Simulation</b> was created using <code>Houdini</code>. A crate mesh was imported and
+        fractured using material fracture tools, then simulated with an RBD Bullet solver. Bones were generated at the
+        pivot points of each fractured piece, and the result was exported. Final cleanup, bone assignment, and animation
+        adjustments were completed in Blender before importing the rigged asset into the engine.
       </p>
     </div>
-      <div class="image-holder-grid  image-bottom">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP02k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP12k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
+    <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Videos/P3/DeathVFX.gif">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/P3/DepthFade.png">
+      <div class="video-wrapper">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P3/WaterShowcase.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
   </div>
   <!-- Footer -->

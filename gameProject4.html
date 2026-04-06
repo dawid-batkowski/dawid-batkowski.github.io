@@ -40,10 +40,10 @@
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Cannibal Crossing - Project Goal</h2>
-      <p class="background-text">The goal of this project was to create a 3D top-down adventure game. The game had to
-        feature multiple different levels, two enemy types and elite enemy varaint,
-        feeling of progression and needed to have clear player motivation.
+      <h2 class="padded-h2">Cannibal Crossing - Project Pitch</h2>
+      <p class="background-text"><i>"As a Bunny separated from your herd, explore the environments around you for
+          weapons and look for a way back to your friends. Beware… everything is not as it seems, and you may have to
+          battle more just your sense of direction to make it back in one piece." </i>
 
       </p>
     </div>
@@ -67,27 +67,35 @@
         <b>Specifications:</b> <br>
         - <strong>Engine:</strong> <code>TGE (Custom DX11)</code> <br>
         - <strong>Platform:</strong> <code>PC</code> <br>
-        - <strong>My Role:</strong> <code>Technical Art, Animator</code> <br><br>
+        - <strong>My Role:</strong> <code>Technical Art, Animation</code> <br><br>
 
-        Second group project in TGE. The game features four distinct levels. Each levels has different obstacles player
-        has to overcome.
+        This was the second group project developed in TGE. Inspired by games such as Tunic, the project focuses on
+        exploration and combat. The game features four distinct levels, culminating in an arena-style encounter with
+        multiple enemy waves. It includes two weapons, three enemy types, checkpoint-based progression, and a strong
+        emphasis on stylized gore.
+
         <br><br>
-        My role for the project was to create shaders, VFX, rigs and animations. I was specifically tasked with riging
-        enemy characters, creating envirmental shaders
-        such as fog, water.
 
+        My role involved creating shaders, VFX, rigs, and animations. I was specifically responsible for rigging enemy
+        characters and developing environmental shaders such as fog, water, clouds, fire, and a triplanar shader for
+        tileable textures.
       </p>
     </div>
   </div>
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Featured work - Triplanar Shader</h2>
+      <h2 class="padded-h2">Featured Work - Triplanar Shader</h2>
       <p class="background-text">
-        My featured work in this project was a triplanar shader for tillable textures. Main function uses <code>vertex normal</code> information from the vertex shader to determine which
-         wolrd coordinates are gonna be used for tilling the texture. After that, the texture is sampled 3 times, each time with different coordinates and lerped with eachother using <code>normal</code>
-          data as a t value of the lerp. The smoothness of blending between textures and tilling density can be controlled for each case separately. <br> <br>
-          Shader can be applied on vareity of shapes other than cubes, it works with non-uniform scaling and allows for rotation.
+        My primary contribution to this project was a triplanar shader designed for tileable textures.
+
+        The shader uses vertex normal data to determine blending weights for projections along the three world axes. The
+        texture is sampled three times—once per axis—and the results are blended using the normal components as
+        interpolation weights.
+
+        The function exposes controls for blending sharpness and tiling density, allowing for flexible adjustment
+        depending on the surface. It works reliably on a wide variety of meshes, including non-uniformly scaled and
+        rotated objects, making it particularly useful for environment assets.
       </p>
       <div class="video-container image-holder-grid image-bottom">
         <div class="video-wrapper">
@@ -105,71 +113,95 @@
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Additional work - Rigs and Destruction sims</h2>
+      <h2 class="padded-h2">Additional Work - Rigs and Destruction Simulations</h2>
       <p class="background-text">
-        Creating rigs for melee and ranged enemies was one of my main tasks.
-        Those rigs would then be used by Graphic designers to create animations. <br><br>
-        Destructable objects was another requirement for this project. For that <code>Houdini</code> fracturing nodes and rbd bullet solver were used to simulate the destruction.
-        Then bones were assigned to pivot point of each piece and whole thing was then exported, imported into blender, cleaned and prepared for importing into our engine.
+        Creating rigs for both melee and ranged enemy characters was one of my main responsibilities. These rigs were
+        then used by graphic artists to produce animations.
+
+        <br><br>
+
+        Destructible objects were implemented using <code>Houdini</code>. Assets were fractured using procedural tools
+        and simulated with an RBD Bullet solver. Each fragment was assigned a bone at its pivot point, allowing the
+        simulation to be exported as a rigged asset.
+
+        The resulting assets were then imported into Blender for cleanup, bone assignment refinement, and animation
+        adjustments before being integrated into the engine.
       </p>
     </div>
-        <div class="video-container image-holder-grid image-right">
-        <div class="video-wrapper-noFill">
-          <video width="100%" height="100%" controls autoplay muted loop>
-            <source src="Material/Videos/P4/P4_MeleeRig.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
+    <div class="video-container image-holder-grid image-right">
+      <div class="video-wrapper-noFill">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P4/P4_MeleeRig.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
-        <div class="video-container image-holder-grid image-right">
-        <div class="video-wrapper-noFill">
-          <video width="100%" height="100%" controls autoplay muted loop>
-            <source src="Material/Videos/P4/P4_BushDestruction.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
+    </div>
+    <div class="video-container image-holder-grid image-right">
+      <div class="video-wrapper-noFill">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P4/P4_BushDestruction.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
+    </div>
   </div>
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Additional work - VFX and shaders</h2>
+      <h2 class="padded-h2">Additional Work - VFX and Shaders</h2>
       <p class="background-text">
-        <b>Fog planes</b> were created to be placed around level. Shader was using height calculation between plane with shader and scene height.
-        Additionally, a panning noise was added to create less uniform and more dynamic effect.
-        <br><br>
-        <b>On hit effect</b> for enemy and player was created using simple Fresnel function in combination with constant buffer variables to time it properly.
-        <br><br>
-        <b>Current health indicator</b> was created for characters. It used multi-layered nosie textures in combination with health 
-        constant buffer value to make both player and enemy characters more bloody the lower health they have.
-        <br><br>
-        <b>Fire shader</b> for campfires and braziers was created by combining vertex shader displacement, panning noise for coloring and height alpha clipping. 
-          Alpha clipping was used instead of alpha or additive blend as it was less prone to encounter sorting issues and fit the stylized look of the game.
-          <br><br>
-        <b>Water shader</b> was created in similar fashion to fog planes by comparing depths to create foam and water depth. 
-         Noise texture created in <code>Substance Designer</code> was used create fake waves. Additionally, shadow map distortion was introduced to further sell the fake wave effect.
-        <br><br>
-        <b>Cloud shader</b> was a simple but noticable addition to out project. The shader was making use of cast shadows already present in our game at the time and the fact that camera could never look up.
-        By streatching a large plane above the whole level and using a simple panning noise shader on the plane with fairly agressive alpha clipping an illusion of clouds casting shadows was created.
-        <br><br>
-        <b>Post processing</b> effects were done in the fullscreen pass to further enchance visuals of our game. These effects mainly included vignette and color adjustments.
+        <b>Health-Based Damage Visualization</b> was implemented by using multiple noise functions with a health
+        parameter. As health decreases, characters appear progressively more damaged and blood-covered.<br><br>
+
+        <blue><b>Water Shader</b></blue> was implemented using depth comparisons to simulate foam and water depth. A noise texture
+        created in <code>Substance Designer</code> was used to simulate wave motion. Additionally, shadow map distortion
+        was applied to enhance the illusion of moving water.<br><br>
+
+        <blue><b>Cloud Shader</b></blue> was a lightweight but effective addition. A large plane was placed above the level and
+        animated using panning noise with aggressive alpha clipping. Combined with existing shadow casting and the fixed
+        camera angle (which never looks upward), this created a convincing illusion of moving clouds casting
+        shadows.<br><br>
+
+        <pink><b>Hit Effect</b></pink> for both enemies and the player was implemented using a Fresnel-based shader, combined with
+        time-controlled parameters via constant buffers to produce a reactive flash effect.<br><br>
+
+        <pink><b>Fire Shader</b></pink> for campfires and braziers combines vertex displacement, panning noise for color variation,
+        and height-based alpha clipping. Alpha clipping was chosen over traditional transparency to avoid sorting issues
+        and better match the stylized aesthetic.<br><br>
+
+        <green><b>Post-Processing Effects</b></green> were implemented in a fullscreen pass to enhance the overall visual presentation.
+        These included vignette and color grading adjustments. <br><br>
+
+        <dblue><b>Fog Planes</b></dblue> were placed throughout the level to enhance depth and atmosphere. The shader uses height-based
+        calculations between the fog plane and scene vertex position, combined with panning noise to create a more dynamic and
+        less uniform effect.
       </p>
     </div>
     <div class="image-holder-grid  image-right">
-        <div class="video-wrapper-noFill">
-          <video width="100%" height="100%" controls autoplay muted loop>
-            <source src="Material/Videos/P4/P4_WaterShader.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div class="video-wrapper-noFill">
-          <video width="100%" height="100%" controls autoplay muted loop>
-            <source src="Material/Videos/P4/P4_FireSHowcase.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
+      <div class="video-wrapper-noFill blue-border">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P4/P4_WaterShader.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-wrapper-noFill pink-border">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P4/P4_FireSHowcase.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-wrapper-noFill green-border">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P4/PostProcessingPlay.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-wrapper-noFill dblue-border">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P4/FogPlanes.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
   </div>
   <!-- Footer -->

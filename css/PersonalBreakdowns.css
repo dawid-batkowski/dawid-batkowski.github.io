@@ -117,6 +117,10 @@
     object-fit: contain;
 }
 
+.gif-container-long img{
+    height: 100%;
+    width: 100%;
+}
 .flex-column {
     display: flex;
     flex-direction: column;
@@ -152,6 +156,50 @@
 code {
     color: #ffe09c;
     font-family: inherit;
+}
+
+red {
+    color: #ec2020;
+}
+
+blue {
+    color: #abd4ff;
+}
+
+.blue-border {
+    border-style:groove;
+    border-color: #abd4ff;
+    border-width: 2px;
+}
+
+pink {
+    color: #ffabed;
+}
+
+.pink-border {
+    border-style:groove;
+    border-color: #ffabed;
+    border-width: 2px;
+}
+
+green {
+    color: #abffb2;
+}
+
+.green-border {
+    border-style:groove;
+    border-color: #abffb2;
+    border-width: 2px;
+}
+
+dblue {
+    color: #3766ff;
+}
+
+.dblue-border {
+    border-style:groove;
+    border-color:  #3766ff;
+    border-width: 2px;
 }
 
 history {
