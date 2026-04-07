@@ -278,6 +278,18 @@ header {
   text-decoration: none;
 }
 
+@media (max-width: 768px) {
+  .mainPiecetext h3 {
+    font-size: 1.2em; 
+    margin: 2%;
+  }
+  .mainPiecetext p {
+    font-size: 0.8em; 
+  }
+}
+
+
+
 /* Mobile reveal state */
 .mainPiece.show-description img {
   filter: brightness(0.5) grayscale(50%) blur(2px);
@@ -490,7 +502,7 @@ ul {
 }
 
 .software-overlay img {
-  width: max(25px, 2vw);
+  width: max(20px, 3vw);
   height: auto;
 }
 
