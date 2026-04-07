@@ -21,11 +21,18 @@
   <!-- Navigation -->
   <header>
     <div class="logo">Dawid Batkowski</div>
-    <ul class="nav-links">
+  
+    <!-- Burger icon -->
+    <div class="burger" id="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  
+    <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="#personalInfo">About</a></li>
-      <li><a href="#">Projects</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="Material/Documents/Dawid_Batkowski_CV.pdf" class="cv-button" target="_blank" rel="noopener noreferrer">View CV</a></li>
     </ul>
   </header>
 
@@ -97,7 +104,7 @@
         <br><br>
 
         The shader is applied to a plane, either covering large areas of a level or used locally for smaller water
-        bodies. It utilizes Unity’s procedural noise functions to simulate effects such as water foam, floating cherry
+        bodies. It utilizes Unity's procedural noise functions to simulate effects such as water foam, floating cherry
         blossom petals, depth-based coloration, and wave motion.
       </p>
       <img class="image-holder-underText under-shadow" src="Material/Screenshots/P2_WaterShader_Breakdown2.png">

@@ -7,23 +7,30 @@ float saturate(float x) {
     return clamp(x, 0.0, 1.0);
 }
 
+vec2 RotateUV(vec2 uv, vec2 center, float rotation)
+{
+    float rad = rotation * (3.1415926 / 180.0);
+
+    float s = sin(rad);
+    float c = cos(rad);
+
+    mat2 rot = mat2(
+        c, -s,
+        s,  c
+    );
+
+    uv -= center;
+    uv = rot * uv;
+    uv += center;
+
+    return uv;
+}
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-    float thickness = 64.0 * (uv.y - 0.5);
-    float maskH = 1.0 - saturate(pow(abs(uv.x * thickness - (thickness / 2.0)), 0.25));
 
-
-    float alpha = maskH;
-    if (u_time > 1.5)
-    {
-        alpha += u_time - 1.5;
-    }
-
-    float maskCircle = 1.0 - (length(uv - 0.5) + 1.5  - clamp(u_time * 1.5, 0.0, 1.5));
-    float maskAlpha = 1.0 - (length(uv - 0.5) + 3.0  - clamp(u_time * 1.5, 0.0, 3.0));
-
-    vec3 color = maskH * maskCircle * vec3(0.9216, 0.902, 1.0);
-    gl_FragColor = vec4(color, 1.0 - alpha * maskAlpha);
+    float verticalMask = step(0.5, (1.0 - RotateUV(uv, vec2(0.0, 0.0), -10.0).y  + 0.9 - (u_time * u_time) * 2.5));
+    float verticalMaskHigh = 1.0 - saturate(abs(((1.0 - RotateUV(uv, vec2(0.0, 0.0), -10.0).y + 0.9 - (u_time * u_time) * 2.5)) * 2.0 - 1.0) * 5.0) ;
+    gl_FragColor = vec4(verticalMaskHigh, verticalMaskHigh, verticalMaskHigh, verticalMaskHigh + verticalMask);
 }
 
 // Add this random function if not already defined
