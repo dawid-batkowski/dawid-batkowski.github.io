@@ -132,6 +132,7 @@ function resizeButtonText() {
 
   function openLightbox(img) {
     const overlay = document.getElementById('lightbox');
+    if (!overlay) return; // safety
     document.getElementById('lightbox-img').src = img.src;
     overlay.style.display = 'flex';
     requestAnimationFrame(() => overlay.classList.add('active'));
@@ -139,6 +140,7 @@ function resizeButtonText() {
   
   function closeLightbox() {
     const overlay = document.getElementById('lightbox');
+    if (!overlay) return;
     overlay.classList.remove('active');
     setTimeout(() => overlay.style.display = 'none', 250);
   }
@@ -147,8 +149,9 @@ function resizeButtonText() {
     if (e.key === 'Escape') closeLightbox();
   });
   
-  document.getElementById('lightbox').style.display = 'none';
-
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox) lightbox.style.display = 'none';
+  
   document.querySelectorAll('.auto-params').forEach(el => {
     el.innerHTML = el.innerHTML.replace(/\(([^)]+)\)/g, (match, inner) => {
       const colored = inner.split(',').map(p => 
@@ -176,4 +179,33 @@ function resizeButtonText() {
     }
   
     lastScroll = currentScroll;
+  });
+
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('nav-links');
+  const navItems = navLinks.querySelectorAll('a'); // all links inside menu
+  
+  // Toggle menu when burger clicked
+  burger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    burger.classList.toggle('toggle');
+  });
+  
+  // Close menu when any link is clicked
+  navItems.forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      burger.classList.remove('toggle');
+    });
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    const isClickInsideMenu = navLinks.contains(e.target);
+    const isClickOnBurger = burger.contains(e.target);
+  
+    if (!isClickInsideMenu && !isClickOnBurger) {
+      navLinks.classList.remove('active');
+      burger.classList.remove('toggle');
+    }
   });
