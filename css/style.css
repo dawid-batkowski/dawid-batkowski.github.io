@@ -272,7 +272,7 @@ header {
 
 .mainPiecetext p {
   flex-grow: 1; 
-  margin: 1rem 0;
+  margin: 0 5%;
   overflow-y: hidden;
   align-content: center;
   text-decoration: none;
@@ -285,6 +285,7 @@ header {
   }
   .mainPiecetext p {
     font-size: 0.8em; 
+    margin: 0 1%;
   }
 }
 
@@ -502,7 +503,7 @@ ul {
 }
 
 .software-overlay img {
-  width: max(20px, 3vw);
+  width: min(40px, 4.5vw);
   height: auto;
 }
 
@@ -526,4 +527,94 @@ ul {
   margin-top: 0px;
   color: #b3b3b3;
   font-size: 0.8em;
+}
+
+/* Contact Section - matching .about style */
+.contact {
+  padding: 3% 10vw;
+  max-width: 100vw;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1.6;
+  font-size: 1em;
+  background-color: #0000005e;
+  border-radius: 4px;
+}
+
+.contact h2 {
+  font-size: 1.8em;
+  margin-bottom: 0.5em;
+  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+.contact p {
+  margin-bottom: 1.5em;
+  color: #ccc;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: center; /* center links */
+}
+
+.contact-list li a {
+  color: #ff6f61;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.contact-list li a:hover {
+  color: #ffa08c;
+}
+
+/* Social icons row */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #222;
+  border-radius: 6px;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #ff6f61;
+  transform: scale(1.1);
+}
+
+.social-icon svg {
+  width: 60%;
+  height: 60%;
+  fill: currentColor;
+}
+
+@media (max-width: 480px) {
+  .contact h2 {
+    font-size: 1.5em;
+  }
+  
+  .contact p {
+    font-size: 0.9em;
+  }
+
+  .social-icon {
+    width: 32px;
+    height: 32px;
+  }
 }
