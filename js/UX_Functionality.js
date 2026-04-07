@@ -157,3 +157,23 @@ function resizeButtonText() {
       return `(${colored})`;
     });
   });
+
+  let lastScroll = 0;
+  const header = document.querySelector("header");
+  const threshold = 100;
+  
+  window.addEventListener("scroll", () => {
+    const currentScroll = window.pageYOffset;
+
+    if (currentScroll <= threshold) {
+      header.style.top = "0";
+    } 
+    else if (currentScroll > lastScroll) {
+      header.style.top = "-100px";
+    } 
+    else {
+      header.style.top = "0";
+    }
+  
+    lastScroll = currentScroll;
+  });
