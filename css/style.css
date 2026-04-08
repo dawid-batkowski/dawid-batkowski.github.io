@@ -529,6 +529,17 @@ ul {
   font-size: 0.8em;
 }
 
+@media (max-width: 768px) {
+  .personal-title-index h1{
+    font-size: 1.4em;
+    font-weight: 500;
+  }
+  
+  .personal-title-index p{
+    font-size: 0.6em;
+  }
+}
+
 /* Contact Section - matching .about style */
 .contact {
   padding: 3% 3%;
