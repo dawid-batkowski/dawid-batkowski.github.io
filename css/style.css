@@ -558,7 +558,8 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  align-items: center; /* center links */
+  align-items: center;
+  justify-items: center;
 }
 
 .contact-list li a {
