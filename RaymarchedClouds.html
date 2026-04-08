@@ -20,11 +20,19 @@
   <!-- Navigation -->
   <header>
     <div class="logo">Dawid Batkowski</div>
-    <ul class="nav-links">
+
+    <!-- Burger icon -->
+    <div class="burger" id="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="#personalInfo">About</a></li>
-      <li><a href="#">Projects</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="Material/Documents/Dawid_Batkowski_CV.pdf" class="cv-button" target="_blank"
+          rel="noopener noreferrer">View CV</a></li>
     </ul>
   </header>
 
@@ -51,8 +59,7 @@
       </p>
     </div>
     <div class="image-holder-grid  image-bottom">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)"
-        src="Material/Screenshots/Clouds/NewClouds2k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/NewClouds2k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)"
         src="Material/Screenshots/Clouds/CloudsFantasy2k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)"
@@ -60,8 +67,7 @@
       <img class="mainPiece zoomable" onclick="openLightbox(this)"
         src="Material/Screenshots/Clouds/CloudsFantasy22k.png">
 
-      <img class="mainPiece zoomable" onclick="openLightbox(this)"
-        src="Material/Screenshots/Clouds/NewClouds22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/NewClouds22k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)"
         src="Material/Screenshots/Clouds/CloudsRealistic42k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)"
@@ -71,10 +77,8 @@
 
       <img class="mainPiece zoomable" onclick="openLightbox(this)"
         src="Material/Screenshots/Clouds/CloudUpdated12k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)"
-        src="Material/Screenshots/Clouds/NewClouds12k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" 
-      src="Material/Screenshots/Clouds/NewClouds32k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/NewClouds12k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/NewClouds32k.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)"
         src="Material/Screenshots/Clouds/CloudUpdated32k.png">
     </div>
@@ -154,7 +158,7 @@
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Rymarching - shadow calculation</h2>
+      <h2 class="padded-h2">Rymarching - shadow & lighting calculation</h2>
       <p class="background-text">
         Initially, each step for density accumulation was additionally executing steps towards light direction to
         accumulate shadows.
@@ -162,27 +166,8 @@
           href="https://iquilezles.org/articles/derivative/">directional derivative</a>,
         which estimates light attenuation using a small number of offset samples along the light direction.
         This significantly reduces cost (instead of 6 fBm samples per step, it's 2 with current set-up) while preserving
-        soft shadowing within the cloud.
-      </p>
-    </div>
-  </div>
+        soft shadowing within the cloud. <br> <br>
 
-  <div class="project-grid-setup">
-    <div>
-      <h2 class="padded-h2">Rymarching - progress</h2>
-    </div>
-    <div class="image-holder-grid  image-bottom">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP02k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP12k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
-    </div>
-  </div>
-
-  <div class="project-grid-setup">
-    <div>
-      <h2 class="padded-h2">Rymarching - lighting</h2>
-      <p class="background-text">
         Lighting is composed of multiple components. Direct lighting is driven by the scene's DirectionalLight,
         modulated by shadowing and a <a class="link-no-effect" ,
           href="https://en.wikipedia.org/wiki/Henyey%E2%80%93Greenstein_phase_function">Henyey-Greenstein phase
@@ -197,9 +182,109 @@
   </div>
 
 
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Rymarching - optimization</h2>
+      <p class="background-text">
+        To make the shader usable, optimization played an important role. <br> <br>
+        The first—and likely most important—optimization was the implementation of early exits.
+        Ray marching stops early whenever the accumulated density reaches a value of 0.95.
+        In large volumes, this means that only a small percentage of the steps are used before the function stops
+        accumulating.
+        <br><br>
+        The second optimization was the implementation of an adjustable LOD system. Since the visual quality of the
+        clouds heavily depends on the number of octaves used, increasing the octave count results in more detailed
+        clouds.
+        However, maintaining a high number of octaves over large distances is both expensive and unnecessary, as distant
+        clouds naturally appear less detailed.
+        Instead of using a static octave value for density and shadow calculations, the octave count is dynamically
+        adjusted based on the distance from the camera, using a configurable parameter.
+        <br><br>
+        Third optimization was a simple but effective, in some cases, depth-based early exit.
+        This allows skipping raymarching steps that would otherwise accumulate density and shadow values for regions
+        that are ultimately invisible due to occlusion by scene geometry.
+      </p>
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Rymarching - progress</h2>
+      <p class="background-text">
+        1. The shader started by calculating density accumulation and performing an additional raymarch toward the light
+        direction to compute shadows. At this stage, only two octaves of noise were used to create the effect.
+        <br><br>
+        2. Next, a proper fBm function was implemented, utilizing 4-5 noise octaves for both density and shadows. During
+        this phase, I also experimented with directional derivatives as an alternative to raymarched shadows.
+        <br><br>
+        3. At this point, the clouds were getting close to the desired look. However, there were still issues with step
+        distribution relying on a bounding box, which resulted in significant quality loss when rendering large volumes.
+        <br><br>
+        4. Finally, the last refinements were made. The step distribution method was improved to better handle large
+        volumes, and the placeholder lighting calculations were replaced with techniques commonly used in AAA games.
+        Additional modifications were also introduced to soften and further enhance the shadows.
+      </p>
+    </div>
+    <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP02k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP12k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP22k.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Clouds/CloudWIP32k.png">
+    </div>
+  </div>
+
+
+  <section id="contact" class="contact">
+    <div class="container is-visible" data-reveal="">
+      <h2>Contact</h2>
+      <ul class="contact-list">
+        <li>Email: <a href="mailto:dawidtrix.trixit@gmail.com">dawidtrix.trixit@gmail.com</a></li>
+        <li>LinkedIn: <a
+            href="https://www.linkedin.com/in/dawid-batkowski-8aa248272/">linkedin.com/in/dawid-batkowski</a></li>
+        <li>GitHub: <a href="https://github.com/dawid-batkowski">github.com/dawid-batkowski</a></li>
+      </ul>
+
+      <div class="social-icons">
+        <a href="mailto:dawidtrix.trixit@gmail.com" class="social-icon" aria-label="Email">
+          <svg viewBox="0.5 3.5 23 17" fill="currentColor">
+            <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67z">
+            </path>
+            <path
+              d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908z">
+            </path>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/dawid-batkowski-8aa248272/" target="_blank" rel="noopener"
+          class="social-icon" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z">
+            </path>
+          </svg>
+        </a>
+        <a href="https://github.com/dawid-batkowski" target="_blank" rel="noopener" class="social-icon"
+          aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z">
+            </path>
+          </svg>
+        </a>
+        <a href="Material/Documents/Dawid_Batkowski_CV.pdf" target="_blank" rel="noopener" class="social-icon"
+          aria-label="CV">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 17v-1h8v1H8zm0-3v-1h8v1H8zm0-3v-1h5v1H8z">
+            </path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
+    <p>&copy; Website created & designed by Dawid Batkowski</p>
   </footer>
 
   <!-- Scripts -->

@@ -202,6 +202,7 @@ header {
   flex-direction: column;
   box-shadow: 10px 10px 30px #000000;
   border-radius: 1%;
+  max-height: 1000px;
   transition: all 0.3s ease;
 }
 
@@ -261,7 +262,6 @@ header {
   text-decoration: none;
   position: relative;
   z-index: 20;
-  
 }
 
 .mainPiecetext h3 {
@@ -466,8 +466,8 @@ ul {
   position: absolute;
   height: 20%;
   width: 40%;
-  bottom: 0%;
-  left: 0;
+  bottom: 1%;
+  left: 1%;
   object-fit: contain;
   object-position: left bottom;
 }
@@ -532,11 +532,10 @@ ul {
 /* Contact Section - matching .about style */
 .contact {
   padding: 3% 10vw;
-  max-width: 100vw;
-  margin: 0 auto;
+  margin: 3% auto 0 auto;
   text-align: center;
   line-height: 1.6;
-  font-size: 1em;
+  font-size: 1.1em;
   background-color: #0000005e;
   border-radius: 4px;
 }
