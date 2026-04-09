@@ -3,6 +3,23 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta property="og:title" content="Dawid Batkowski - Shader Analyzer">
+  <meta property="og:description"
+    content="A user-friendly tool that scans shader directories, generates JSON reports, and visualizes shader dependencies and usage with interactive charts and graphs.">
+  <meta property="og:url" content="https://dawid-batkowski.github.io/ShaderAnalyzerBreakdown.html">
+  <meta property="og:image"
+    content="https://dawid-batkowski.github.io/Material/Screenshots/Analyzer/DependencyChartLateWIP.png">
+  <meta property="og:image:width" content="1920">
+  <meta property="og:image:height" content="1080">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dawid Batkowski - Shader Analyzer">
+  <meta name="twitter:description"
+    content="A user-friendly tool that scans shader directories, generates JSON reports, and visualizes shader dependencies and usage with interactive charts and graphs.">
+  <meta name="twitter:image" content="https://dawid-batkowski.github.io/Material/Screenshots/Analyzer/DependencyChartLateWIP.png">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Exo font -->
   <style>
@@ -20,11 +37,19 @@
   <!-- Navigation -->
   <header>
     <div class="logo">Dawid Batkowski</div>
-    <ul class="nav-links">
+
+    <!-- Burger icon -->
+    <div class="burger" id="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="#personalInfo">About</a></li>
-      <li><a href="/shaderAnalyzer.html">Projects</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="Material/Documents/Dawid_Batkowski_CV.pdf" class="cv-button" target="_blank"
+          rel="noopener noreferrer">View CV</a></li>
     </ul>
   </header>
 
@@ -37,23 +62,30 @@
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
   </div>
-  
+
   <div class="project-grid-setup">
     <div>
       <h1 class="padded-h2">Project Goal</h1>
       <p class="background-text">
-      The goal of this project is to create a Python tool that allows users to scan project files, locate shaders, parse them, and compile them using a shader compiler in order to generate structured data in the form of a JSON file.
+        The goal of this project is to create a Python tool that allows users to scan project files, locate shaders,
+        parse them, and compile them using a shader compiler in order to generate structured data in the form of a JSON
+        file.
 
-      Additionally, a JavaScript-based visualizer loads the generated JSON file and presents the collected data through user-friendly charts and graphs.       <br><br>
-      Initially, the tool was designed to focus on analyzing metrics such as ALU cost, texture sample/load counts, and estimating variant explosion risk, with addition of detecting potential optimization opportunities.
-      
-      However, the project direction was later adjusted. 
-      Instead of focusing on optimization patterns, the focus was pivoted towards creating dependency graph that illustrates which shaders use specific include files and which functions from those files are actually utilized.
-    </p>
+        Additionally, a JavaScript-based visualizer loads the generated JSON file and presents the collected data
+        through user-friendly charts and graphs. <br><br>
+        Initially, the tool was designed to focus on analyzing metrics such as ALU cost, texture sample/load counts, and
+        estimating variant explosion risk, with addition of detecting potential optimization opportunities.
+
+        However, the project direction was later adjusted.
+        Instead of focusing on optimization patterns, the focus was pivoted towards creating dependency graph that
+        illustrates which shaders use specific include files and which functions from those files are actually utilized.
+      </p>
     </div>
     <div class="image-holder-grid image-bottom">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/DependencyChart.png">
-      <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/InctructionCount.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)"
+        src="Material/Screenshots/Analyzer/DependencyChart.png">
+      <img class="mainPiece zoomable" onclick="openLightbox(this)"
+        src="Material/Screenshots/Analyzer/InctructionCount.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/JSONShowcase.png">
       <img class="mainPiece zoomable" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/ShaderDetail.png">
     </div>
@@ -68,21 +100,27 @@
         - <strong>JS Libraries:</strong> <code>D3.js, Chart.js</code> <br>
         - <strong>Python packages:</strong> <code>Pygments, tinkerer</code> <br><br>
 
-        The tool is designed to be quick and easy to use. After running the executable, the user selects a directory to scan. The scope of the directory is flexible—it can be a specific folder containing shaders or an entire project directory. The user then chooses where to save the generated JSON file.
+        The tool is designed to be quick and easy to use. After running the executable, the user selects a directory to
+        scan. The scope of the directory is flexible—it can be a specific folder containing shaders or an entire project
+        directory. The user then chooses where to save the generated JSON file.
 
-        Once generated, the JSON file can be opened directly or uploaded into the visualizer. The visualizer is a JavaScript application that uses 
-        <a class="link-no-effect" href="https://www.chartjs.org/">Chart.js</a> and 
-        <a class="link-no-effect" href="https://d3js.org/">D3.js</a> to display the collected data. It provides charts as well as a dependency graph showing which shaders use specific include files and which functions are referenced from those files.
+        Once generated, the JSON file can be opened directly or uploaded into the visualizer. The visualizer is a
+        JavaScript application that uses
+        <a class="link-no-effect" href="https://www.chartjs.org/">Chart.js</a> and
+        <a class="link-no-effect" href="https://d3js.org/">D3.js</a> to display the collected data. It provides charts
+        as well as a dependency graph showing which shaders use specific include files and which functions are
+        referenced from those files.
       </p>
+      <a href="shaderAnalyzer.html" class="live-demo-button" rel="noopener noreferrer">Live Demo</a>
     </div>
 
     <div class="video-container image-holder-grid image-bottom">
       <div class="video-wrapper">
-      <video width="100%" height="100%" controls autoplay muted loop>
-        <source src="Material/Videos/ShaderAnalyzer/ShaderAnalyzerShowcase.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-      </video>
-    </div>
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/ShaderAnalyzer/ShaderAnalyzerShowcase.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
   </div>
 
@@ -92,86 +130,159 @@
       <p class="background-text">
         The Python script executes the following steps: <br>
 
-        <b>1.</b> Prompts the user to select the directory to scan, the output location, and the name of the generated JSON file. <br><br>
+        <b>1.</b> Prompts the user to select the directory to scan, the output location, and the name of the generated
+        JSON file. <br><br>
 
-        <b>2.</b> Searches the selected directory for files with the <code>.hlsl</code> extension and records their paths and filenames. <br><br>
+        <b>2.</b> Searches the selected directory for files with the <code>.hlsl</code> extension and records their
+        paths and filenames. <br><br>
 
-        <b>3.</b> Tokenizes the shader code using an HLSL lexer and analyzes it to detect inefficient <code>pow()</code> usage that could be replaced with simpler multiplication. <br><br>
+        <b>3.</b> Tokenizes the shader code using an HLSL lexer and analyzes it to detect inefficient <code>pow()</code>
+        usage that could be replaced with simpler multiplication. <br><br>
 
-        <b>4.</b> Estimates variant explosion risk by analyzing preprocessor directives such as <code>#if</code>, <code>#define</code>, and <code>#endif</code>. A scoring system is used based on their frequency and nesting depth. <br><br>
+        <b>4.</b> Estimates variant explosion risk by analyzing preprocessor directives such as <code>#if</code>,
+        <code>#define</code>, and <code>#endif</code>. A scoring system is used based on their frequency and nesting
+        depth. <br><br>
 
-        <b>5.</b> Compiles each shader using the FXC compiler with the highest optimization flag. The tool determines whether the shader is a pixel or vertex shader based on filename suffixes (e.g., <code>_PS</code> or <code>_VS</code>). If no suffix is found, it attempts compilation as a pixel shader first, and falls back to a vertex shader if compilation fails. <br><br>
+        <b>5.</b> Compiles each shader using the FXC compiler with the highest optimization flag. The tool determines
+        whether the shader is a pixel or vertex shader based on filename suffixes (e.g., <code>_PS</code> or
+        <code>_VS</code>). If no suffix is found, it attempts compilation as a pixel shader first, and falls back to a
+        vertex shader if compilation fails. <br><br>
 
-        <b>6.</b> The generated assembly output is stored temporarily and parsed to extract metrics such as instruction count, branch count, texture operations, loop usage, and temporary register usage. The temporary file is then deleted. <br><br>
+        <b>6.</b> The generated assembly output is stored temporarily and parsed to extract metrics such as instruction
+        count, branch count, texture operations, loop usage, and temporary register usage. The temporary file is then
+        deleted. <br><br>
 
         <b>7.</b> Finally, all collected data is structured into a predefined JSON format and written to disk.
       </p>
-        <img  class="image-holder-underText under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/AssemblyParseFunction.png">
-        <p class="image-explanation">Snippet of a function responsible for gathering data from assembly file</p>
+      <img class="image-holder-underText under-shadow" onclick="openLightbox(this)"
+        src="Material/Screenshots/Analyzer/AssemblyParseFunction.png">
+      <p class="image-explanation">Snippet of a function responsible for gathering data from assembly file</p>
     </div>
     <div class="under-shadow image-holder image-right">
       <img clas="under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/AssemblyIFEdited.png">
-      <p class="image-explanation">Snippet of assembly file generated by FXC, showcasing the type of data being parsed</p>
+      <p class="image-explanation">Snippet of assembly file generated by FXC, showcasing the type of data being parsed
+      </p>
     </div>
   </div>
 
-    <div class="project-grid-setup">
+  <div class="project-grid-setup">
     <div>
       <p class="background-text">
-        Several aspects of the Python tool evolved significantly over time. 
-        The initial approach relied solely on parsing shader source code to extract performance-related metrics. 
-        This method proved to be fundamentally flawed, as accurately estimating instruction count, sampler usage, 
-        and branching behavior is extremely difficult without accounting for compiler optimizations, loop transformations and usage of include files. <br><br>  
+        Several aspects of the Python tool evolved significantly over time.
+        The initial approach relied solely on parsing shader source code to extract performance-related metrics.
+        This method proved to be fundamentally flawed, as accurately estimating instruction count, sampler usage,
+        and branching behavior is extremely difficult without accounting for compiler optimizations, loop
+        transformations and usage of include files. <br><br>
 
-        A second approach involved using the DXC compiler to generate assembly output. 
-        However, this solution was quickly abandoned because the generated assembly was complex and difficult to parse reliably. <br><br>
+        A second approach involved using the DXC compiler to generate assembly output.
+        However, this solution was quickly abandoned because the generated assembly was complex and difficult to parse
+        reliably. <br><br>
 
-        As a result, the tool transitioned to using the FXC compiler. 
-        While FXC is limited to an older version of <code>HLSL</code> (5.1), it produces assembly output that is significantly easier to 
+        As a result, the tool transitioned to using the FXC compiler.
+        While FXC is limited to an older version of <code>HLSL</code> (5.1), it produces assembly output that is
+        significantly easier to
         parse and includes pre-estimated instruction counts, making it more suitable for this type of analysis.
-       </p>
+      </p>
     </div>
   </div>
 
-      <div class="project-grid-setup">
+  <div class="project-grid-setup">
     <div>
       <h2 class="padded-h2">Shader Analyzer - JavaScript</h2>
       <p class="background-text">
-        The JavaScript portion of the tool focuses on data visualization. Initially, Chart.js was used to implement bar and radar charts due to its simplicity and ease of integration. 
-        Once JSON file loading and parsing were implemented, creating basic charts required relatively little development time, with most effort spent on configuration and styling. <br><br>
+        The JavaScript portion of the tool focuses on data visualization. Initially, Chart.js was used to implement bar
+        and radar charts due to its simplicity and ease of integration.
+        Once JSON file loading and parsing were implemented, creating basic charts required relatively little
+        development time, with most effort spent on configuration and styling. <br><br>
 
-        However, <code>Chart.js</code> proved insufficient for building an interactive dependency graph. 
-        For this purpose, <code>D3.js</code> was introduced, offering significantly more flexibility for data manipulation, dynamic updates, and custom SVG-based visualizations. <br><br>
+        However, <code>Chart.js</code> proved insufficient for building an interactive dependency graph.
+        For this purpose, <code>D3.js</code> was introduced, offering significantly more flexibility for data
+        manipulation, dynamic updates, and custom SVG-based visualizations. <br><br>
 
-        The dependency graph became the most time-consuming part of the project, largely due to the steep learning curve of <code>D3.js</code> and limited prior experience with JavaScript. <br> <br>
+        The dependency graph became the most time-consuming part of the project, largely due to the steep learning curve
+        of <code>D3.js</code> and limited prior experience with JavaScript. <br> <br>
 
-  As a final addition to the visualization tool, a <code>console</code> panel and a <code>"Copy Shader Path"</code> button were implemented. <br>
-  The <code>console</code> is intended to display potential optimization suggestions for the selected shader.
+        As a final addition to the visualization tool, a <code>console</code> panel and a
+        <code>"Copy Shader Path"</code> button were implemented. <br>
+        The <code>console</code> is intended to display potential optimization suggestions for the selected shader.
 
-  However, due to the project's shift in focus toward dependency chart, the console currently provides only a very limited set of suggestions. <br>
-   The <code>"Copy Shader Path"</code> button is primarily a convenience feature, allowing users to quickly copy the file path so it can be pasted into a file explorer or editor to open the shader directly. 
+        However, due to the project's shift in focus toward dependency chart, the console currently provides only a very
+        limited set of suggestions. <br>
+        The <code>"Copy Shader Path"</code> button is primarily a convenience feature, allowing users to quickly copy
+        the file path so it can be pasted into a file explorer or editor to open the shader directly.
 
 
-       </p>
-        <img  class="image-holder-underText under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/AdditionalConsole.png">
-        <p class="image-explanation">Console and "Copy Shader Path" button</p>
+      </p>
+      <img class="image-holder-underText under-shadow" onclick="openLightbox(this)"
+        src="Material/Screenshots/Analyzer/AdditionalConsole.png">
+      <p class="image-explanation">Console and "Copy Shader Path" button</p>
     </div>
     <div class="image-holder-grid image-left">
-          <div class="flex-column">
-            <img  class="under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/DependencyChartWIP.png" alt="First image">
-            <p class="image-explanation">Dependency chart during work in progress</p>
-            <img class="under-shadow" onclick="openLightbox(this)" src="Material/Screenshots/Analyzer/DependencyChartLateWIP.png" alt="Second image">
-            <p class="image-explanation">Dependency chart when finished</p>
-          </div>
+      <div class="flex-column">
+        <img class="under-shadow" onclick="openLightbox(this)"
+          src="Material/Screenshots/Analyzer/DependencyChartWIP.png" alt="First image">
+        <p class="image-explanation">Dependency chart during work in progress</p>
+        <img class="under-shadow" onclick="openLightbox(this)"
+          src="Material/Screenshots/Analyzer/DependencyChartLateWIP.png" alt="Second image">
+        <p class="image-explanation">Dependency chart when finished</p>
+      </div>
 
 
     </div>
   </div>
 
-  
+
+  <section id="contact" class="contact">
+    <div class="container is-visible" data-reveal="">
+      <h2>Contact</h2>
+      <ul class="contact-list">
+        <li>Email: <a href="mailto:dawidtrix.trixit@gmail.com">dawidtrix.trixit@gmail.com</a></li>
+        <li>LinkedIn: <a
+            href="https://www.linkedin.com/in/dawid-batkowski-8aa248272/">linkedin.com/in/dawid-batkowski</a></li>
+        <li>GitHub: <a href="https://github.com/dawid-batkowski">github.com/dawid-batkowski</a></li>
+      </ul>
+
+      <div class="social-icons">
+        <a href="mailto:dawidtrix.trixit@gmail.com" class="social-icon" aria-label="Email">
+          <svg viewBox="0.5 3.5 23 17" fill="currentColor">
+            <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67z">
+            </path>
+            <path
+              d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908z">
+            </path>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/dawid-batkowski-8aa248272/" target="_blank" rel="noopener"
+          class="social-icon" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z">
+            </path>
+          </svg>
+        </a>
+        <a href="https://github.com/dawid-batkowski" target="_blank" rel="noopener" class="social-icon"
+          aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z">
+            </path>
+          </svg>
+        </a>
+        <a href="Material/Documents/Dawid_Batkowski_CV.pdf" target="_blank" rel="noopener" class="social-icon"
+          aria-label="CV">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 17v-1h8v1H8zm0-3v-1h8v1H8zm0-3v-1h5v1H8z">
+            </path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
+    <p>&copy; Website created & designed by Dawid Batkowski</p>
   </footer>
 
   <!-- Scripts -->
@@ -186,4 +297,3 @@
 </body>
 
 </html>
-

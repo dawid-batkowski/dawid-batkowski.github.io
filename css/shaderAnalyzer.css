@@ -187,6 +187,7 @@ body {
 
 #dependency-chart {
     grid-column: 1 / -1;
+    margin: 5% 0;
 }
 
 
@@ -200,4 +201,10 @@ body {
 
 .redundant {
     background-color: #ff6021;
+}
+
+.centered-p {
+    display: block;
+    justify-items: center;
+    align-items: center;
 }

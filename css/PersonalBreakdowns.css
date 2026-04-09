@@ -255,3 +255,29 @@ history {
     transition: opacity 0.2s;
   }
   .lightbox-close:hover { opacity: 1; }
+
+  .live-demo-button {
+    display: inline-flex;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #313131, #747474);
+    padding: 8px 16px;
+    margin: 2% 0;
+    height: 70px;
+    width: 100%;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 2em;
+    text-decoration: none;
+    justify-content: center; 
+    align-items: center; 
+  
+    transition: all 0.3s ease;
+  }
+  
+  .live-demo-button:hover {
+    background: linear-gradient(135deg, #ff3b2f, #ff6f61);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 111, 97, 0.6);
+    color: #fff;
+  }
