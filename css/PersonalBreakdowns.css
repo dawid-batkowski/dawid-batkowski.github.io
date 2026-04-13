@@ -15,7 +15,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
     gap: 0 2%;
-    margin: 5vh 10vw;
+    margin: max(100px, 5vh) 10vw;
     min-height: 10vw;
 }
 
@@ -107,8 +107,9 @@
     background-color: #000000;
     box-shadow: 10px 10px 30px #000000;
     border-radius: 1%;
-
 }
+
+
 
 .video-wrapper-noFill video {
     width: 100%;
@@ -120,18 +121,20 @@
 .image-wrapper-noFill {
     width: 100%;
     height: 100%;
-    background-color: #000000;
-    box-shadow: 10px 10px 30px #000000;
+    display: grid;
+    align-content: center;
+    /*background-color: #000000;*/
     border-radius: 1%;
-
 }
 
-.image-wrapper-noFill img {
+
+.image-wrapper-noFill > img {
     width: 100%;
     height: 100%;
     border: 0;
     object-fit: contain;
 }
+
 
 .image-wrapper {
     width: 100%;
@@ -148,6 +151,29 @@
     object-fit: fill;
 }
 
+.webp-shadow-wrapper {
+  display: inline-block;  
+  box-shadow: 10px 10px 30px #000000;
+
+}
+
+.webp-shadow-wrapper img {
+  display: block;
+  max-width: 100%;
+  border-radius: 1%;
+  height: auto;
+}
+
+.webp-shadow-wrapper video {
+  display: block;
+  max-width: 100%;
+  border-radius: 1%;
+  height: auto;
+}
+
+.no-bg {
+    background-color: #00000000;
+}
 .gif-container-long img{
     height: 100%;
     width: 100%;

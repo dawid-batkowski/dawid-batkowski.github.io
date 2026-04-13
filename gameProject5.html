@@ -88,7 +88,6 @@
     </div>
   </div>
 
-  <br><br>
 
   <div class="project-grid-setup">
     <div>
@@ -182,26 +181,26 @@
       </p>
     </div>
     <div class="image-wrapper-noFill">
-      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Videos/P5/ResourceOrb_Progress.webp">
+      <div class="webp-shadow-wrapper">
+        <img onclick="openLightbox(this)" src="Material/Videos/P5/ResourceOrb_Progress.webp">
+      </div>
       <p class="image-explanation">First iteration of rage orb.</p>
     </div>
     <div class="image-wrapper-noFill">
-      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Videos/P5/ResourceOrb_Progress1.webp">
-      <p class="image-explanation">Second iteration of rage orb.</p>
+      <div class="webp-shadow-wrapper">
+        <img onclick="openLightbox(this)" src="Material/Videos/P5/ResourceOrb_Progress1.webp">
+      </div>
+      <p class="image-explanation">First iteration of rage orb.</p>
     </div>
   </div>
 
-  <br><br>
+
 
   <div class="project-grid-setup">
     <div>
       <h2 class="padded-h2">Featured Work 2 - Health pickup</h2>
     </div>
     <div class="image-holder-grid gif-container-long image-bottom tablet-break-early">
-      <div class="image-wrapper-noFill">
-        <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/Health_Pickup.gif">
-      </div>
-
       <div class="flex-column">
         <div class="image-holder-grid  image-right">
           <div class="video-wrapper-noFill">
@@ -217,27 +216,42 @@
             </video>
           </div>
         </div>
-        <p class="background-text">
-          My second major work during this project was creation of <b>
-            <red>pickup health orb</red>
-          </b>. One of the bigger limitations when creating VFX during this project was lack of particle system. <br><br>
-          And while I was designing a concept for that effect I was thinking, what would I want from particle system to
-          be able to do for this effect to be finished?<br>
-          It spawns quads over time, the quads move in either one or multiple directions, there is a lifetime variable I
-          can use to control pixel shader, there is no visible sign of particles poping in and out of existance without
-          any smooth transition, they billboard towards camera. <br><br>
-          All of these attributes can be done using only vertex and pixel shader. All of them except for spawning geometry, however, as long as effect is continous
-          and it isimpossible to see whether a geometry is actually spawned or just moved back and forth, a very convincing fake can be made. 
-          
-          <br><br>
 
-          
-        </p>
+
+
+        <div class="image-holder-grid">
+          <div class="image-wrapper-noFill">
+            <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/Health_Pickup.gif">
+          </div>
+          <div>
+            <p class="background-text">
+              My second major work during this project was creation of <b>
+                <red>pickup health orb</red>
+              </b>. One of the bigger limitations when creating VFX during this project was lack of particle system.
+              <br><br>
+              And while I was designing a concept for that effect I was thinking, what would I want from particle system
+              to
+              be able to do for this effect to be finished?<br>
+              It spawns quads over time, the quads move in either one or multiple directions, there is a lifetime
+              variable I
+              can use to control pixel shader, there is no visible sign of particles poping in and out of existance
+              without
+              any smooth transition, they billboard towards camera. <br><br>
+              All of these attributes can be done using only vertex and pixel shader. All of them except for spawning
+              geometry, however, as long as effect is continous
+              and it isimpossible to see whether a geometry is actually spawned or just moved back and forth, a very
+              convincing fake can be made.
+              <br><br><br><br><br>
+            </p>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>
 
-  <br><br>
+
 
   <div class="project-grid-setup">
     <div>
@@ -257,7 +271,6 @@
     </div>
   </div>
 
-  <br><br>
 
   <div class="project-grid-setup">
     <div>
@@ -296,7 +309,7 @@
   </div>
   </div>
 
-  <br><br>
+
 
   <div class="project-grid-setup">
     <div class="flex-column">
