@@ -70,18 +70,20 @@
         <b>Specifications:</b> <br>
         - <strong>Engine:</strong> <code>TGE (Custom DX11)</code> <br>
         - <strong>Platform:</strong> <code>PC</code> <br>
-        - <strong>My Role:</strong> <code>Technical Art, Animation</code> <br><br>
+        - <strong>My Role:</strong> <code>Technical Art, Animation, VFX</code> <br><br>
 
-        This was the second group project developed in TGE. Inspired by games such as Tunic, the project focuses on
-        exploration and combat. The game features four distinct levels, culminating in an arena-style encounter with
-        multiple enemy waves. It includes two weapons, three enemy types, checkpoint-based progression, and a strong
-        emphasis on stylized gore.
+        This was the 5th group project developed in TGE. Inspired themed after Diablo 3, the project focuses on
+        exploration and combat. The game features four distinct levels, culminating in a boss fight.
+        Player character is equipped with left mouse attack and 5 unique abilities, unlockable throughout the gameplay.
+        Additionally, game features 2 enemy types, elite enemy variant with random modyfiers and boss.
 
         <br><br>
 
-        My role involved creating shaders, VFX, rigs, and animations. I was specifically responsible for rigging enemy
-        characters and developing environmental shaders such as fog, water, clouds, fire, and a triplanar shader for
-        tileable textures.
+        My role was heavily focused around rigging and animating with my main responsibility being player character.
+        My second role was to create enviroment/UI shaders. These included fogs, resource orbs, vignette, color grading,
+        shader for tilleable textures.
+        Lastly, I was also responsible for a lot of VFX. These included effects for some player abilities, pick ups and
+        enviroment.
       </p>
     </div>
   </div>
@@ -92,8 +94,38 @@
     <div>
       <h2 class="padded-h2">Featured Work - Health & Rage resource orbs</h2>
       <p class="background-text">
-        Our main inspiration for this project was Diablo 3, which is why we have decided to keep the resource meters in
-        similar fashion.
+        A very important shader I was responsible for were resource orbs. Since this shader would be visible at all time
+        throughout the gameplay
+        it took more time to complete than any other effect made during this project.
+
+        The goal was to create two resource orbs in similar style but
+        distinct look to represent health and rage meter. My restrictions for this shader were: plane as geometry for
+        each orb, single texture slot, no blending modes other than opaque with alpha clipping.
+        <br><br>
+
+        Creation of this shader started with preparing main shape, using some simple math based on modyfing length of
+        UVs and discarding pixel below certain treshold I was quickly able to get main shape for each orb.
+        Next step was to create some flow patterns. For rage orb I decided to go with something re-assmbling flames with
+        it's color and chaotic movement.
+        For health orb I decided to go with more tame, liquidy, with slower flow, red in color and a faint pulsing light
+        in the mdidle to sigdnify beating heart.
+        The main pattern for both orbs was created using multiple noise textures created in <code>IlluGen</code> and
+        using one noise texture to modulate UVs of another noise texture.
+        Additional UV modyfications were used to make a flow more spherical to give the orb it's round perspective.
+        Coloring in both cases was done using 3-way lerp and hand-picked values.
+
+        <br><br>
+
+        After pattern and coloring was done, it was time to fake some ligthing. The orbs feature fake directional light,
+        rim light and specular light
+        to further enchance the 3D look of it and fit better in a lit game enviroment.
+
+        <br><br>
+
+        Last visual part was to create a background for when orb is not fompletely full. For that I have created a
+        scratch mark mask in <code>Illugen</code>, which was included in a noise texture.
+        In a shader a color was assigned ot that mask and the visiblity of a background was controlled via smoothstep Y
+        axis of moving UVs controlled by a contant buffer variables.
 
       </p>
     </div>
@@ -117,19 +149,36 @@
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Health & Rage resource orbs - work in progress</h2>
+      <h2 class="padded-h2">Health & Rage resource orbs - early iterations</h2>
       <p class="background-text">
-        Creating rigs for both melee and ranged enemy characters was one of my main responsibilities. These rigs were
-        then used by graphic artists to produce animations.
+        Creating this shader was a very iterative process. <br><br>
+        <b>
+          <orange>Rage orb's</orange>
+        </b> initial design assumed a creepy face to appear
+        when orb was full.
+        Design was later changed due to feedback mentioning that it look very halloween-like.
 
         <br><br>
 
-        Destructible objects were implemented using <code>Houdini</code>. Assets were fractured using procedural tools
-        and simulated with an RBD Bullet solver. Each fragment was assigned a bone at its pivot point, allowing the
-        simulation to be exported as a rigged asset.
+        Second design leaned more into flame direction, using multiple noise texture masks it was possible to give the
+        orb more varied and chaotic movement with more dynamic colors. It wasn't untill moving noise masks were used to
+        modulate other moving noises that I finally was happy with design.
+        From that point a center piece of the orb was added in form of a shining light and some small tweaks were made
+        regarding types of noise used, ways of layering noises,
+        and balancing colors.
 
-        The resulting assets were then imported into Blender for cleanup, bone assignment refinement, and animation
-        adjustments before being integrated into the engine.
+        <br><br>
+
+        <b>
+          <red>Health orb</red>
+        </b> is using rage orb's shader at it's heart. The shader was however modified to create more calm, flowing,
+        liquidy and deeper effect with stronger panning towards the side of the orb rahter than going up.
+
+        <br><br>
+
+        The initial final result assumed usage of 3 textures. One for noise masks, background and gradient atlas for
+        coloring. Due to implementation limitations the shader had to be modyfied to use only one texutre.
+        This texture included 3 masks for nosies and 1 mask for background pattern.
       </p>
     </div>
     <div class="image-wrapper-noFill">
@@ -169,22 +218,20 @@
           </div>
         </div>
         <p class="background-text">
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
+          My second major work during this project was creation of <b>
+            <red>pickup health orb</red>
+          </b>. One of the bigger limitations when creating VFX during this project was lack of particle system. <br><br>
+          And while I was designing a concept for that effect I was thinking, what would I want from particle system to
+          be able to do for this effect to be finished?<br>
+          It spawns quads over time, the quads move in either one or multiple directions, there is a lifetime variable I
+          can use to control pixel shader, there is no visible sign of particles poping in and out of existance without
+          any smooth transition, they billboard towards camera. <br><br>
+          All of these attributes can be done using only vertex and pixel shader. All of them except for spawning geometry, however, as long as effect is continous
+          and it isimpossible to see whether a geometry is actually spawned or just moved back and forth, a very convincing fake can be made. 
+          
+          <br><br>
 
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
-
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
-
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
-
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
+          
         </p>
       </div>
     </div>

@@ -227,6 +227,10 @@ dblue {
     color: #3766ff;
 }
 
+orange {
+    color: orange;
+}
+
 .dblue-border {
     border-style:groove;
     border-color:  #3766ff;
