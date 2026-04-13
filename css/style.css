@@ -192,7 +192,7 @@ header {
   position: relative;
   aspect-ratio: 16 / 9;
   width: 100%;
-  height: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
   border: 0;
@@ -207,10 +207,11 @@ header {
 }
 
 .mainPieceContainer--gameProject {
-  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100vw), 1fr));
 }
 .mainPiece--gameProject {
   aspect-ratio: 1 / 3;
+  height: auto;
 }
 
 @media (max-width: 980px) {
@@ -221,6 +222,7 @@ header {
 .mainPiece img {
   width: 100%;
   height: 100%;
+  position: absolute;
   object-fit: cover;
   display: block;
 }
@@ -430,16 +432,6 @@ ul {
   padding-left: 1.5em;  
 }
 
-@media (hover: none) {
-  .projectButton {
-    opacity: 1;
-  }
-
-  .projectDescription {
-    opacity: 1;
-  }
-}
-
 .icon-list {
   list-style: none;
   padding: 0;
@@ -492,7 +484,6 @@ ul {
   left: 0%;
   object-fit: contain;
 }
-
 
 .mainPiece img.TGA-overlay {
   position: absolute;
