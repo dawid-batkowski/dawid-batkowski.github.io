@@ -69,24 +69,32 @@
   <div class="project-grid-setup">
     <div>
       <h2 class="padded-h2">Spite: TDOD - Overview</h2>
-      <p class="background-text">
-        <b>Specifications:</b> <br>
-        - <strong>Engine:</strong> <code>TGE (Custom DX11)</code> <br>
+      <p class="background-text"> <b>Specifications:</b>
+        <br>
+        - <strong>Engine:</strong> <code>TGE (Custom DX11)</code>
+        <br>
         - <strong>Platform:</strong> <code>PC</code> <br>
         - <strong>My Role:</strong> <code>Technical Art, Animation, VFX</code> <br><br>
 
-        This was the 5th group project developed in TGE. Inspired themed after Diablo 3, the project focuses on
-        exploration and combat. The game features four distinct levels, culminating in a boss fight.
-        Player character is equipped with left mouse attack and 5 unique abilities, unlockable throughout the gameplay.
-        Additionally, game features 2 enemy types, elite enemy variant with random modyfiers and boss.
+        This was the fifth group project developed in TGE, inspired by the theme and gameplay of Diablo 3. The project
+        focuses on exploration and combat, featuring four distinct levels that culminate in a boss fight.
+
+        The player character is equipped with a two-handed hammer which features primary attack mapped to the left mouse
+        button and five unique
+        abilities, which are unlocked progressively throughout the game. Additionally, the game includes two enemy
+        types, an elite enemy variant with random modifiers, and a boss encounter.
 
         <br><br>
 
-        My role was heavily focused around rigging and animating with my main responsibility being player character.
-        My second role was to create enviroment/UI shaders. These included fogs, resource orbs, vignette, color grading,
-        shader for tilleable textures.
-        Lastly, I was also responsible for a lot of VFX. These included effects for some player abilities, pick ups and
-        enviroment.
+        My role focused heavily on rigging and animation, with primary responsibility being the player character. I was
+        also responsible for creating environment and UI shaders, including fog, resource orbs, vignette, color grading,
+        shaders for tileable textures and more.
+
+        <br>
+
+        In addition, I created various VFX, including effects for player abilities, pickups, and environmental
+        elements.
+
       </p>
     </div>
   </div>
@@ -94,40 +102,44 @@
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Featured Work - Health & Rage resource orbs</h2>
-      <p class="background-text">
-        A very important shader I was responsible for were resource orbs. Since this shader would be visible at all time
-        throughout the gameplay
-        it took more time to complete than any other effect made during this project.
+      <h2 class="padded-h2">Featured Work - Health & Rage Resource Orbs</h2>
+      <p class="background-text"> One of the most important shaders I developed was the resource orb shader. Since these
+        orbs are visible at all times during gameplay, they required more polish and iterating than any other effect in
+        the project.
 
-        The goal was to create two resource orbs in similar style but
-        distinct look to represent health and rage meter. My restrictions for this shader were: plane as geometry for
-        each orb, single texture slot, no blending modes other than opaque with alpha clipping.
-        <br><br>
-
-        Creation of this shader started with preparing main shape, using some simple math based on modyfing length of
-        UVs and discarding pixel below certain treshold I was quickly able to get main shape for each orb.
-        Next step was to create some flow patterns. For rage orb I decided to go with something re-assmbling flames with
-        it's color and chaotic movement.
-        For health orb I decided to go with more tame, liquidy, with slower flow, red in color and a faint pulsing light
-        in the mdidle to sigdnify beating heart.
-        The main pattern for both orbs was created using multiple noise textures created in <code>IlluGen</code> and
-        using one noise texture to modulate UVs of another noise texture.
-        Additional UV modyfications were used to make a flow more spherical to give the orb it's round perspective.
-        Coloring in both cases was done using 3-way lerp and hand-picked values.
+        The goal was to create two visually consistent yet distinct orbs representing the health and rage resources. The
+        technical constraints were strict: quad as a geometry for each orb, a single texture slot, and no blending modes
+        other than opaque with alpha clipping.
 
         <br><br>
 
-        After pattern and coloring was done, it was time to fake some ligthing. The orbs feature fake directional light,
-        rim light and specular light
-        to further enchance the 3D look of it and fit better in a lit game enviroment.
+        The creation process began with defining the main shape. Using simple math operations—calculating
+        <code>length()</code> of UV and
+        discarding pixels below a threshold—I quickly established the base form of each orb.
+
+        Next, I developed flow patterns. The rage orb was designed to resemble flames, with chaotic motion and intense
+        coloration. In contrast, the health orb features a calmer, liquid-like motion with slower flow, a red color
+        palette, and a subtle pulsing center to suggest a beating heart.
+
+        The core patterns for both orbs were created using multiple noise textures generated in <code>IlluGen</code>,
+        with one noise texture used to modulate the UVs of another. Additional UV distortion was applied to create a
+        spherical flow, enhancing the illusion of depth. Coloring was achieved using a three-way lerp with hand
+        picked values.
 
         <br><br>
 
-        Last visual part was to create a background for when orb is not fompletely full. For that I have created a
-        scratch mark mask in <code>Illugen</code>, which was included in a noise texture.
-        In a shader a color was assigned ot that mask and the visiblity of a background was controlled via smoothstep Y
-        axis of moving UVs controlled by a contant buffer variables.
+        After establishing the patterns and colors, I implemented fake lighting. Each orb includes fake directional
+        light, rim lighting, and specular highlights to enhance the 3D appearance and better integrate with the game's
+        lighting.
+
+        <br><br>
+
+        The final visual component was the background visible when the orb is not full. For this, I created a
+        scratch-mark mask in <code>IlluGen</code>, embedded as a single channel within a noise texture. In the shader,
+        this mask was
+        assigned a color, and its visibility was controlled using a <code>smoothstep()</code> function along the Y-axis
+        of UVs animated
+        via a constant buffer variable.
 
       </p>
     </div>
@@ -151,36 +163,37 @@
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Health & Rage resource orbs - early iterations</h2>
-      <p class="background-text">
-        Creating this shader was a very iterative process. <br><br>
+      <h2 class="padded-h2">Health & Rage Resource Orbs - Early Iterations</h2>
+      <p class="background-text"> Creating this shader was a highly iterative process. <br><br>
+
         <b>
-          <orange>Rage orb's</orange>
-        </b> initial design assumed a creepy face to appear
-        when orb was full.
-        Design was later changed due to feedback mentioning that it look very halloween-like.
+          <orange>Rage orb</orange>
+        </b>
+        - The initial concept featured a creepy face appearing when the orb was full. However, this direction was
+        abandoned following feedback that it felt too Halloween-themed.
 
-        <br><br>
+        The second iteration leaned further into a flame-based design. By layering multiple noise masks, I achieved more
+        chaotic motion and dynamic color variation. The final breakthrough came when moving noise patterns were used to
+        modulate other moving noise layers, resulting in a more cohesive and visually rich effect.
 
-        Second design leaned more into flame direction, using multiple noise texture masks it was possible to give the
-        orb more varied and chaotic movement with more dynamic colors. It wasn't untill moving noise masks were used to
-        modulate other moving noises that I finally was happy with design.
-        From that point a center piece of the orb was added in form of a shining light and some small tweaks were made
-        regarding types of noise used, ways of layering noises,
-        and balancing colors.
+        A bright central element was then added, along with further refinements to noise selection, layering techniques,
+        and color balance.
 
         <br><br>
 
         <b>
           <red>Health orb</red>
-        </b> is using rage orb's shader at it's heart. The shader was however modified to create more calm, flowing,
-        liquidy and deeper effect with stronger panning towards the side of the orb rahter than going up.
+        </b>
+        - The health orb is built upon the same shader foundation as the rage orb but modified to create a calmer, more
+        fluid effect. The motion is more lateral, with stronger horizontal flow rather than upward movement, reinforcing
+        its liquid-like behavior.
 
         <br><br>
 
-        The initial final result assumed usage of 3 textures. One for noise masks, background and gradient atlas for
-        coloring. Due to implementation limitations the shader had to be modyfied to use only one texutre.
-        This texture included 3 masks for nosies and 1 mask for background pattern.
+        The initial final version of the shader used three textures: one for noise masks, one for the background, and a
+        gradient atlas for coloring. Due to engine limitations, the shader was later optimized to use a single texture
+        containing three noise masks and one background mask.
+
       </p>
     </div>
     <div class="image-wrapper-noFill">
@@ -228,8 +241,10 @@
           The stack of planes is then imported into the engine.
           <br> <br>
           In vertex shader first step is to group the vertices. By doing <green>SV_VertexID</green> / 4 it was
-          possible to get a uniform value for each quad in that stack, and by taking a <green>SV_VertexID</green> % 4 it was possible to access ID of each vertex within a quad.
-          These, in combination with <code>time</code> value and <code>fmod()</code> function became fundaments for creating particle-like behaviours such as randomized movement, scale, rotation and billboarding.
+          possible to get a uniform value for each quad in that stack, and by taking a <green>SV_VertexID</green> % 4 it
+          was possible to access ID of each vertex within a quad.
+          These, in combination with <code>time</code> value and <code>fmod()</code> function became fundaments for
+          creating particle-like behaviours such as randomized movement, scale, rotation and billboarding.
         </p>
         <div class="code-block-wrapper">
           <button class="code-toggle" onclick="this.parentElement.classList.toggle('expanded')">
@@ -287,14 +302,19 @@
           <div>
             <p class="background-text">
               To utilize particle shader for <red>pickup health orb</red> some additional work had to be done. <br><br>
-              1. Three sphere have been created in blender, one bigger than the privtous one and combined into a single object together with stack of 30 planes. <br><br>
-              2. In engine, in both vertex and pixel shader stack of planes and each sphere were divided into groups using <green>SV_VertexID</green>. <br><br>
-              3. In vertex shader, vertices belonging to groups of spheres are beeing displaced using panning procedural noise. 
+              1. Three sphere have been created in blender, one bigger than the privtous one and combined into a single
+              object together with stack of 30 planes. <br><br>
+              2. In engine, in both vertex and pixel shader stack of planes and each sphere were divided into groups
+              using <green>SV_VertexID</green>. <br><br>
+              3. In vertex shader, vertices belonging to groups of spheres are beeing displaced using panning procedural
+              noise.
               4. Stack of planes is being divded into groups of single planes and modyfied in following manner: <br>
               <b>A. <pink>Scaling</pink></b> from 0 to their respectetive max size and back to 0 over lifetime.<br>
-              <b>B. <green>Position</green></b> from 0 of object position upwards with noise modyfier for variety and stronger displacement in the middle of their lifetime.<br>
+              <b>B. <green>Position</green></b> from 0 of object position upwards with noise modyfier for variety and
+              stronger displacement in the middle of their lifetime.<br>
               <b>C. <dblue>Rotation</dblue></b> randomly apllied for each plane without breaking billboarding.<br>
-              <b>D. <blue>Color</blue></b> discard treshold increasing over lifetime making particles dissolve completely at the end of their lifetime.<br>
+              <b>D. <blue>Color</blue></b> discard treshold increasing over lifetime making particles dissolve
+              completely at the end of their lifetime.<br>
             </p>
             <div class="code-block-wrapper">
               <button class="code-toggle" onclick="this.parentElement.classList.toggle('expanded')">
@@ -336,10 +356,13 @@
     <div>
       <h2 class="padded-h2">Additional Work - Rigs and Animations</h2>
       <p class="background-text">
-        One of my main responsibilities was creating rigs and animations, focusing mostly on player and enviromental rigs and naimations. <br>
+        One of my main responsibilities was creating rigs and animations, focusing mostly on player and enviromental
+        rigs and aimations. <br><br>
 
-        All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-        squash-and-stretch techniques were heavily used throughout the animation process.
+        Both rigs and animations have been created in blender. <br>
+        <b>Player animations:</b> movement, attack, wide swing, death, idle, ability1, ability2, ability3, ability4.
+        <br>
+        <b>Enviromental animations:</b> wooden gate open, wooden gate close, metal gate open, metal gate close.
       </p>
     </div>
     <div class="image-holder-grid gif-container-long image-bottom">
@@ -358,22 +381,14 @@
     <div class="image-holder-grid gif-container-long image-bottom tablet-break-early">
       <div>
         <p class="background-text">
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
+          One of the more usefull shaders created in collaboration with <a class="link-no-effect"
+            href="https://efrem-torrisi.github.io/">Efrem Torrisi</a> was a see through shader that allows player to
+          always see player regardles if it is occluded by enviroment.
+          The function was part of a shader applied to all enviromental objects in the scene. <br><br>
 
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
-
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
-
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
-
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
+          By creating a cylindrical mask from player position to camera position it was possible to discard pixels that
+          were within the volume of the cylinder.
+          To avoid having a clean cut-off a very fine gradient noise was implemented to make the discarding less sudden.
         </p>
       </div>
       <div class="image-holder-grid  image-right">
@@ -395,55 +410,25 @@
       <div>
         <h2 class="padded-h2">Additional Work - Flipbook VFX</h2>
         <p class="background-text">
-          <b>Health-Based Damage Visualization</b> was implemented by using multiple noise functions with a health
-          parameter. As health decreases, characters appear progressively more damaged and blood-covered.<br><br>
+          The pipeline for VFX in this project was heavily relying on flipbooks. Most of the flipbooks and meshes for
+          them were created in <code>IlluGen</code> and played in the engine usinga flipbook player shader. <br>
+          The created flipbooks included <dblue>two impact effects</dblue>, <green>upgrade effect</green>, <orange>
+            sparks ability2 effect</orange>, <red>charge-up effect</red> and multiple smaller VFX that could have been
+          used in addition to other effects.
 
-          <blue><b>Water Shader</b></blue> was implemented using depth comparisons to simulate foam and water depth. A
-          noise texture
-          created in <code>Substance Designer</code> was used to simulate wave motion. Additionally, shadow map
-          distortion
-          was applied to enhance the illusion of moving water.<br><br>
-
-          <blue><b>Cloud Shader</b></blue> was a lightweight but effective addition. A large plane was placed above the
-          level and
-          animated using panning noise with aggressive alpha clipping. Combined with existing shadow casting and the
-          fixed
-          camera angle (which never looks upward), this created a convincing illusion of moving clouds casting
-          shadows.<br><br>
-
-          <pink><b>Hit Effect</b></pink> for both enemies and the player was implemented using a Fresnel-based shader,
-          combined with
-          time-controlled parameters via constant buffers to produce a reactive flash effect.<br><br>
-
-          <pink><b>Fire Shader</b></pink> for campfires and braziers combines vertex displacement, panning noise for
-          color
-          variation,
-          and height-based alpha clipping. Alpha clipping was chosen over traditional transparency to avoid sorting
-          issues
-          and better match the stylized aesthetic.<br><br>
-
-          <green><b>Post-Processing Effects</b></green> were implemented in a fullscreen pass to enhance the overall
-          visual presentation.
-          These included vignette and color grading adjustments. <br><br>
-
-          <dblue><b>Fog Planes</b></dblue> were placed throughout the level to enhance depth and atmosphere. The shader
-          uses height-based
-          calculations between the fog plane and scene vertex position, combined with panning noise to create a more
-          dynamic and
-          less uniform effect.
         </p>
       </div>
       <div class="image-holder-grid  image-right">
-        <div class="image-wrapper">
+        <div class="image-wrapper dblue-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/FlipbookVFX.webp">
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper green-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/FlipbookVFX1.webp">
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper dblue-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/FlipbookVFX2.webp">
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper red-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/FlipbookVFX3.webp">
         </div>
       </div>
@@ -455,23 +440,24 @@
       <div>
         <h2 class="padded-h2">Flipbook VFX - re-usability</h2>
         <p class="background-text">
-          I was responsible for creating rigs and animations for both the main player character and a parrot enemy.
-
-          All rigs and animations were created in Blender. To match the exaggerated, cartoon-like style of the game,
-          squash-and-stretch techniques were heavily used throughout the animation process.
+          Certain flipbooks like this <orange>sparks ability2 effect</orange> was designed to be used as multiple
+          effects from the same flipbook texture.
+          In the example below all four effects have been created using one and same flipbook texture and different
+          meshes. The reason behind this approach was to reduce the amount of necessary textures while maintaining
+          ability to create many different effects.
         </p>
       </div>
       <div class="image-holder-grid  image-bottom">
-        <div class="image-wrapper">
+        <div class="image-wrapper orange-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/SparkVariant1.webp">
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper orange-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/SparkVariant2.webp">
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper orange-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/SparkVariant3.webp">
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper orange-border">
           <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/SparkVariant4.webp">
         </div>
       </div>
@@ -542,8 +528,10 @@
   <script data-goatcounter="https://dawidtrix.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <!--Traffic tracker-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script><!--Prism.js-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script> <!--Prism.js - C (required for HLSL)-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script> <!--Prism.js - HLSL-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+  <!--Prism.js - C (required for HLSL)-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script>
+  <!--Prism.js - HLSL-->
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
   <script

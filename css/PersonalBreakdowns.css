@@ -224,6 +224,12 @@ red {
     color: #ec2020;
 }
 
+.red-border {
+    border-style:groove;
+    border-color:  #ec2020;
+    border-width: 2px;
+}
+
 blue {
     color: #abd4ff;
 }
@@ -258,15 +264,23 @@ dblue {
     color: #3766ff;
 }
 
-orange {
-    color: orange;
-}
-
 .dblue-border {
     border-style:groove;
     border-color:  #3766ff;
     border-width: 2px;
 }
+
+orange {
+    color: orange;
+}
+
+.orange-border {
+    border-style:dashed;
+    border-color:  orange;
+    border-width: 2px;
+}
+
+
 
 history {
     color: #b69cff;
