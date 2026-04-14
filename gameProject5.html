@@ -219,32 +219,41 @@
     <div class="image-holder-grid gif-container-long image-bottom tablet-break-early">
       <div class="flex-column">
         <p class="background-text">
-          My second major work during this project was creation of <b>
-            <red>pickup health orb</red>
-          </b>. One of the bigger limitations when creating VFX during this project was lack of particle system.
-          <br><br>
-          And while I was designing a concept for that effect I was thinking, what would I want from particle system
-          to
-          be able to do for this effect to be finished?<br>
-          It spawns quads over time, the quads move in either one or multiple directions, there is a lifetime
-          variable I
-          can use to control pixel shader, there is no visible sign of particles poping in and out of existance
-          without
-          any smooth transition, they billboard towards camera. <br><br>
-          All of these attributes can be done using only vertex and pixel shader. All of them except for spawning
-          geometry, however, as long as effect is continous
-          and it isimpossible to see whether a geometry is actually spawned or just moved back and forth, a very
-          convincing fake can be made. <br><br>
+          My second major contribution in this project was the creation of the <b>
+            <red>health pickup orb</red>
+          </b>.
+          My initial design for this effect involved using some form of particle system. However, a major limitation was
+          the lack of any particle system support in our engine.
 
-          To create the particle effect I first need a specific model. I created simple python tool in blender that
-          generates a stack of planes with very tiny offset from one another.
-          The stack of planes is then imported into the engine.
-          <br> <br>
-          In vertex shader first step is to group the vertices. By doing <green>SV_VertexID</green> / 4 it was
-          possible to get a uniform value for each quad in that stack, and by taking a <green>SV_VertexID</green> % 4 it
-          was possible to access ID of each vertex within a quad.
-          These, in combination with <code>time</code> value and <code>fmod()</code> function became fundaments for
-          creating particle-like behaviours such as randomized movement, scale, rotation and billboarding.
+          <br><br>
+
+          While designing the effect, I considered what features a particle system would normally provide:
+          <br>
+          - Spawning quads over time <br>
+          - Movement in one or multiple directions<br>
+          - A lifetime parameter to drive shader behavior<br>
+          - Smooth transitions without visible popping<br>
+          - Billboarding toward the camera<br>
+
+          <br><br>
+
+          All of these behaviors can be simulated using vertex and pixel shaders—except for spawning geometry.
+          However, as long as the effect is continuous, it is possible to convincingly fake spawning by moving
+          geometry back and forth while manipulating their scale and visibility.
+
+          <br><br>
+
+          To achieve this, I created a custom model using a Python tool in Blender that generates a stack of planes
+          with minimal offsets. This stack is then imported into the engine.
+
+          <br><br>
+
+          In the vertex shader, I grouped vertices using <green>SV_VertexID</green>. Dividing <green>SV_VertexID
+          </green> by 4 produces a consistent ID per quad, while using modulo 4 identifies each vertex within the
+          quad. Combined with a <code>time</code> parameter and the <code>fmod()</code> function, this allowed me to
+          simulate particle-like behaviors such as randomized movement, scaling, rotation, and billboarding in a
+          continous and repeating manner.
+
         </p>
         <div class="code-block-wrapper">
           <button class="code-toggle" onclick="this.parentElement.classList.toggle('expanded')">
@@ -300,50 +309,25 @@
             <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P5/Health_Pickup.gif">
           </div>
           <div>
-            <p class="background-text">
-              To utilize particle shader for <red>pickup health orb</red> some additional work had to be done. <br><br>
-              1. Three sphere have been created in blender, one bigger than the privtous one and combined into a single
-              object together with stack of 30 planes. <br><br>
-              2. In engine, in both vertex and pixel shader stack of planes and each sphere were divided into groups
-              using <green>SV_VertexID</green>. <br><br>
-              3. In vertex shader, vertices belonging to groups of spheres are beeing displaced using panning procedural
-              noise.
-              4. Stack of planes is being divded into groups of single planes and modyfied in following manner: <br>
-              <b>A. <pink>Scaling</pink></b> from 0 to their respectetive max size and back to 0 over lifetime.<br>
-              <b>B. <green>Position</green></b> from 0 of object position upwards with noise modyfier for variety and
-              stronger displacement in the middle of their lifetime.<br>
-              <b>C. <dblue>Rotation</dblue></b> randomly apllied for each plane without breaking billboarding.<br>
-              <b>D. <blue>Color</blue></b> discard treshold increasing over lifetime making particles dissolve
-              completely at the end of their lifetime.<br>
+            <p class="background-text"> To adapt this particle-like behaviour for the <red>health pickup orb</red>,
+              additional steps were
+              required:
+
+              <br><br>
+
+              Three spheres were created in Blender, each larger than the previous, and combined with a stack of 30
+              planes into a single mesh. <br><br>
+              In the engine, both the vertex and pixel shaders divide the mesh into groups (planes and spheres) using
+              <green>SV_VertexID</green>.
+              Vertices belonging to the sphere groups are displaced using panning procedural noise.
+              The plane stack is divided into individual planes and modified as follows: <br><br>
+              <b>A. <pink>Scaling</pink></b> - scales from 0 to a maximum size and back to 0 over its lifetime. <br><br>
+              <b>B. <green>Position</green></b> - moves upward from the origin, with added noise variation and stronger
+              displacement mid-lifetime. <br><br>
+              <b>C. <dblue>Rotation</dblue></b> - randomly applied per plane while maintaining billboarding. <br><br>
+              <b>D. <blue>Color</blue></b> - uses an increasing discard threshold to smoothly dissolve particles at the
+              end of their lifetime.
             </p>
-            <div class="code-block-wrapper">
-              <button class="code-toggle" onclick="this.parentElement.classList.toggle('expanded')">
-                Vertex Shader — Group-based Vertex Displacement
-              </button>
-              <pre class="line-numbers"><code class="language-hlsl">
-                if (input.vertexID > 399)
-                {
-                  vertexObjectPos = input.position + float4(0, sin(Timings.x) * 10, 0, 0);
-            
-                    if (input.vertexID >= 400 + 559)
-                    {
-                        vertexObjectPos = input.position + float4(0, sin(Timings.x) * 10, 0, 0);
-                        vertexObjectPos += float4(input.normal * GradientNoise_float(input.texCoord0 * float2(1, 15) + float2(Timings.x, 0), 2) * 20, 0);
-                        vertexObjectPos = lerp(vertexObjectPos, input.position + float4(0, sin(Timings.x) * 12, 0, 0), displacementSofteningX);
-                        vertexObjectPos = lerp(vertexObjectPos, input.position + float4(0, sin(Timings.x) * 12, 0, 0), displacementSofteningY);
-                        isParticles = 2;
-                    }
-            
-                    if (input.vertexID >= 400 + 559 * 2)
-                    {
-                        vertexObjectPos = input.position + float4(0, sin(Timings.x) * 10, 0, 0) + float4(input.normal * GradientNoise_float(input.texCoord0 * float2(1, 15) - float2(Timings.x, 0), 2) * 20, 0);
-                        vertexObjectPos = lerp(vertexObjectPos, input.position + float4(0, sin(Timings.x) * 12, 0, 0), displacementSofteningX);
-                        vertexObjectPos = lerp(vertexObjectPos, input.position + float4(0, sin(Timings.x) * 12, 0, 0), displacementSofteningY);
-                        isParticles = 3;
-                    }
-                }
-              </code></pre>
-            </div>
           </div>
         </div>
       </div>
@@ -355,14 +339,16 @@
   <div class="project-grid-setup">
     <div>
       <h2 class="padded-h2">Additional Work - Rigs and Animations</h2>
-      <p class="background-text">
-        One of my main responsibilities was creating rigs and animations, focusing mostly on player and enviromental
-        rigs and aimations. <br><br>
+      <p class="background-text"> One of my primary responsibilities was creating rigs and animations, focusing mainly
+        on the player character and environmental objects.
 
-        Both rigs and animations have been created in blender. <br>
-        <b>Player animations:</b> movement, attack, wide swing, death, idle, ability1, ability2, ability3, ability4.
-        <br>
-        <b>Enviromental animations:</b> wooden gate open, wooden gate close, metal gate open, metal gate close.
+        <br><br>
+
+        All rigs and animations were created in Blender. <br>
+
+        <b>Player animations:</b> movement, attack, wide swing, death, idle, ability 1-4. <br>
+        <b>Environmental animations:</b> wooden gate (open/close), metal gate (open/close).
+
       </p>
     </div>
     <div class="image-holder-grid gif-container-long image-bottom">
@@ -376,19 +362,22 @@
 
   <div class="project-grid-setup">
     <div>
-      <h2 class="padded-h2">Additional work - See-through shader</h2>
+      <h2 class="padded-h2">Additional Work - See-Through Shader</h2>
     </div>
     <div class="image-holder-grid gif-container-long image-bottom tablet-break-early">
       <div>
-        <p class="background-text">
-          One of the more usefull shaders created in collaboration with <a class="link-no-effect"
-            href="https://efrem-torrisi.github.io/">Efrem Torrisi</a> was a see through shader that allows player to
-          always see player regardles if it is occluded by enviroment.
-          The function was part of a shader applied to all enviromental objects in the scene. <br><br>
+        <p class="background-text"> A very usefull shader, created in collaboration with <a class="link-no-effect"
+            href="https://efrem-torrisi.github.io/">Efrem Torrisi</a>, was a see-through shader that ensures the player
+          remains visible even when occluded by the environment.
 
-          By creating a cylindrical mask from player position to camera position it was possible to discard pixels that
-          were within the volume of the cylinder.
-          To avoid having a clean cut-off a very fine gradient noise was implemented to make the discarding less sudden.
+          <br><br>
+
+          This functionality was implemented as part of a gbuffer shader applied to all environmental objects. By
+          calculating and using a
+          cylindrical mask between positions of the player and the camera, pixels within that volume could be discarded.
+
+          To avoid harsh cutoffs, a fine scale gradient noise was applied to soften the transition.
+
         </p>
       </div>
       <div class="image-holder-grid  image-right">
@@ -409,12 +398,11 @@
     <div class="flex-column">
       <div>
         <h2 class="padded-h2">Additional Work - Flipbook VFX</h2>
-        <p class="background-text">
-          The pipeline for VFX in this project was heavily relying on flipbooks. Most of the flipbooks and meshes for
-          them were created in <code>IlluGen</code> and played in the engine usinga flipbook player shader. <br>
-          The created flipbooks included <dblue>two impact effects</dblue>, <green>upgrade effect</green>, <orange>
-            sparks ability2 effect</orange>, <red>charge-up effect</red> and multiple smaller VFX that could have been
-          used in addition to other effects.
+        <p class="background-text"> The VFX pipeline for this project relied heavily on flipbooks. Most flipbooks and
+          their corresponding meshes were created in <code>IlluGen</code> and played in-engine using a flipbook shader.
+
+          The created flipbooks included <dblue>two impact effects</dblue>, <green>an upgrade effect</green>, <orange>a
+            sparks effect (ability 2)</orange>, <red>a charge-up effect</red>, and several smaller supporting VFX.
 
         </p>
       </div>
@@ -438,13 +426,13 @@
   <div class="project-grid-setup">
     <div class="flex-column">
       <div>
-        <h2 class="padded-h2">Flipbook VFX - re-usability</h2>
-        <p class="background-text">
-          Certain flipbooks like this <orange>sparks ability2 effect</orange> was designed to be used as multiple
-          effects from the same flipbook texture.
-          In the example below all four effects have been created using one and same flipbook texture and different
-          meshes. The reason behind this approach was to reduce the amount of necessary textures while maintaining
-          ability to create many different effects.
+        <h2 class="padded-h2">Flipbook VFX - Re-usability</h2>
+        <p class="background-text"> Some flipbooks—such as the <orange>sparks effect (ability 2)</orange>—were designed
+          to be used as multiple different effects.
+
+          In the example below, four distinct effects were created using the same flipbook texture but applied on multiple
+          different meshes. This approach reduces texture usage while maintaining flexibility and variety in visual
+          effects.
         </p>
       </div>
       <div class="image-holder-grid  image-bottom">
