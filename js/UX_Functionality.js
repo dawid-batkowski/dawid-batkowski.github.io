@@ -209,3 +209,26 @@ function resizeButtonText() {
       burger.classList.remove('toggle');
     }
   });
+
+  Prism.plugins.NormalizeWhitespace.setDefaults({
+    'remove-trailing': true,
+    'remove-indent': true,
+    'left-trim': true,
+    'right-trim': true,
+    'break-lines': true
+  });
+
+
+
+
+  document.querySelectorAll('.code-block-wrapper pre').forEach(pre => {
+    pre.addEventListener('wheel', (e) => {
+      const canScrollX = pre.scrollWidth > pre.clientWidth;
+      const canScrollY = pre.scrollHeight > pre.clientHeight;
+  
+      if (canScrollX || canScrollY) {
+        e.stopPropagation();
+      }
+    });
+  });
+

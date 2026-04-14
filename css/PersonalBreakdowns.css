@@ -127,6 +127,11 @@
     border-radius: 1%;
 }
 
+.align-start {
+    align-content: start ;
+}
+
+
 
 .image-wrapper-noFill > img {
     width: 100%;
@@ -355,3 +360,78 @@ history {
   .margin-3 {
     margin: 3% auto;
   }
+
+  /*Code Linter Block*/
+
+  .code-block-wrapper {
+    position: relative;
+    margin: 1% 0;
+    border-radius: 6px;
+    border: 1px solid #ffffff25;
+    background: #1a1a1a;
+    overflow-x: hidden; 
+    overflow-y: hidden;
+    transition: max-height 0.4s ease;
+    max-height: 42px;
+  }
+  
+  .code-block-wrapper.expanded {
+    max-height: 500px;
+
+  }
+  
+  .code-toggle {
+    width: 100%;
+    background: #2a2a2a;
+    border: none;
+    color: #aaaaaa;
+    font-family: 'Exo', sans-serif;
+    font-size: 0.85em;
+    padding: 10px 16px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease;
+  }
+  
+  .code-toggle:hover {
+    background: #333333;
+    color: #ffffff;
+  }
+  
+  .code-toggle::after {
+    content: '▶';
+    font-size: 0.7em;
+    transition: transform 0.3s ease;
+  }
+  
+  .code-block-wrapper.expanded .code-toggle::after {
+    transform: rotate(90deg);
+  }
+  
+  .code-block-wrapper pre {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto; 
+    max-height: 450px;
+    overflow-y: auto;
+    background: transparent !important;
+    white-space: pre;
+  }
+  
+  .code-block-wrapper code {
+    font-size: 0.85em;
+    background: transparent !important;
+    white-space: pre;
+  }
+
+  /*For preventing clipping on last line of code block */
+  .code-block-wrapper pre::after {
+    content: '';
+    display: block;
+    height: 16px;
+  }
+
+  
