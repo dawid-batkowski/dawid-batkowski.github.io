@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Exo font -->
+  <!-- Exo font -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');   
-    </style>
-  <title>My Portfolio</title>
+    @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+  </style>
+  <title>P6 - Bot Ops</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/PersonalBreakdowns.css">
+  <link rel="stylesheet" href="css/gameProject.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
+    rel="stylesheet" />
 </head>
+
 <body>
   <!-- Shader Canvas -->
   <canvas id="bgCanvas"></canvas>
@@ -17,154 +24,387 @@
   <!-- Navigation -->
   <header>
     <div class="logo">Dawid Batkowski</div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#personalInfo">About</a></li>
-      <li><a href="#">Projects</a></li>
-      <li><a href="#">Contact</a></li>
+
+    <!-- Burger icon -->
+    <div class="burger" id="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="Material/Documents/Dawid_Batkowski_CV.pdf" class="cv-button" target="_blank"
+          rel="noopener noreferrer">View CV</a></li>
     </ul>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <h1>Hello, I'm Dawid</h1>
-    <p>Technical/procedural game artist</p>
-    <a href="#" class="cta-button">View Projects</a>
+  <section class="personal-title">
+    <h1>P6 - Bot Ops</h1>
   </section>
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+  </div>
 
-  <!-- Section Title -->
-  <section class="about">
-    <p class="sectionTitle">Individual pieces</p>
-  </section>
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Bot Ops - Project Pitch</h2>
+      <p class="background-text"><i>"Use resources left in the factory to save yourself from being wiped out by the evil
+          AI. Shoot down and survive the oncoming waves or die." </i>
 
-  <!-- Grid Container (outside .about) -->
-  <section>
-    <div class="mainPieceContainer">
-      <div class="mainPiece">
-        <img src="Material/Screenshots/RockAndMoss1.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder1</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
+      </p>
+    </div>
+    <div class="image-holder-grid  image-bottom">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P6/P6_Showcase2.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P6/P6_Showcase3.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P6/P6_Showcase4.png">
+      <img class="mainPiece" onclick="openLightbox(this)" src="Material/Screenshots/P6/P6_Showcase1.png">
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Bot Ops - Overview</h2>
+      <p class="background-text"> <b>Specifications:</b>
+        <br>
+        - <strong>Engine:</strong> <code>TGE (Custom DX11)</code>
+        <br>
+        - <strong>Platform:</strong> <code>PC</code> <br>
+        - <strong>My Role:</strong> <code>Technical Art, Animation, VFX</code> <br><br>
+
+        This was the fourth group project developed in TGE, inspired by the theme and gameplay of Call of Duty: Black
+        Ops - Zombies. The project focuses heavily on arena-style combat with a wave-based system.
+
+        The player starts with an MP40 machine gun. By unlocking and exploring new sections of the arena, the player
+        gains access to upgrades and a new weapon - a quadruple-barrel gun capable of damaging multiple enemies in a
+        single shot. After surviving all waves and collecting the final key, the player can escape the arena, completing
+        the game. The game features two difficulty levels, which differ by the presence of checkpoints.
+
+        <br><br>
+
+        My role focused on VFX and environmental shaders. During the project, I explored a technique called raymarching,
+        which allowed me to create interesting volumetric effects.
+
+        In addition to environmental effects, a large part of my work was player feedback. I created effects for upgrade
+        machines, muzzle flashes, hit effects, and additional post-processing effects.
+
+        Lastly, I worked on rigging and animation, including enemy rigs and animations, as well as animated doors.
+      </p>
+    </div>
+  </div>
+
+  <div class="flex-column">
+    <div>
+      <div class="project-grid-setup">
+
+        <div>
+          <h2 class="padded-h2">Featured Work - Volumetric fog & Godrays & Dust particles</h2>
+          <p class="background-text">
+            Since my first project in this custom engine, I have been exploring ways of creating fog and alternatives to
+            traditional particle systems. Depth- or height-based fog is cheap and often looks good enough; however, for
+            this project, with a first-person perspective, it wasn't sufficient.
+
+            <br><br>
+
+            My initial attempt at "volumetric" fog involved using a dense cube with many internal intersections and
+            projecting 2D noise in three directions. This produced a somewhat convincing volume-like effect, but due to
+            the high polygon density, it was not scalable.
+
+            At that point, I continued searching for a better solution and discovered raymarching.
+
+            <br><br>
+
+            <pink><b>Fog</b></pink> is created by accumulating the density of procedural 3D noise at each step. The
+            raymarching distance is defined by the minimum of a manually set limit and the scene depth. The 3D noise was
+            later extended into fBm using two octaves, adding variation while maintaining low cost.
+
+            <br><br>
+
+            <dblue><b>God rays</b></dblue> initially appeared as an unintended by-product of projecting 2D noise in 3D
+            space. After switching to true 3D noise for fog, the god rays disappeared.
+
+            Based on feedback, I reintroduced god rays as a separate effect using a similar technique—projecting 2D
+            noise along the direction of the directional light direction. To improve realism and prevent them from
+            appearing
+            through ceilings, I incorporated logic to account for shadow mapping so that god rays only appear in lit
+            areas.
+
+            <br><br>
+
+            <orange><b>Dust particles</b></orange> differ from fog and god rays in that they are not based on density
+            accumulation. Instead, rays march until they intersect small SDF sphere.
+
+            A single sphere was not sufficient, so I used <a class="link-no-effect"
+              href="https://iquilezles.org/articles/sdfrepetition/">domain repetition</a> to duplicate the spheres
+            thousands of times with minimal cost. Finally, noise-modulated sine waves were added to create subtle
+            particle movement.
+          </p>
         </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder2</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
+
+        <div class="image-wrapper-noFill image-right">
+          <div class="webp-shadow-wrapper">
+            <img onclick="openLightbox(this)" src="Material/Screenshots/P6/GodRyas.png">
+          </div>
+          <p class="image-explanation">God Rays showcase.</p>
         </div>
+
       </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/StylizedRocksGrass4.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder3</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
+    </div>
+    <div class="project-grid-setup no-top-margin">
+      <div class="image-holder-grid">
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/Particles.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class="image-explanation">Dust particles showcase.</p>
         </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/TilesSphere.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <p>Placeholder4</p>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/Fog.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class="image-explanation">Early iteration of fog, still using multiple 2D projected noise functions.</p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- About Section with text content -->
-  <section class="about" id="personalInfo">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce justo nisi, sodales sit amet augue sed, bibendum hendrerit libero. Donec id sodales mi. Nunc pellentesque ante in nibh imperdiet, et finibus felis volutpat. Praesent volutpat velit a nunc faucibus sodales. Donec quis sollicitudin eros. Cras at tortor eu sapien lobortis congue in ut mi. Vestibulum ullamcorper, ante in accumsan rutrum, libero dui facilisis ante, quis porttitor libero elit vitae diam. Nam ut ligula sollicitudin, sagittis lorem vel, interdum enim. Aenean vel lacinia ligula. Nunc id velit nulla. Phasellus feugiat nisl justo. Integer fermentum ullamcorper sollicitudin.</p>
+  </div>
 
-    <p>Aenean sodales vitae felis vitae dapibus. Praesent vel libero nisl. Integer sodales maximus lorem et condimentum. Quisque et turpis ut neque porttitor gravida. Ut a sodales purus, sit amet vulputate mi. Duis felis orci, porta ut nisl rhoncus, vehicula congue erat. Donec pellentesque ligula ac dapibus vulputate.</p>
-    
-    <p>Quisque imperdiet volutpat maximus. Sed eget orci eget arcu interdum tincidunt. Praesent ut pretium diam. Maecenas tellus ex, blandit eu diam a, posuere dapibus leo. Maecenas ipsum nibh, placerat sit amet velit vel, dignissim sodales erat. Praesent hendrerit tellus nisi, a dictum tellus tincidunt nec. Vestibulum hendrerit libero sit amet nisi posuere, non eleifend risus fermentum. Nullam a urna quis quam mattis interdum ullamcorper ac urna. Nam suscipit ex vitae lectus accumsan, non laoreet nisl suscipit. Nunc sit amet tempor tortor, vel rutrum turpis. Duis convallis tellus a nisl consectetur, id vehicula purus facilisis. Pellentesque pellentesque bibendum ultrices. Nulla sed tincidunt risus. Sed dapibus maximus auctor. Nullam ultrices nec erat at tempus. Aliquam diam urna, laoreet id est nec, dignissim lacinia tellus.</p>
-    
-    <p>Phasellus est magna, venenatis eget lobortis at, aliquet eget felis. Sed tortor purus, finibus sit amet sagittis eget, dignissam eu velit. Donec vel lacus gravida, elementum sem nec, dictum metus. Nulla urna magna, rhoncus ac augue eget, pharetra venenatis odio. Quisque et odio enim. Phasellus eu mauris convallis felis hendrerit semper sit amet vel lorem. Duis quis hendrerit sem. Suspendisse convallis ultrices ante sit amet sollicitudin. Vestibulum ullamcorper mattis bibendum. Etiam aliquam tortor urna, sit amet pretium nisi varius dictum. Morbi quis velit et turpis pharetra egestas vel sit amet orci. Nulla facilisi.</p>
-  </section>
-  
-  <!-- Section Title -->
-  <section class="about">
-    <p class="sectionTitle">Group Game Projects</p>
-  </section>
 
-  <section>
-    <div class="mainPieceContainer mainPieceContainer--gameProject">
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P2_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 2</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
+  <div class="project-grid-setup no-top-margin">
+    <div>
+      <h2 class="padded-h2"> Volumetric fog & Godrays & Dust particles - Early Experimantations</h2>
+
+    </div>
+    <div class="image-holder-grid  image-bottom">
+      <div class="video-wrapper-noFill">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P6/EarlyFog.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-wrapper-noFill">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P6/EarlyParticles.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-wrapper-noFill">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P6/EarlyVolume.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-wrapper-noFill">
+        <video width="100%" height="100%" controls autoplay muted loop>
+          <source src="Material/Videos/P6/EarlyDomainRepetition.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="project-grid-setup">
+    <div>
+      <h2 class="padded-h2">Additional Work - Rigs and Animations</h2>
+      <p class="background-text">
+        One of my primary responsibilities was creating rigs and animations, mainly for the enemy character and
+        environmental objects.
+
+        <br><br>
+
+        All rigs and animations were created in Blender. <br>
+
+        <b>Enemy animations:</b> movement1, movement2, attack1, attack2, idle, death.<br>
+        <b>Environmental animations:</b> door open/close, garage door open/close, final gate open.
+      </p>
+    </div>
+    <div class="image-holder-grid gif-container-long image-bottom">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P6/Attack1.gif">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P6/Attack2.gif">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P6/Movement1.gif">
+      <img class="under-shadow" onclick="openLightbox(this)" src="Material/Videos/P6/Movement2.gif">
+    </div>
+  </div>
+
+
+  <div class="project-grid-setup">
+    <div class="flex-column">
+      <div>
+        <h2 class="padded-h2">Additional Work - Shooting Feedback</h2>
+        <p class="background-text">
+          A significant portion of player feedback relied on VFX. The primary effect for both weapons was a muzzle flash
+          created in <code>EmberGen</code>, baked into flipbooks, and played back in-game.
+
+          For the shotgun, an additional spark effect was created. This effect was heavily inspired by the
+          <code>SG-225IE Breaker Incendiary</code> shotgun from Helldivers 2. Since we did not yet have a fully
+          developed particle system, I implemented a particle-like effect using a vertex shader (more details <a
+            class="link-no-effect" href="https://dawid-batkowski.github.io/gameProject5.html">here</a>).
+
+          <br><br>
+
+          Additional shooting feedback included hit effects on enemies, consisting of three parts: <br>
+          <b>1. Vertex shake</b> - a quick, subtle noise applied to vertex positions of struck enemy on impact to
+          simulate an electrical
+          shock. <br>
+          <b>2. Electric shock</b> - a pixel shader effect using a panning and modified Minkowski variant of Voronoi
+          noise. <br>
+          <b>3. Sparks</b> - similar to the shotgun sparks, spawned at the hit location.
+        </p>
+      </div>
+      <div class="image-holder-grid  image-bottom">
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/ShootingVFX.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/ShotgunShooting.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P3_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 3</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
+    </div>
+  </div>
+
+  <div class="project-grid-setup">
+    <div class="flex-column">
+      <div>
+        <h2 class="padded-h2">Additional Work - Other Effects</h2>
+        <p class="background-text">
+          <red><b>1. Bloody screen effect</b></red> - a fullscreen post-processing shader. A major limitation was the
+          inability to assign
+          textures to the fullscreen pass, so the effect relied heavily on procedural gradient noises. These noises were
+          panned at different speeds and masked at the center to avoid covering the entire screen.
+
+          <br><br>
+
+          <pink><b>2. Upgrade machine effects</b></pink> - three unique effects, one for each upgrade machine. All were
+          implemented as
+          post-processing effects using noise, sine waves, and UV distortion of scene textures from previous passes.
+
+          The most complex was the weapon upgrade effect, where the bullet shell, its movement, and its lighting/shading
+          were fully implemented via shader code.
+
+          <br><br>
+
+          <orange><b>3. Fire propeller</b></orange> - an effect used to justify enemy hovering. The mesh was created in
+          Blender, and vertex
+          painting was used to modify inner, middle, and outer regions of the propeller in the shader separately.
+        </p>
+      </div>
+      <div class="image-holder-grid  image-bottom">
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/HealthUpgrade.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/ReloadUpgrade.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/WeaponUpgrade.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="video-wrapper-noFill">
+          <video width="100%" height="100%" controls autoplay muted loop>
+            <source src="Material/Videos/P6/FirePropeller.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P4_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 4</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/P5_LevelShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 5</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 6</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 7</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
-      </div>
-      <div class="mainPiece mainPiece--gameProject">
-        <img src="Material/Screenshots/IceTextureShowcase.png" />
-        <div class="mainPiecetext">
-          <h3>Game Project 8</h3>
-          <p class="projectDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime eaque iusto vel provident perferendis nemo et delectus incidunt accusamus deserunt?</p>
-        </div>
+      <p class="image-explanation">3rd and 4th videos do not represent final iteration of the effect.</p>
+    </div>
+
+  </div>
+
+
+  <section id="contact" class="contact">
+    <div class="container is-visible" data-reveal="">
+      <h2>Contact</h2>
+      <ul class="contact-list">
+        <li>Email: <a href="mailto:dawidtrix.trixit@gmail.com">dawidtrix.trixit@gmail.com</a></li>
+        <li>LinkedIn: <a
+            href="https://www.linkedin.com/in/dawid-batkowski-8aa248272/">linkedin.com/in/dawid-batkowski</a></li>
+        <li>GitHub: <a href="https://github.com/dawid-batkowski">github.com/dawid-batkowski</a></li>
+      </ul>
+
+      <div class="social-icons">
+        <a href="mailto:dawidtrix.trixit@gmail.com" class="social-icon" aria-label="Email">
+          <svg viewBox="0.5 3.5 23 17" fill="currentColor">
+            <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67z">
+            </path>
+            <path
+              d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908z">
+            </path>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/dawid-batkowski-8aa248272/" target="_blank" rel="noopener"
+          class="social-icon" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z">
+            </path>
+          </svg>
+        </a>
+        <a href="https://github.com/dawid-batkowski" target="_blank" rel="noopener" class="social-icon"
+          aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z">
+            </path>
+          </svg>
+        </a>
+        <a href="Material/Documents/Dawid_Batkowski_CV.pdf" target="_blank" rel="noopener" class="social-icon"
+          aria-label="CV">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 17v-1h8v1H8zm0-3v-1h8v1H8zm0-3v-1h5v1H8z">
+            </path>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Dawid Batkowski All rights reserved.</p>
+    <p>&copy; Website created & designed by Dawid Batkowski</p>
   </footer>
 
   <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script>  <!--Three.js-->
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script> <!--Smooth Scrolling-->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.156.0/build/three.min.js"></script> <!--Three.js-->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <!--Smooth Scrolling-->
+  <script data-goatcounter="https://dawidtrix.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <!--Traffic tracker-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script><!--Prism.js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+  <!--Prism.js - C (required for HLSL)-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script>
+  <!--Prism.js - HLSL-->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <!--Smooth Scrolling-->
   <script src="js/UX_Functionality.js"></script>
   <script src="js/intro.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
