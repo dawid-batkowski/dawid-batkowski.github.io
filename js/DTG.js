@@ -1,15 +1,18 @@
 const RES = 512;
 
 // ── SHADER LOADER ─────────────────────────────────────────────
+// All shaders are fetched ONCE before the graph starts (see init() at the bottom).
+// onExecute() is synchronous — it reads from shaderCache directly, no awaiting.
+// This avoids the async-inside-LiteGraph-loop problem that causes on_frame errors.
+
 const shaderCache = {};
 
-async function loadShader(name) {
-  if (shaderCache[name]) return shaderCache[name];
-  const response = await fetch(`glsl/DTG_lib/${name}.glsl`);
-  if (!response.ok) throw new Error(`Could not load shader: ${name}.glsl`);
-  const src = await response.text();
-  shaderCache[name] = src;
-  return src;
+async function preloadShaders(names) {
+  await Promise.all(names.map(async (name) => {
+    const response = await fetch(`glsl/DTG_lib/${name}.glsl`);
+    if (!response.ok) throw new Error(`Could not load shader: ${name}.glsl (${response.status})`);
+    shaderCache[name] = await response.text();
+  }));
 }
 
 // ── OFFSCREEN RENDERER ────────────────────────────────────────
@@ -63,7 +66,7 @@ function drawThumbnail(node, ctx, thumbCanvas) {
   // way is to ask LiteGraph where the last widget ends via widgets_up.
   // Simplest reliable method: count widgets, each is ~20px + 4px gap.
   const WIDGET_ROW_H = 24; // 20px widget + 4px gap
-  const TITLE_H      = 30;
+  const TITLE_H      = 20;
   const widgetCount  = node.widgets ? node.widgets.length : 0;
   const thumbY       = TITLE_H + widgetCount * WIDGET_ROW_H + 2; // 2px gap
 
@@ -84,7 +87,7 @@ function drawThumbnail(node, ctx, thumbCanvas) {
 // ── NODES ─────────────────────────────────────────────────────
 
 function NoiseNode() {
-  this.addInput('in', 'texture');
+  this.addInput('uv', 'UV');
   this.addOutput('out', 'texture');
 
   this.properties = { scale: 4.0, seed: 0.0 };
@@ -108,12 +111,11 @@ function NoiseNode() {
 
 NoiseNode.title = 'GradientNoise_float';
 
-NoiseNode.prototype.onExecute = async function() {
+NoiseNode.prototype.onExecute = function() {
   const uvCanvas = this.getInputData(0);
   if (this._dirty || this._lastUV !== uvCanvas) {
     this._lastUV = uvCanvas;
-    const src = await loadShader('noise');
-    this._canvas = renderNode(src, {
+    this._canvas = renderNode(shaderCache['noise'], {
       u_scale: { value: this.properties.scale },
       u_seed:  { value: this.properties.seed  },
       tex_uv:  { value: uvCanvas ? canvasToTexture(uvCanvas) : null },
@@ -136,15 +138,19 @@ LiteGraph.registerNodeType('Noises/GradientNoise_float', NoiseNode);
 function InvertNode() {
   this.addInput('in',  'texture');
   this.addOutput('out', 'texture');
-  this.size = [180, 20 + 180];
+  this.size    = [180, 160];
   this._canvas = null;
 }
 InvertNode.title = 'Invert';
-InvertNode.prototype.onExecute = async function() {
+InvertNode.prototype.onExecute = function() {
   const inputCanvas = this.getInputData(0);
   if (!inputCanvas) return;
-  const src = await loadShader('invert');
-  this._canvas = renderNode(src, { u_input: { value: canvasToTexture(inputCanvas) } });
+  if (this._lastInput === inputCanvas) {
+    this.setOutputData(0, this._canvas);
+    return;
+  }
+  this._lastInput = inputCanvas;
+  this._canvas = renderNode(shaderCache['invert'], { u_input: { value: canvasToTexture(inputCanvas) } });
   this.setOutputData(0, this._canvas);
 };
 InvertNode.prototype.onDrawForeground = function(ctx) {
@@ -154,14 +160,15 @@ LiteGraph.registerNodeType('texture/invert', InvertNode);
 
 
 function UVNode() {
-  this.addOutput('out', 'texture');
-  this.size = [180, 20 + 180];
+  this.addOutput('out', 'uv');
+  this.size    = [180, 160];
   this._canvas = null;
 }
 UVNode.title = 'UV';
-UVNode.prototype.onExecute = async function() {
-  const src = await loadShader('uv');
-  this._canvas = renderNode(src, {});
+UVNode.prototype.onExecute = function() {
+  if (!this._canvas) {
+    this._canvas = renderNode(shaderCache['uv'], {});
+  }
   this.setOutputData(0, this._canvas);
 };
 UVNode.prototype.onDrawForeground = function(ctx) {
@@ -172,14 +179,18 @@ LiteGraph.registerNodeType('texture/uv', UVNode);
 
 function OutputNode() {
   this.addInput('in', 'texture');
-  this.size = [180, 20 + 180];
   this._canvas = null;
 
-  this.addWidget("button", "Save PNG", null, () => {
-    if (this._canvas) {
-      downloadCanvasAsPNG(this._canvas);
-    }
+  this.addWidget('button', 'Export PNG', null, () => {
+    if (!this._canvas) return;
+    const link = document.createElement('a');
+    link.download = 'texture.png';
+    link.href     = this._canvas.toDataURL('image/png');
+    link.click();
   });
+
+  // title + 1 widget + square thumbnail
+  this.size = [180, 20 + 24 + 180];
 }
 OutputNode.title = 'Output';
 OutputNode.prototype.onExecute = function() {
@@ -188,50 +199,53 @@ OutputNode.prototype.onExecute = function() {
   this._canvas = src;
   const preview = document.getElementById('previewCanvas');
   preview.getContext('2d').drawImage(src, 0, 0, preview.width, preview.height);
-  
 };
 OutputNode.prototype.onDrawForeground = function(ctx) {
   drawThumbnail(this, ctx, this._canvas);
 };
 LiteGraph.registerNodeType('texture/output', OutputNode);
 
-function downloadCanvasAsPNG(canvas, filename = "texture.png") {
-    canvas.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-  
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      a.click();
-  
-      URL.revokeObjectURL(url);
-    }, "image/png");
+
+// ── INIT ──────────────────────────────────────────────────────
+// Fetch all shaders first, then build the graph.
+// Nothing async ever happens inside onExecute after this point.
+
+async function init() {
+  try {
+    await preloadShaders(['noise', 'invert', 'uv']);
+  } catch(e) {
+    console.error('Shader preload failed:', e);
+    document.body.insertAdjacentHTML('afterbegin',
+      `<div style="color:red;padding:12px;font-family:monospace">${e.message}</div>`);
+    return;
   }
 
-// ── GRAPH SETUP ───────────────────────────────────────────────
-const graph    = new LiteGraph.LGraph();
-const lgCanvas = new LiteGraph.LGraphCanvas('#graphCanvas', graph);
+  const graph    = new LiteGraph.LGraph();
+  const lgCanvas = new LiteGraph.LGraphCanvas('#graphCanvas', graph);
 
-function resizeGraph() {
-  const el = document.getElementById('graphCanvas');
-  lgCanvas.resize(el.offsetWidth, el.offsetHeight);
+  function resizeGraph() {
+    const el = document.getElementById('graphCanvas');
+    lgCanvas.resize(el.offsetWidth, el.offsetHeight);
+  }
+  resizeGraph();
+  window.addEventListener('resize', resizeGraph);
+
+  const noiseNode  = LiteGraph.createNode('Noises/GradientNoise_float');
+  noiseNode.pos    = [60, 200];
+  graph.add(noiseNode);
+
+  const invertNode = LiteGraph.createNode('texture/invert');
+  invertNode.pos   = [310, 200];
+  graph.add(invertNode);
+
+  const outputNode = LiteGraph.createNode('texture/output');
+  outputNode.pos   = [560, 200];
+  graph.add(outputNode);
+
+  noiseNode.connect(0, invertNode, 0);
+  invertNode.connect(0, outputNode, 0);
+
+  graph.start();
 }
-resizeGraph();
-window.addEventListener('resize', resizeGraph);
 
-const noiseNode  = LiteGraph.createNode('Noises/GradientNoise_float');
-noiseNode.pos    = [60, 200];
-graph.add(noiseNode);
-
-const invertNode = LiteGraph.createNode('texture/invert');
-invertNode.pos   = [310, 200];
-graph.add(invertNode);
-
-const outputNode = LiteGraph.createNode('texture/output');
-outputNode.pos   = [560, 200];
-graph.add(outputNode);
-
-noiseNode.connect(0, invertNode, 0);
-invertNode.connect(0, outputNode, 0);
-
-graph.start();
+init();
